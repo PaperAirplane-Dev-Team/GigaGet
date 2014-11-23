@@ -63,7 +63,9 @@ public class DownloadMission
 			done = length;
 		}
 		
-		writeThisToFile();
+		if (done != length) {
+			writeThisToFile();
+		}
 		
 		for (MissionListener listener : mListeners) {
 			if (listener != null) {
