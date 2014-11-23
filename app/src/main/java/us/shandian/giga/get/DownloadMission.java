@@ -5,6 +5,7 @@ import android.os.Handler;
 
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,6 +19,8 @@ public class DownloadMission
 		public void onFinish();
 	}
 	
+	public static final int ERROR_SERVER_UNSUPPORTED = 206;
+	
 	public String name = "";
 	public String url = "";
 	public String location = "";
@@ -30,7 +33,7 @@ public class DownloadMission
 	public HashMap<Long, Boolean> blockState = new HashMap<Long, Boolean>();
 	public boolean running = false;
 	public boolean finished = false;
-	public boolean err = false;
+	public int errCode = -1;
 	
 	private transient ArrayList<MissionListener> mListeners = new ArrayList<MissionListener>();
 	private transient boolean mWritingToFile = false;
@@ -80,6 +83,8 @@ public class DownloadMission
 	private void onFinish() {
 		running = false;
 		finished = true;
+		
+		deleteThisFromFile();
 		
 		for (MissionListener listener : mListeners) {
 			listener.onFinish();
@@ -134,5 +139,9 @@ public class DownloadMission
 		synchronized (blockState) {
 			Utility.writeToFile(location + "/" + name + ".giga", new Gson().toJson(this));
 		}
+	}
+	
+	private void deleteThisFromFile() {
+		new File(location + "/" + name + ".giga").delete();
 	}
 }

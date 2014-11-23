@@ -3,7 +3,7 @@ package us.shandian.giga.get;
 import android.os.Handler;
 import android.util.Log;
 
-import java.io.InputStream;
+import java.io.BufferedInputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -66,7 +66,7 @@ public class DownloadRunnable implements Runnable
 			mMission.setPosition(mId, position);
 			
 			long start = position * DownloadManager.BLOCK_SIZE;
-			long end = start + DownloadManager.BLOCK_SIZE;
+			long end = start + DownloadManager.BLOCK_SIZE - 1;
 			
 			if (end >= mMission.length) {
 				end = mMission.length - 1;
@@ -81,17 +81,24 @@ public class DownloadRunnable implements Runnable
 				conn = (HttpURLConnection) url.openConnection();
 				conn.setRequestProperty("Range", "bytes=" + start + "-" + end);
 				
+				// A server may be ignoring the range requet
+				if (conn.getResponseCode() != 206) {
+					mMission.errCode = DownloadMission.ERROR_SERVER_UNSUPPORTED;
+					mMission.pause();
+				}
+				
 				if (DEBUG) {
 					Log.d(TAG, mId + ":" + conn.getRequestProperty("Range"));
+					Log.d(TAG, mId + ":Content-Length=" + conn.getContentLength() + " Code:" + conn.getResponseCode());
 				}
 				
 				RandomAccessFile f = new RandomAccessFile(mMission.location + "/" + mMission.name, "rw");
 				f.seek(start);
-				InputStream ipt = conn.getInputStream();
+				BufferedInputStream ipt = new BufferedInputStream(conn.getInputStream());
 				byte[] buf = new byte[512];
 				
 				while (start < end) {
-					int len = ipt.read(buf);
+					int len = ipt.read(buf, 0, 512);
 					
 					if (len == -1) {
 						break;
@@ -104,10 +111,11 @@ public class DownloadRunnable implements Runnable
 				}
 				
 				if (DEBUG) {
-					Log.d(TAG, mId + ":position " + position + " finished");
+					Log.d(TAG, mId + ":position " + position + " finished, total length " + total);
 				}
 				
 				f.close();
+				ipt.close();
 			} catch (Exception e) {
 				// TODO Retry count limit & notify error
 				retry = true;

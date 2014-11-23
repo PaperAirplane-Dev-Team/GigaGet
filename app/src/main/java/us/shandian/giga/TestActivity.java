@@ -26,7 +26,7 @@ public class TestActivity extends Activity implements DownloadMission.MissionLis
 		mLastTimeStamp = System.currentTimeMillis();
 		
 		mManager = new DownloadManager(this);
-		int id = mManager.startMission("http://gdown.baidu.com/data/wisegame/2c6a60c5cb96c593/QQ_182.apk", "QQ.apk", "/storage/sdcard0/GigaGet");
+		int id = mManager.startMission("http://dldir1.qq.com/qqfile/QQIntl/QQi_wireless/Android/qqi_5.0.10.6046_android_office.apk", "QQ.apk", "/storage/sdcard0/GigaGet");
 		mManager.getMission(id).addListener(this);
 		
     }
