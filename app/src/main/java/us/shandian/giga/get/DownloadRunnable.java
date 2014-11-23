@@ -109,7 +109,7 @@ public class DownloadRunnable implements Runnable
 				
 				f.close();
 			} catch (Exception e) {
-				// TODO Notify
+				// TODO Retry count limit & notify error
 				retry = true;
 				
 				notifyProgress(-total);
