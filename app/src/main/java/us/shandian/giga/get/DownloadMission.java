@@ -3,8 +3,12 @@ package us.shandian.giga.get;
 import android.content.Context;
 import android.os.Handler;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import us.shandian.giga.util.Utility;
 
 public class DownloadMission
 {
@@ -29,13 +33,16 @@ public class DownloadMission
 	public boolean err = false;
 	
 	private transient ArrayList<MissionListener> mListeners = new ArrayList<MissionListener>();
+	private transient boolean mWritingToFile = false;
 	
 	public boolean isBlockPreserved(long block) {
 		return blockState.containsKey(block) ? blockState.get(block) : false;
 	}
 	
 	public void preserveBlock(long block) {
-		blockState.put(block, true);
+		synchronized (blockState) {
+			blockState.put(block, true);
+		}
 	}
 	
 	public void setPosition(int id, long position) {
@@ -52,6 +59,8 @@ public class DownloadMission
 		if (done > length) {
 			done = length;
 		}
+		
+		writeThisToFile();
 		
 		for (MissionListener listener : mListeners) {
 			if (listener != null) {
@@ -105,6 +114,25 @@ public class DownloadMission
 			
 			// TODO: Notify & Write state to info file
 			// if (err)
+		}
+	}
+	
+	private void writeThisToFile() {
+		if (!mWritingToFile) {
+			mWritingToFile = true;
+			new Thread() {
+				@Override
+				public void run() {
+					doWriteThisToFile();
+					mWritingToFile = false;
+				}
+			}.start();
+		}
+	}
+	
+	private void doWriteThisToFile() {
+		synchronized (blockState) {
+			Utility.writeToFile(location + "/" + name + ".giga", new Gson().toJson(this));
 		}
 	}
 }
