@@ -26,7 +26,7 @@ public class DownloadRunnable implements Runnable
 	
 	@Override
 	public void run() {
-		boolean retry = false;
+		boolean retry = mMission.recovered;
 		long position = mMission.getPosition(mId);
 		
 		if (DEBUG) {

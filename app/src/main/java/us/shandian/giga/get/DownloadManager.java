@@ -1,6 +1,9 @@
 package us.shandian.giga.get;
 
 import android.content.Context;
+import android.util.Log;
+
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -8,29 +11,74 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import us.shandian.giga.util.Utility;
+import static us.shandian.giga.BuildConfig.DEBUG;
+
 public class DownloadManager
 {
+	private static final String TAG = DownloadManager.class.getSimpleName();
+	
 	public static final int BLOCK_SIZE = 512 * 1024;
 	
 	private Context mContext;
+	private String mLocation;
 	private ArrayList<DownloadMission> mMissions = new ArrayList<DownloadMission>();
 	
-	public DownloadManager(Context context) {
+	public DownloadManager(Context context, String location) {
 		mContext = context;
+		mLocation = location;
+		loadMissions();
 	}
 	
-	public int startMission(String url, String name, String location) {
+	public int startMission(String url, String name) {
 		DownloadMission mission = new DownloadMission();
 		mission.url = url;
 		mission.name = name;
-		mission.location = location;
+		mission.location = mLocation;
 		mMissions.add(mission);
 		new Initializer(mContext, mission).start();
 		return mMissions.size() - 1;
 	}
 	
+	public void resumeMission(int i) {
+		DownloadMission d = getMission(i);
+		if (!d.running && d.errCode == -1) {
+			d.start(mContext);
+		}
+	}
+	
+	private void loadMissions() {
+		File f = new File(mLocation);
+		
+		if (f.exists() && f.isDirectory()) {
+			File[] subs = f.listFiles();
+			
+			for (File sub : subs) {
+				if (!sub.isDirectory() && sub.getName().endsWith(".giga")) {
+					String str = Utility.readFromFile(sub.getAbsolutePath());
+					if (str != null) {
+						
+						if (DEBUG) {
+							Log.d(TAG, "loading mission " + sub.getName());
+							Log.d(TAG, str);
+						}
+						
+						DownloadMission mis = new Gson().fromJson(str, DownloadMission.class);
+						mis.running = false;
+						mis.recovered = true;
+						mMissions.add(mis);
+					}
+				}
+			}
+		}
+	}
+	
 	public DownloadMission getMission(int i) {
 		return mMissions.get(i);
+	}
+	
+	public int getCount() {
+		return mMissions.size();
 	}
 	
 	private class Initializer extends Thread {

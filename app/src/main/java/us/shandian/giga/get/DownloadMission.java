@@ -35,6 +35,8 @@ public class DownloadMission
 	public boolean finished = false;
 	public int errCode = -1;
 	
+	public transient boolean recovered = false;
+	
 	private transient ArrayList<MissionListener> mListeners = new ArrayList<MissionListener>();
 	private transient boolean mWritingToFile = false;
 	
@@ -57,6 +59,10 @@ public class DownloadMission
 	}
 	
 	public synchronized void notifyProgress(long deltaLen) {
+		if (recovered) {
+			recovered = false;
+		}
+		
 		done += deltaLen;
 		
 		if (done > length) {
@@ -107,7 +113,7 @@ public class DownloadMission
 			
 			Handler handler = new Handler(context.getMainLooper());
 			for (int i = 0; i < threadCount; i++) {
-				if (threadPositions.size() <= i) {
+				if (threadPositions.size() <= i && !recovered) {
 					threadPositions.add((long) i);
 				}
 				new Thread(new DownloadRunnable(this, handler, i)).start();

@@ -1,6 +1,8 @@
 package us.shandian.giga.util;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 public class Utility
@@ -54,6 +56,31 @@ public class Utility
 			opt.close();
 		} catch (Exception e) {
 			
+		}
+	}
+	
+	public static String readFromFile(String file) {
+		try {
+			File f = new File(file);
+			
+			if (!f.exists() || !f.canRead()) {
+				return null;
+			}
+			
+			BufferedInputStream ipt = new BufferedInputStream(new FileInputStream(f));
+			
+			byte[] buf = new byte[512];
+			StringBuilder sb = new StringBuilder();
+			
+			while (ipt.available() > 0) {
+				int len = ipt.read(buf, 0, 512);
+				sb.append(new String(buf, 0, len, "UTF-8"));
+			}
+			
+			ipt.close();
+			return sb.toString();
+		} catch (Exception e) {
+			return null;
 		}
 	}
 }
