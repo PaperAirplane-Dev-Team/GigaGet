@@ -1,5 +1,6 @@
 package us.shandian.giga.get;
 
+import android.os.Handler;
 import android.util.Log;
 
 import java.io.InputStream;
@@ -14,10 +15,12 @@ public class DownloadRunnable implements Runnable
 	private static final String TAG = DownloadRunnable.class.getSimpleName();
 	
 	private DownloadMission mMission;
+	private Handler mHandler;
 	private int mId;
 	
-	public DownloadRunnable(DownloadMission mission, int id) {
+	public DownloadRunnable(DownloadMission mission, Handler handler, int id) {
 		mMission = mission;
+		mHandler = handler;
 		mId = id;
 	}
 	
@@ -71,6 +74,8 @@ public class DownloadRunnable implements Runnable
 			
 			HttpURLConnection conn = null;
 			
+			int total = 0;
+			
 			try {
 				URL url = new URL(mMission.url);
 				conn = (HttpURLConnection) url.openConnection();
@@ -92,8 +97,9 @@ public class DownloadRunnable implements Runnable
 						break;
 					} else {
 						start += len;
+						total += len;
 						f.write(buf, 0, len);
-						// TODO Notify
+						notifyProgress(len);
 					}
 				}
 				
@@ -106,6 +112,8 @@ public class DownloadRunnable implements Runnable
 				// TODO Notify
 				retry = true;
 				
+				notifyProgress(-total);
+				
 				if (DEBUG) {
 					Log.d(TAG, mId + ":position " + position + " retrying");
 				}
@@ -117,5 +125,14 @@ public class DownloadRunnable implements Runnable
 		}
 		
 		// TODO Notify
+	}
+	
+	private void notifyProgress(final long len) {
+		mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				mMission.notifyProgress(len);
+			}
+		});
 	}
 }
