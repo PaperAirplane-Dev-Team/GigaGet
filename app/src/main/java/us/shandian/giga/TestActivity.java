@@ -44,4 +44,9 @@ public class TestActivity extends Activity implements DownloadMission.MissionLis
 		mLastDone = done;
 		mLastTimeStamp = nowTimeStamp;
 	}
+
+	@Override
+	public void onFinish() {
+		mText.setText("done");
+	}
 }

@@ -11,6 +11,7 @@ public class DownloadMission
 	
 	public static interface MissionListener {
 		public void onProgressUpdate(long done, long total);
+		public void onFinish();
 	}
 	
 	public String name = "";
@@ -20,9 +21,11 @@ public class DownloadMission
 	public long length = 0;
 	public long done = 0;
 	public int threadCount = 3;
+	public int finishCount = 0;
 	public ArrayList<Long> threadPositions = new ArrayList<Long>();
 	public HashMap<Long, Boolean> blockState = new HashMap<Long, Boolean>();
 	public boolean running = false;
+	public boolean finished = false;
 	public boolean err = false;
 	
 	private transient ArrayList<MissionListener> mListeners = new ArrayList<MissionListener>();
@@ -57,6 +60,23 @@ public class DownloadMission
 		}
 	}
 	
+	public synchronized void notifyFinished() {
+		finishCount++;
+		
+		if (finishCount == threadCount) {
+			onFinish();
+		}
+	}
+	
+	private void onFinish() {
+		running = false;
+		finished = true;
+		
+		for (MissionListener listener : mListeners) {
+			listener.onFinish();
+		}
+	}
+	
 	public synchronized void addListener(MissionListener listener) {
 		mListeners.add(listener);
 	}
@@ -66,7 +86,7 @@ public class DownloadMission
 	}
 	
 	public void start(Context context) {
-		if (!running) {
+		if (!running && !finished) {
 			running = true;
 			
 			Handler handler = new Handler(context.getMainLooper());

@@ -124,7 +124,7 @@ public class DownloadRunnable implements Runnable
 			Log.d(TAG, "thread " + mId + " finished");
 		}
 		
-		// TODO Notify
+		notifyFinished();
 	}
 	
 	private void notifyProgress(final long len) {
@@ -132,6 +132,15 @@ public class DownloadRunnable implements Runnable
 			@Override
 			public void run() {
 				mMission.notifyProgress(len);
+			}
+		});
+	}
+	
+	private void notifyFinished() {
+		mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				mMission.notifyFinished();
 			}
 		});
 	}
