@@ -1,5 +1,8 @@
 package us.shandian.giga.util;
 
+import android.app.Activity;
+import android.view.View;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -82,5 +85,13 @@ public class Utility
 		} catch (Exception e) {
 			return null;
 		}
+	}
+	
+	public static <T> T findViewById(View v, int id) {
+		return (T) v.findViewById(id);
+	}
+	
+	public static <T> T findViewById(Activity activity, int id) {
+		return (T) activity.findViewById(id);
 	}
 }

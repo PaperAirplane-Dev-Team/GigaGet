@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- Theme colors -->
+	<color name="blue">#0988FF</color>
+	<color name="blue_dark">#0977EE</color>
+	<color name="orange">#EE7800</color>
+	<color name="orange_dark">#ED6700</color>
+	<color name="red">#FF2223</color>
+	<color name="red_dark">#EE1112</color>
+	<color name="green">#22BB12</color>
+	<color name="green_dark">#11AA01</color>
+	<color name="purple">#AA23FF</color>
+	<color name="purple_dark">#9912EE</color>
+	<color name="gray">#444448</color>
+	<color name="gray_dark">#333336</color>
+	
+	<!-- Component colors -->
+	<color name="white">#FFFFFF</color>
+	<color name="light_gray">#EFEFEF</color>
+</resources>

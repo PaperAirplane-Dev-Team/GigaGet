@@ -21,7 +21,7 @@ public class TestActivity extends Activity implements DownloadMission.MissionLis
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.test);
 		mText = (TextView) findViewById(R.id.hello);
 		mLastTimeStamp = System.currentTimeMillis();
 		

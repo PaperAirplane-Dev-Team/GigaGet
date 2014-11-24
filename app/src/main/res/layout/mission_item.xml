@@ -1,0 +1,83 @@
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content"
+	android:layout_width="match_parent">
+	
+	<RelativeLayout
+		android:id="@+id/item_bkg"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:layout_margin="5dp"
+		android:background="@color/gray">
+		
+		<RelativeLayout
+			android:id="@+id/item_title_line"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_marginTop="4dp">
+			
+			<TextView
+				android:id="@+id/item_status"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_centerVertical="true"
+				android:layout_marginLeft="6dp"
+				android:singleLine="true"
+				android:text="0%"
+				android:textSize="20sp"
+				android:textColor="@color/white"/>
+			
+			<ImageView
+				style="?attr/buttonBarButtonStyle"
+				android:id="@+id/item_more"
+				android:layout_width="36dp"
+				android:layout_height="36dp"
+				android:layout_alignParentRight="true"
+				android:layout_centerVertical="true"
+				android:layout_marginRight="4dp"
+				android:src="@drawable/ic_menu_more"
+				android:scaleType="centerInside"/>
+			
+		</RelativeLayout>
+		
+		<TextView
+			android:id="@+id/item_letter"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/item_title_line"
+			android:padding="8dp"
+			android:gravity="center"
+			android:textSize="48sp"
+			android:textColor="@color/white"
+			android:textStyle="bold"
+			android:text="X"/>
+		
+		<TextView
+			android:id="@+id/item_name"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/item_letter"
+			android:padding="6dp"
+			android:singleLine="true"
+			android:ellipsize="end"
+			android:text="XXX.xx"
+			android:textSize="16sp"
+			android:textStyle="bold"
+			android:textColor="@color/white"/>
+		
+		<TextView
+			android:id="@+id/item_size"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/item_name"
+			android:padding="6dp"
+			android:singleLine="true"
+			android:text="100.00MB"
+			android:textSize="12sp"
+			android:textColor="@color/white"/>
+		
+	</RelativeLayout>
+    
+</RelativeLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="Theme.App.Base" parent="Theme.AppCompat.Light">
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowBackground">@color/light_gray</item>
+		<item name="windowActionBar">false</item>
+		<item name="windowActionModeOverlay">true</item>
+	</style>
+	
+	<style name="Theme.App.Blue" parent="Theme.App.Base">
+		<item name="colorPrimary">@color/blue</item>
+		<item name="colorPrimaryDark">@color/blue_dark</item>
+	</style>
+	
+	<style name="Theme.App.Orange" parent="Theme.App.Base">
+		<item name="colorPrimary">@color/orange</item>
+		<item name="colorPrimaryDark">@color/orange_dark</item>
+	</style>
+	
+	<style name="Theme.App.Red" parent="Theme.App.Base">
+		<item name="colorPrimary">@color/red</item>
+		<item name="colorPrimaryDark">@color/red_dark</item>
+	</style>
+	
+	<style name="Theme.App.Green" parent="Theme.App.Base">
+		<item name="colorPrimary">@color/green</item>
+		<item name="colorPrimaryDark">@color/green_dark</item>
+	</style>
+	
+	<style name="Theme.App.Purple" parent="Theme.App.Base">
+		<item name="colorPrimary">@color/purple</item>
+		<item name="colorPrimaryDark">@color/purple_dark</item>
+	</style>
+	
+	<style name="Theme.App.Gray" parent="Theme.App.Base">
+		<item name="colorPrimary">@color/gray</item>
+		<item name="colorPrimaryDark">@color/gray_dark</item>
+	</style>
+</resources>
