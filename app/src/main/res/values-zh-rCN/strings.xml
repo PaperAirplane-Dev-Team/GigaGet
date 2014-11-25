@@ -3,4 +3,10 @@
 	<!-- Missions -->
 	<string name="start">开始</string>
 	<string name="pause">暂停</string>
+	
+	<!-- Fragment -->
+	<string name="add">添加任务</string>
+	
+	<!-- Msg -->
+	<string name="msg_url">请输入下载地址(URL)</string>
 </resources>

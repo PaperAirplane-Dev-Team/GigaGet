@@ -1,10 +1,17 @@
 package us.shandian.giga.ui.fragment;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +48,66 @@ public class MissionsFragment extends Fragment
 		mGridManager = new GridLayoutManager(getActivity(), 2);
 		mList.setLayoutManager(mGridManager);
 		
+		setHasOptionsMenu(true);
+		
 		return v;
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.frag_mission, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.add:
+				showUrlDialog();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	private void showUrlDialog() {
+		// Create the view
+		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View v = inflater.inflate(R.layout.dialog_url, null);
+		final EditText text = Utility.findViewById(v, R.id.url);
+		
+		// Show the dialog
+		new AlertDialog.Builder(getActivity())
+				.setCancelable(true)
+				.setView(v)
+				.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.dismiss();
+					}
+				})
+				.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						String url = text.getText().toString().trim();
+						
+						if (!url.equals("")) {
+							int index = url.lastIndexOf("/");
+							
+							if (index > 0) {
+								int end = url.lastIndexOf("?");
+								
+								if (end == -1) {
+									end = url.length();
+								}
+								
+								String name = url.substring(index + 1, end);
+								mManager.startMission(url, name);
+								mAdapter.notifyDataSetChanged();
+							}
+						}
+					}
+				})
+				.create()
+				.show();
 	}
 }
