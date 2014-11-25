@@ -75,6 +75,12 @@ public class DownloadManager
 						}
 						
 						DownloadMission mis = new Gson().fromJson(str, DownloadMission.class);
+						
+						if (mis.finished) {
+							sub.delete();
+							continue;
+						}
+						
 						mis.running = false;
 						mis.recovered = true;
 						mMissions.add(mis);
