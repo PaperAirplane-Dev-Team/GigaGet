@@ -37,7 +37,7 @@ public class DownloadRunnable implements Runnable
 			
 			if (Thread.currentThread().isInterrupted()) {
 				mMission.pause();
-				break;
+				return;
 			}
 			
 			// Wait for an unblocked position
@@ -97,7 +97,7 @@ public class DownloadRunnable implements Runnable
 				BufferedInputStream ipt = new BufferedInputStream(conn.getInputStream());
 				byte[] buf = new byte[512];
 				
-				while (start < end) {
+				while (start < end && mMission.running) {
 					int len = ipt.read(buf, 0, 512);
 					
 					if (len == -1) {
@@ -116,6 +116,10 @@ public class DownloadRunnable implements Runnable
 				
 				f.close();
 				ipt.close();
+				
+				if (!mMission.running) {
+					return;
+				}
 			} catch (Exception e) {
 				// TODO Retry count limit & notify error
 				retry = true;

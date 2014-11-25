@@ -2,8 +2,12 @@ package us.shandian.giga.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import android.support.v7.widget.RecyclerView;
@@ -47,13 +51,33 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 
 	@Override
 	public MissionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		return new ViewHolder(mInflater.inflate(R.layout.mission_item, parent, false));
+		final ViewHolder h =  new ViewHolder(mInflater.inflate(R.layout.mission_item, parent, false));
+		
+		h.menu.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				buildPopup(h);
+			}
+		});
+		
+		return h;
+	}
+
+	@Override
+	public void onViewRecycled(MissionAdapter.ViewHolder h) {
+		super.onViewRecycled(h);
+		h.mission.removeListener(h.observer);
+		h.mission = null;
+		h.observer = null;
+		h.progress = null;
+		h.position = -1;
 	}
 
 	@Override
 	public void onBindViewHolder(MissionAdapter.ViewHolder h, int pos) {
 		DownloadMission ms = mManager.getMission(pos);
 		h.mission = ms;
+		h.position = pos;
 		h.letter.setText(ms.name.substring(0, 1));
 		h.name.setText(ms.name);
 		h.size.setText(Utility.formatBytes(ms.length));
@@ -61,6 +85,9 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		int first = ms.name.charAt(0);
 		h.progress = new ProgressDrawable(mContext, BACKGROUNDS[first % BACKGROUNDS.length], FOREGROUNDS[first % FOREGROUNDS.length]);
 		h.bkg.setBackgroundDrawable(h.progress);
+		
+		h.observer = new MissionObserver(this, h);
+		ms.addListener(h.observer);
 		
 		updateProgress(h);
 	}
@@ -81,15 +108,53 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		h.progress.setProgress(progress);
 	}
 	
+	private void buildPopup(final ViewHolder h) {
+		PopupMenu popup = new PopupMenu(mContext, h.menu);
+		popup.inflate(R.menu.mission);
+		
+		Menu menu = popup.getMenu();
+		MenuItem start = menu.findItem(R.id.start);
+		MenuItem pause = menu.findItem(R.id.pause);
+		
+		if (!h.mission.running) {
+			start.setVisible(true);
+			pause.setVisible(false);
+		} else {
+			start.setVisible(false);
+			pause.setVisible(true);
+		}
+		
+		popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				switch (item.getItemId()) {
+					case R.id.start:
+						mManager.resumeMission(h.position);
+						return true;
+					case R.id.pause:
+						mManager.pauseMission(h.position);
+						return true;
+					default:
+						return false;
+				}
+			}
+		});
+		
+		popup.show();
+	}
+	
 	static class ViewHolder extends RecyclerView.ViewHolder {
 		public DownloadMission mission;
+		public int position;
 		
 		public TextView status;
 		public TextView letter;
 		public TextView name;
 		public TextView size;
 		public View bkg;
+		public ImageView menu;
 		public ProgressDrawable progress;
+		public MissionObserver observer;
 		
 		public ViewHolder(View v) {
 			super(v);
@@ -99,6 +164,31 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 			name = Utility.findViewById(v, R.id.item_name);
 			size = Utility.findViewById(v, R.id.item_size);
 			bkg = Utility.findViewById(v, R.id.item_bkg);
+			menu = Utility.findViewById(v, R.id.item_more);
 		}
+	}
+	
+	static class MissionObserver implements DownloadMission.MissionListener {
+		private MissionAdapter mAdapter;
+		private ViewHolder mHolder;
+		
+		public MissionObserver(MissionAdapter adapter, ViewHolder holder) {
+			mAdapter = adapter;
+			mHolder = holder;
+		}
+		
+		@Override
+		public void onProgressUpdate(long done, long total) {
+			mAdapter.updateProgress(mHolder);
+		}
+
+		@Override
+		public void onFinish() {
+			mAdapter.mManager.deleteMission(mHolder.position);
+			// TODO Notification
+			mAdapter.notifyDataSetChanged();
+		}
+
+		
 	}
 }

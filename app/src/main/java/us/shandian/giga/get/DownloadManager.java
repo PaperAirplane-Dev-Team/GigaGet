@@ -47,6 +47,17 @@ public class DownloadManager
 		}
 	}
 	
+	public void pauseMission(int i) {
+		DownloadMission d = getMission(i);
+		if (d.running) {
+			d.pause();
+		}
+	}
+	
+	public void deleteMission(int i) {
+		mMissions.remove(i);
+	}
+	
 	private void loadMissions() {
 		File f = new File(mLocation);
 		

@@ -3,5 +3,9 @@
 
     <string name="app_name">GigaGet</string>
     <string name="hello_world">Hello world!</string>
+	
+	<!-- Missions -->
+	<string name="start">Start</string>
+	<string name="pause">Pause</string>
 
 </resources>
