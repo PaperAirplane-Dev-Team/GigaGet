@@ -71,6 +71,9 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		h.observer = null;
 		h.progress = null;
 		h.position = -1;
+		h.lastTimeStamp = -1;
+		h.lastDone = -1;
+		h.sizeString = "";
 	}
 
 	@Override
@@ -80,7 +83,8 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		h.position = pos;
 		h.letter.setText(ms.name.substring(0, 1));
 		h.name.setText(ms.name);
-		h.size.setText(Utility.formatBytes(ms.length));
+		h.sizeString = Utility.formatBytes(ms.length);
+		h.size.setText(h.sizeString);
 		
 		int first = ms.name.charAt(0);
 		h.progress = new ProgressDrawable(mContext, BACKGROUNDS[first % BACKGROUNDS.length], FOREGROUNDS[first % FOREGROUNDS.length]);
@@ -103,9 +107,34 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 	}
 	
 	private void updateProgress(ViewHolder h) {
-		float progress = (float) h.mission.done / h.mission.length;
-		h.status.setText(String.format("%.2f%%", progress * 100));
-		h.progress.setProgress(progress);
+		long now = System.currentTimeMillis();
+		
+		if (h.lastTimeStamp == -1) {
+			h.lastTimeStamp = now;
+		}
+		
+		if (h.lastDone == -1) {
+			h.lastDone = h.mission.done;
+		}
+		
+		long deltaTime = now - h.lastTimeStamp;
+		long deltaDone = h.mission.done - h.lastDone;
+		
+		if (deltaTime == 0 || deltaTime > 100) {
+			float progress = (float) h.mission.done / h.mission.length;
+			h.status.setText(String.format("%.2f%%", progress * 100));
+			h.progress.setProgress(progress);
+		}
+		
+		if (deltaTime > 400 && deltaDone > 0) {
+			float speed = (float) deltaDone / deltaTime;
+			String speedStr = Utility.formatSpeed(speed * 1000);
+			
+			h.size.setText(h.sizeString + " " + speedStr);
+			
+			h.lastTimeStamp = now;
+			h.lastDone = h.mission.done;
+		}
 	}
 	
 	private void buildPopup(final ViewHolder h) {
@@ -133,6 +162,8 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 						return true;
 					case R.id.pause:
 						mManager.pauseMission(h.position);
+						h.lastTimeStamp = -1;
+						h.lastDone = -1;
 						return true;
 					default:
 						return false;
@@ -155,6 +186,10 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		public ImageView menu;
 		public ProgressDrawable progress;
 		public MissionObserver observer;
+		
+		public long lastTimeStamp = -1;
+		public long lastDone = -1;
+		public String sizeString = "";
 		
 		public ViewHolder(View v) {
 			super(v);
