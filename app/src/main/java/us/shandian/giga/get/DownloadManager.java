@@ -89,7 +89,7 @@ public class DownloadManager
 						mis.recovered = true;
 						insertMission(mis);
 					}
-				} else if (!sub.getName().startsWith(".")) {
+				} else if (!sub.getName().startsWith(".") && !new File(sub.getPath() + ".giga").exists()) {
 					// Add a dummy mission for downloaded files
 					DownloadMission mis = new DownloadMission();
 					mis.length = sub.length();
@@ -122,6 +122,8 @@ public class DownloadManager
 			do {
 				m = mMissions.get(++i);
 			} while (m.timestamp < mission.timestamp && i < mMissions.size() - 1);
+			
+			if (i > 0) i--;
 		} else {
 			i = 0;
 		}
