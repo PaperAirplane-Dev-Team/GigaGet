@@ -35,9 +35,9 @@ public class DownloadManager
 		mission.url = url;
 		mission.name = name;
 		mission.location = mLocation;
-		mMissions.add(mission);
+		mission.timestamp = System.currentTimeMillis();
 		new Initializer(mContext, mission).start();
-		return mMissions.size() - 1;
+		return insertMission(mission);
 	}
 	
 	public void resumeMission(int i) {
@@ -87,7 +87,7 @@ public class DownloadManager
 						
 						mis.running = false;
 						mis.recovered = true;
-						mMissions.add(mis);
+						insertMission(mis);
 					}
 				} else if (!sub.getName().startsWith(".")) {
 					// Add a dummy mission for downloaded files
@@ -98,7 +98,8 @@ public class DownloadManager
 					mis.running = false;
 					mis.name = sub.getName();
 					mis.location = mLocation;
-					mMissions.add(mis);
+					mis.timestamp = sub.lastModified();
+					insertMission(mis);
 				}
 			}
 		}
@@ -110,6 +111,24 @@ public class DownloadManager
 	
 	public int getCount() {
 		return mMissions.size();
+	}
+	
+	private int insertMission(DownloadMission mission) {
+		int i = -1;
+		
+		DownloadMission m = null;
+		
+		if (mMissions.size() > 0) {
+			do {
+				m = mMissions.get(++i);
+			} while (m.timestamp < mission.timestamp && i < mMissions.size() - 1);
+		} else {
+			i = 0;
+		}
+		
+		mMissions.add(i, mission);
+		
+		return i;
 	}
 	
 	private class Initializer extends Thread {

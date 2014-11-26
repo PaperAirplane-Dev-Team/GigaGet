@@ -34,6 +34,7 @@ public class DownloadMission
 	public boolean running = false;
 	public boolean finished = false;
 	public int errCode = -1;
+	public long timestamp = 0;
 	
 	public transient boolean recovered = false;
 	
