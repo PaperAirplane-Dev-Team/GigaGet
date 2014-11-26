@@ -12,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.text.Editable;
+import android.text.TextWatcher;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -74,6 +76,40 @@ public class MissionsFragment extends Fragment
 		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View v = inflater.inflate(R.layout.dialog_url, null);
 		final EditText text = Utility.findViewById(v, R.id.url);
+		final EditText name = Utility.findViewById(v, R.id.file_name);
+		
+		text.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void beforeTextChanged(CharSequence p1, int p2, int p3, int p4) {
+				
+			}
+
+			@Override
+			public void onTextChanged(CharSequence p1, int p2, int p3, int p4) {
+				
+				String url = text.getText().toString().trim();
+
+				if (!url.equals("")) {
+					int index = url.lastIndexOf("/");
+
+					if (index > 0) {
+						int end = url.lastIndexOf("?");
+
+						if (end == -1) {
+							end = url.length();
+						}
+
+						name.setText(url.substring(index + 1, end));
+					}
+				}
+			}
+
+			@Override
+			public void afterTextChanged(Editable txt) {
+				
+			}	
+		});
 		
 		// Show the dialog
 		new AlertDialog.Builder(getActivity())
@@ -90,21 +126,10 @@ public class MissionsFragment extends Fragment
 					public void onClick(DialogInterface dialog, int id) {
 						String url = text.getText().toString().trim();
 						
-						if (!url.equals("")) {
-							int index = url.lastIndexOf("/");
-							
-							if (index > 0) {
-								int end = url.lastIndexOf("?");
-								
-								if (end == -1) {
-									end = url.length();
-								}
-								
-								String name = url.substring(index + 1, end);
-								mManager.startMission(url, name);
-								mAdapter.notifyDataSetChanged();
-							}
-						}
+						mManager.startMission(url, name.getText().toString().trim());
+						mAdapter.notifyDataSetChanged();
+						
+						// TODO Check for illegal url or file name
 					}
 				})
 				.create()

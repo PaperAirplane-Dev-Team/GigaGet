@@ -9,5 +9,7 @@
 	<string name="add">添加任务</string>
 	
 	<!-- Msg -->
-	<string name="msg_url">请输入下载地址(URL)</string>
+	<string name="msg_url">下载地址</string>
+	<string name="msg_name">文件名</string>
+	
 </resources>

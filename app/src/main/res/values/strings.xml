@@ -13,6 +13,7 @@
 	<string name="add">Add</string>
 	
 	<!-- Msg -->
-	<string name="msg_url">Please input the url to download from</string>
+	<string name="msg_url">Download URL</string>
+	<string name="msg_name">File name</string>
 
 </resources>
