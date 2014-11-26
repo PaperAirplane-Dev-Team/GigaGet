@@ -245,6 +245,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 			//mAdapter.mManager.deleteMission(mHolder.position);
 			// TODO Notification
 			//mAdapter.notifyDataSetChanged();
+			mHolder.size.setText(Utility.formatBytes(mHolder.mission.length));
 		}
 
 		
