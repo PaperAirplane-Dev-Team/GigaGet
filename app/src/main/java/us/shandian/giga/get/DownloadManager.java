@@ -121,9 +121,9 @@ public class DownloadManager
 		if (mMissions.size() > 0) {
 			do {
 				m = mMissions.get(++i);
-			} while (m.timestamp < mission.timestamp && i < mMissions.size() - 1);
+			} while (m.timestamp > mission.timestamp && i < mMissions.size() - 1);
 			
-			if (i > 0) i--;
+			//if (i > 0) i--;
 		} else {
 			i = 0;
 		}
