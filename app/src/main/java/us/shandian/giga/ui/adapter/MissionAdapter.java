@@ -83,8 +83,6 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		h.position = pos;
 		h.letter.setText(ms.name.substring(0, 1));
 		h.name.setText(ms.name);
-		h.sizeString = Utility.formatBytes(ms.length);
-		h.size.setText(h.sizeString);
 		
 		int first = ms.name.charAt(0);
 		h.progress = new ProgressDrawable(mContext, BACKGROUNDS[first % BACKGROUNDS.length], FOREGROUNDS[first % FOREGROUNDS.length]);
@@ -129,8 +127,9 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		if (deltaTime > 400 && deltaDone > 0) {
 			float speed = (float) deltaDone / deltaTime;
 			String speedStr = Utility.formatSpeed(speed * 1000);
+			String sizeStr = Utility.formatBytes(h.mission.length);
 			
-			h.size.setText(h.sizeString + " " + speedStr);
+			h.size.setText(sizeStr + " " + speedStr);
 			
 			h.lastTimeStamp = now;
 			h.lastDone = h.mission.done;
