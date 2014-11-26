@@ -97,6 +97,7 @@ public class DownloadManager
 					mis.finished = true;
 					mis.running = false;
 					mis.name = sub.getName();
+					mis.location = mLocation;
 					mMissions.add(mis);
 				}
 			}

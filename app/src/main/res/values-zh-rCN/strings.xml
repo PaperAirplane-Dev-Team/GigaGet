@@ -3,6 +3,7 @@
 	<!-- Missions -->
 	<string name="start">开始</string>
 	<string name="pause">暂停</string>
+	<string name="view">查看</string>
 	
 	<!-- Fragment -->
 	<string name="add">添加任务</string>

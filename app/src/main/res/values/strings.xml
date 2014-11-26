@@ -7,6 +7,7 @@
 	<!-- Missions -->
 	<string name="start">Start</string>
 	<string name="pause">Pause</string>
+	<string name="view">View</string>
 	
 	<!-- Fragment -->
 	<string name="add">Add</string>

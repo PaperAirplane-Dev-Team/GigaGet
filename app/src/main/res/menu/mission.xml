@@ -7,5 +7,9 @@
 	<item
 		android:id="@+id/pause"
 		android:title="@string/pause"/>
+	
+	<item
+		android:id="@+id/view"
+		android:title="@string/view"/>
 
 </menu>

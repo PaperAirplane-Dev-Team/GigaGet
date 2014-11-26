@@ -1,16 +1,21 @@
 package us.shandian.giga.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import android.support.v7.widget.RecyclerView;
+
+import java.io.File;
 
 import us.shandian.giga.R;
 import us.shandian.giga.get.DownloadManager;
@@ -143,15 +148,21 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		Menu menu = popup.getMenu();
 		MenuItem start = menu.findItem(R.id.start);
 		MenuItem pause = menu.findItem(R.id.pause);
+		MenuItem view = menu.findItem(R.id.view);
+		
+		// Set to false first
+		start.setVisible(false);
+		pause.setVisible(false);
+		view.setVisible(false);
 		
 		if (!h.mission.finished) {
 			if (!h.mission.running) {
 				start.setVisible(true);
-				pause.setVisible(false);
 			} else {
-				start.setVisible(false);
 				pause.setVisible(true);
 			}
+		} else {
+			view.setVisible(true);
 		}
 		
 		popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -165,6 +176,18 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 						mManager.pauseMission(h.position);
 						h.lastTimeStamp = -1;
 						h.lastDone = -1;
+						return true;
+					case R.id.view:
+						Intent i = new Intent();
+						i.setAction(Intent.ACTION_VIEW);
+						File f = new File(h.mission.location + "/" + h.mission.name);
+						String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(Utility.getFileExt(h.mission.name).substring(1));
+						
+						if (f.exists()) {
+							i.setDataAndType(Uri.fromFile(f), mime);
+							mContext.startActivity(i);
+						}
+						
 						return true;
 					default:
 						return false;
