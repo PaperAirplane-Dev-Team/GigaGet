@@ -73,7 +73,6 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		h.position = -1;
 		h.lastTimeStamp = -1;
 		h.lastDone = -1;
-		h.sizeString = "";
 	}
 
 	@Override
@@ -83,6 +82,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		h.position = pos;
 		h.letter.setText(ms.name.substring(0, 1));
 		h.name.setText(ms.name);
+		h.size.setText(Utility.formatBytes(ms.length));
 		
 		int first = ms.name.charAt(0);
 		h.progress = new ProgressDrawable(mContext, BACKGROUNDS[first % BACKGROUNDS.length], FOREGROUNDS[first % FOREGROUNDS.length]);
@@ -144,12 +144,14 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		MenuItem start = menu.findItem(R.id.start);
 		MenuItem pause = menu.findItem(R.id.pause);
 		
-		if (!h.mission.running) {
-			start.setVisible(true);
-			pause.setVisible(false);
-		} else {
-			start.setVisible(false);
-			pause.setVisible(true);
+		if (!h.mission.finished) {
+			if (!h.mission.running) {
+				start.setVisible(true);
+				pause.setVisible(false);
+			} else {
+				start.setVisible(false);
+				pause.setVisible(true);
+			}
 		}
 		
 		popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -188,7 +190,6 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		
 		public long lastTimeStamp = -1;
 		public long lastDone = -1;
-		public String sizeString = "";
 		
 		public ViewHolder(View v) {
 			super(v);
@@ -218,9 +219,9 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 
 		@Override
 		public void onFinish() {
-			mAdapter.mManager.deleteMission(mHolder.position);
+			//mAdapter.mManager.deleteMission(mHolder.position);
 			// TODO Notification
-			mAdapter.notifyDataSetChanged();
+			//mAdapter.notifyDataSetChanged();
 		}
 
 		

@@ -65,7 +65,11 @@ public class DownloadManager
 			File[] subs = f.listFiles();
 			
 			for (File sub : subs) {
-				if (!sub.isDirectory() && sub.getName().endsWith(".giga")) {
+				if (sub.isDirectory()) {
+					continue;
+				}
+				
+				if (sub.getName().endsWith(".giga")) {
 					String str = Utility.readFromFile(sub.getAbsolutePath());
 					if (str != null) {
 						
@@ -85,6 +89,15 @@ public class DownloadManager
 						mis.recovered = true;
 						mMissions.add(mis);
 					}
+				} else if (!sub.getName().startsWith(".")) {
+					// Add a dummy mission for downloaded files
+					DownloadMission mis = new DownloadMission();
+					mis.length = sub.length();
+					mis.done = mis.length;
+					mis.finished = true;
+					mis.running = false;
+					mis.name = sub.getName();
+					mMissions.add(mis);
 				}
 			}
 		}
