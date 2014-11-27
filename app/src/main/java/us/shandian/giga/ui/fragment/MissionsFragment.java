@@ -30,6 +30,8 @@ public class MissionsFragment extends Fragment
 	private RecyclerView mList;
 	private MissionAdapter mAdapter;
 	private GridLayoutManager mGridManager;
+	
+	private String mPendingUrl = null;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,6 +71,20 @@ public class MissionsFragment extends Fragment
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		if (mPendingUrl != null) {
+			showUrlDialog();
+			mPendingUrl = null;
+		}
+	}
+	
+	public void setPendingUrl(String url) {
+		mPendingUrl = url;
 	}
 	
 	private void showUrlDialog() {
@@ -110,6 +126,10 @@ public class MissionsFragment extends Fragment
 				
 			}	
 		});
+		
+		if (mPendingUrl != null) {
+			text.setText(mPendingUrl);
+		}
 		
 		// Show the dialog
 		new AlertDialog.Builder(getActivity())
