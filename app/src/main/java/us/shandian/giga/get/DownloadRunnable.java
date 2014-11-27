@@ -140,20 +140,24 @@ public class DownloadRunnable implements Runnable
 	}
 	
 	private void notifyProgress(final long len) {
-		mHandler.post(new Runnable() {
-			@Override
-			public void run() {
-				mMission.notifyProgress(len);
-			}
-		});
+		synchronized (mMission) {
+			mHandler.post(new Runnable() {
+				@Override
+				public void run() {
+					mMission.notifyProgress(len);
+				}
+			});
+		}
 	}
 	
 	private void notifyFinished() {
-		mHandler.post(new Runnable() {
-			@Override
-			public void run() {
-				mMission.notifyFinished();
-			}
-		});
+		synchronized (mMission) {
+			mHandler.post(new Runnable() {
+				@Override
+				public void run() {
+					mMission.notifyFinished();
+				}
+			});
+		}
 	}
 }

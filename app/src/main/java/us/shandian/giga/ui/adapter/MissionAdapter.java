@@ -123,13 +123,13 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		long deltaTime = now - h.lastTimeStamp;
 		long deltaDone = h.mission.done - h.lastDone;
 		
-		if (deltaTime == 0 || deltaTime > 100) {
+		if (deltaTime == 0 || deltaTime > 1000) {
 			float progress = (float) h.mission.done / h.mission.length;
 			h.status.setText(String.format("%.2f%%", progress * 100));
 			h.progress.setProgress(progress);
 		}
 		
-		if (deltaTime > 400 && deltaDone > 0) {
+		if (deltaTime > 1000 && deltaDone > 0) {
 			float speed = (float) deltaDone / deltaTime;
 			String speedStr = Utility.formatSpeed(speed * 1000);
 			String sizeStr = Utility.formatBytes(h.mission.length);
