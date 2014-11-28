@@ -15,5 +15,6 @@
 	<!-- Msg -->
 	<string name="msg_url">Download URL</string>
 	<string name="msg_name">File name</string>
+	<string name="msg_threads">Threads</string>
 
 </resources>

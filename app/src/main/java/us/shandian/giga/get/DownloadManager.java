@@ -30,12 +30,13 @@ public class DownloadManager
 		loadMissions();
 	}
 	
-	public int startMission(String url, String name) {
+	public int startMission(String url, String name, int threads) {
 		DownloadMission mission = new DownloadMission();
 		mission.url = url;
 		mission.name = name;
 		mission.location = mLocation;
 		mission.timestamp = System.currentTimeMillis();
+		mission.threadCount = threads;
 		new Initializer(mContext, mission).start();
 		return insertMission(mission);
 	}

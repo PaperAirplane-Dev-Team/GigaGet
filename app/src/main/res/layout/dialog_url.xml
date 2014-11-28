@@ -1,41 +1,76 @@
-<RelativeLayout
+<LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content">
+	android:layout_height="wrap_content"
+	android:padding="5dp"
+	android:orientation="vertical">
 
-	<GridLayout
-		android:layout_width="wrap_content"
+	<LinearLayout
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_gravity="center_horizontal"
-		android:columnCount="2"
-		android:alignmentMode="alignMargins"
-		android:useDefaultMargins="true"
+		android:gravity="center_vertical"
 		android:orientation="horizontal">
-    
+		
 		<TextView
-			android:layout_width="wrap_content"
+			android:layout_width="80dp"
 			android:layout_height="wrap_content"
 			android:text="@string/msg_url"/>
 	
 		<EditText
 			android:id="@+id/url"
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:singleLine="true"
 			android:ems="10"/>
 		
+	</LinearLayout>
+	
+	
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="5dp"
+		android:gravity="center_vertical"
+		android:orientation="horizontal">
+		
 		<TextView
-			android:layout_width="wrap_content"
+			android:layout_width="80dp"
 			android:layout_height="wrap_content"
 			android:text="@string/msg_name"/>
 
 		<EditText
 			android:id="@+id/file_name"
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:singleLine="true"
-			android:ems="10"/>
+			android:singleLine="true"/>
+		
+	</LinearLayout>
 	
-	</GridLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="5dp"
+		android:gravity="center_vertical"
+		android:orientation="horizontal">
 	
-</RelativeLayout>
+		<TextView
+			android:layout_width="80dp"
+			android:layout_height="wrap_content"
+			android:text="@string/msg_threads"/>
+		
+		<TextView
+			android:id="@+id/threads_count"
+			android:layout_width="20dp"
+			android:layout_height="wrap_content"
+			android:text="0"/>
+		
+		<SeekBar
+			android:id="@+id/threads"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:max="31"
+			android:progress="3"/>
+		
+	</LinearLayout>
+	
+</LinearLayout>

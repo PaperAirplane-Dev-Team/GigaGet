@@ -11,5 +11,6 @@
 	<!-- Msg -->
 	<string name="msg_url">下载地址</string>
 	<string name="msg_name">文件名</string>
+	<string name="msg_threads">线程</string>
 	
 </resources>

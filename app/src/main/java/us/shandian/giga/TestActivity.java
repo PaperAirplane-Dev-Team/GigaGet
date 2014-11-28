@@ -30,7 +30,7 @@ public class TestActivity extends Activity implements DownloadMission.MissionLis
 		int id = 0;
 		
 		if (mManager.getCount() == 0) {
-			id = mManager.startMission("http://dldir1.qq.com/qqfile/QQIntl/QQi_wireless/Android/qqi_5.0.10.6046_android_office.apk", "QQ.apk");
+			id = mManager.startMission("http://dldir1.qq.com/qqfile/QQIntl/QQi_wireless/Android/qqi_5.0.10.6046_android_office.apk", "QQ.apk", 3);
 		} else {
 			mManager.resumeMission(id);
 		}

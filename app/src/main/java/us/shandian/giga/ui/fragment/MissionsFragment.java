@@ -12,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.text.Editable;
 import android.text.TextWatcher;
 
@@ -93,6 +95,30 @@ public class MissionsFragment extends Fragment
 		View v = inflater.inflate(R.layout.dialog_url, null);
 		final EditText text = Utility.findViewById(v, R.id.url);
 		final EditText name = Utility.findViewById(v, R.id.file_name);
+		final TextView tCount = Utility.findViewById(v, R.id.threads_count);
+		final SeekBar threads = Utility.findViewById(v, R.id.threads);
+		
+		threads.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+				@Override
+				public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser) {
+					tCount.setText(String.valueOf(progress + 1));
+				}
+
+				@Override
+				public void onStartTrackingTouch(SeekBar p1) {
+					
+				}
+
+				@Override
+				public void onStopTrackingTouch(SeekBar p1) {
+					
+				}
+				
+		});
+		
+		threads.setProgress(3);
+		tCount.setText("4"); // TODO Read default value from pref
 		
 		text.addTextChangedListener(new TextWatcher() {
 
@@ -146,7 +172,7 @@ public class MissionsFragment extends Fragment
 					public void onClick(DialogInterface dialog, int id) {
 						String url = text.getText().toString().trim();
 						
-						mManager.startMission(url, name.getText().toString().trim());
+						mManager.startMission(url, name.getText().toString().trim(), threads.getProgress() + 1);
 						mAdapter.notifyDataSetChanged();
 						
 						// TODO Check for illegal url or file name
