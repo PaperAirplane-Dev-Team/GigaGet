@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +34,8 @@ public class MissionsFragment extends Fragment
 	private MissionAdapter mAdapter;
 	private GridLayoutManager mGridManager;
 	
+	private SharedPreferences mPrefs;
+	
 	private String mPendingUrl = null;
 
 	@Override
@@ -53,6 +56,8 @@ public class MissionsFragment extends Fragment
 		mList.setAdapter(mAdapter);
 		mGridManager = new GridLayoutManager(getActivity(), 2);
 		mList.setLayoutManager(mGridManager);
+		
+		mPrefs = getActivity().getSharedPreferences("threads", Context.MODE_WORLD_READABLE);
 		
 		setHasOptionsMenu(true);
 		
@@ -117,8 +122,9 @@ public class MissionsFragment extends Fragment
 				
 		});
 		
-		threads.setProgress(3);
-		tCount.setText("4"); // TODO Read default value from pref
+		int def = mPrefs.getInt("threads", 4);
+		threads.setProgress(def - 1);
+		tCount.setText(String.valueOf(def));
 		
 		text.addTextChangedListener(new TextWatcher() {
 
@@ -174,6 +180,8 @@ public class MissionsFragment extends Fragment
 						
 						mManager.startMission(url, name.getText().toString().trim(), threads.getProgress() + 1);
 						mAdapter.notifyDataSetChanged();
+						
+						mPrefs.edit().putInt("threads", threads.getProgress() + 1);
 						
 						// TODO Check for illegal url or file name
 					}
