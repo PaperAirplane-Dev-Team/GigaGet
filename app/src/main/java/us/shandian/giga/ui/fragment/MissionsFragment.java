@@ -181,7 +181,7 @@ public class MissionsFragment extends Fragment
 						mManager.startMission(url, name.getText().toString().trim(), threads.getProgress() + 1);
 						mAdapter.notifyDataSetChanged();
 						
-						mPrefs.edit().putInt("threads", threads.getProgress() + 1);
+						mPrefs.edit().putInt("threads", threads.getProgress() + 1).commit();
 						
 						// TODO Check for illegal url or file name
 					}
