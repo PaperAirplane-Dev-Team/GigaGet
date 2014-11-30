@@ -3,6 +3,7 @@
 	<style name="Theme.App.Base" parent="Theme.AppCompat.Light">
 		<item name="android:windowNoTitle">true</item>
 		<item name="android:windowBackground">@color/light_gray</item>
+		<item name="android:windowContentOverlay">@null</item>
 		<item name="windowActionBar">false</item>
 		<item name="windowActionModeOverlay">true</item>
 	</style>
