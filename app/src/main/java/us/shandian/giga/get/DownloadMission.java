@@ -158,7 +158,7 @@ public class DownloadMission
 		new File(location + "/" + name).delete();
 	}
 	
-	private void writeThisToFile() {
+	public void writeThisToFile() {
 		if (!mWritingToFile) {
 			mWritingToFile = true;
 			new Thread() {

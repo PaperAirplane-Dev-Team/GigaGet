@@ -105,6 +105,7 @@ public class DetailActivity extends ToolbarActivity implements DownloadMission.M
 		super.onStop();
 		
 		mMission.removeListener(this);
+		mMission.writeThisToFile();
 	}
 	
 	private void initViews() {
