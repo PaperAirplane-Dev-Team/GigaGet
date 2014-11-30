@@ -153,6 +153,11 @@ public class DownloadMission
 		}
 	}
 	
+	public void delete() {
+		deleteThisFromFile();
+		new File(location + "/" + name).delete();
+	}
+	
 	private void writeThisToFile() {
 		if (!mWritingToFile) {
 			mWritingToFile = true;

@@ -8,6 +8,7 @@
 	<string name="start">Start</string>
 	<string name="pause">Pause</string>
 	<string name="view">View</string>
+	<string name="delete">Delete</string>
 	
 	<!-- Info -->
 	<string name="url">Url</string>

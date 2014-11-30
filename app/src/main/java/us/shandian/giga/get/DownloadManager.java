@@ -56,6 +56,7 @@ public class DownloadManager
 	}
 	
 	public void deleteMission(int i) {
+		getMission(i).delete();
 		mMissions.remove(i);
 	}
 	

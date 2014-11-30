@@ -176,15 +176,21 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		MenuItem start = menu.findItem(R.id.start);
 		MenuItem pause = menu.findItem(R.id.pause);
 		MenuItem view = menu.findItem(R.id.view);
+		MenuItem delete = menu.findItem(R.id.delete);
 		
 		// Set to false first
 		start.setVisible(false);
 		pause.setVisible(false);
 		view.setVisible(false);
+		delete.setVisible(false);
 		
 		if (!h.mission.finished) {
 			if (!h.mission.running) {
-				start.setVisible(true);
+				if (h.mission.errCode == -1) {
+					start.setVisible(true);
+				}
+				
+				delete.setVisible(true);
 			} else {
 				pause.setVisible(true);
 			}
@@ -215,6 +221,10 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 							mContext.startActivity(i);
 						}
 						
+						return true;
+					case R.id.delete:
+						mManager.deleteMission(h.position);
+						notifyDataSetChanged();
 						return true;
 					default:
 						return false;
