@@ -20,7 +20,6 @@ public class DetailActivity extends ToolbarActivity implements DownloadMission.M
 	
 	private static final int[] THEMES = new int[]{
 		R.style.Theme_App_Blue,
-		R.style.Theme_App_Red,
 		R.style.Theme_App_Green,
 		R.style.Theme_App_Orange,
 		R.style.Theme_App_Gray,

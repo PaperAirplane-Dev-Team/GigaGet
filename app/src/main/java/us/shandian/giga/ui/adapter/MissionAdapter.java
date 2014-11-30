@@ -28,7 +28,6 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 {
 	private static final int[] BACKGROUNDS = new int[]{
 		R.color.blue,
-		R.color.red,
 		R.color.green,
 		R.color.orange,
 		R.color.gray,
@@ -37,7 +36,6 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 	
 	private static final int[] FOREGROUNDS = new int[]{
 		R.color.blue_dark,
-		R.color.red_dark,
 		R.color.green_dark,
 		R.color.orange_dark,
 		R.color.gray_dark,
@@ -98,7 +96,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		h.name.setText(ms.name);
 		h.size.setText(Utility.formatBytes(ms.length));
 		
-		int first = ms.name.charAt(0);
+		int first = (ms.name.charAt(0) + ms.name.charAt(ms.name.length() - 1)) / ms.name.length();
 		h.colorId = first % BACKGROUNDS.length;
 		h.progress = new ProgressDrawable(mContext, BACKGROUNDS[h.colorId], FOREGROUNDS[h.colorId]);
 		h.bkg.setBackgroundDrawable(h.progress);
