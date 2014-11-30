@@ -21,6 +21,7 @@ import us.shandian.giga.R;
 import us.shandian.giga.get.DownloadManager;
 import us.shandian.giga.get.DownloadMission;
 import us.shandian.giga.ui.common.ProgressDrawable;
+import us.shandian.giga.ui.main.DetailActivity;
 import us.shandian.giga.util.Utility;
 
 public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHolder>
@@ -65,6 +66,13 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 			}
 		});
 		
+		h.itemView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showDetail(h);
+			}
+		});
+		
 		return h;
 	}
 
@@ -78,6 +86,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		h.position = -1;
 		h.lastTimeStamp = -1;
 		h.lastDone = -1;
+		h.colorId = 0;
 	}
 
 	@Override
@@ -90,7 +99,8 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		h.size.setText(Utility.formatBytes(ms.length));
 		
 		int first = ms.name.charAt(0);
-		h.progress = new ProgressDrawable(mContext, BACKGROUNDS[first % BACKGROUNDS.length], FOREGROUNDS[first % FOREGROUNDS.length]);
+		h.colorId = first % BACKGROUNDS.length;
+		h.progress = new ProgressDrawable(mContext, BACKGROUNDS[h.colorId], FOREGROUNDS[h.colorId]);
 		h.bkg.setBackgroundDrawable(h.progress);
 		
 		h.observer = new MissionObserver(this, h);
@@ -139,6 +149,20 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 			h.lastTimeStamp = now;
 			h.lastDone = h.mission.done;
 		}
+	}
+	
+	private void showDetail(ViewHolder h) {
+		if (h.mission.finished) return;
+		
+		// Pass the manager
+		DetailActivity.sManager = mManager;
+		
+		Intent i = new Intent();
+		i.setAction(Intent.ACTION_MAIN);
+		i.setClass(mContext, DetailActivity.class);
+		i.putExtra("colorId", h.colorId);
+		i.putExtra("id", h.position);
+		mContext.startActivity(i);
 	}
 	
 	private void buildPopup(final ViewHolder h) {
@@ -213,6 +237,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		
 		public long lastTimeStamp = -1;
 		public long lastDone = -1;
+		public int colorId = 0;
 		
 		public ViewHolder(View v) {
 			super(v);

@@ -5,6 +5,16 @@
 	<string name="pause">暂停</string>
 	<string name="view">查看</string>
 	
+	<!-- Info -->
+	<string name="url">源地址</string>
+	<string name="path">路径</string>
+	<string name="create_date">创建于</string>
+	<string name="total_size">总大小</string>
+	<string name="downloaded_size">已完成</string>
+	<string name="speed">速度</string>
+	<string name="blocks_count">区块数</string>
+	<string name="threads_count">线程数</string>
+	
 	<!-- Fragment -->
 	<string name="add">添加任务</string>
 	

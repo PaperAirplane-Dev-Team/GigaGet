@@ -9,6 +9,16 @@
 	<string name="pause">Pause</string>
 	<string name="view">View</string>
 	
+	<!-- Info -->
+	<string name="url">Url</string>
+	<string name="path">Path</string>
+	<string name="create_date">Created on</string>
+	<string name="total_size">Total size</string>
+	<string name="downloaded_size">Downloaded size</string>
+	<string name="speed">Speed</string>
+	<string name="blocks_count">Blocks count</string>
+	<string name="threads_count">Threads count</string>
+	
 	<!-- Fragment -->
 	<string name="add">Add</string>
 	
