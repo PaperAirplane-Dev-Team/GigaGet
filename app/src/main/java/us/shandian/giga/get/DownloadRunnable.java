@@ -124,7 +124,7 @@ public class DownloadRunnable implements Runnable
 				ipt.close();
 				
 				if (!mMission.running) {
-					break;
+					return;
 				}
 			} catch (Exception e) {
 				// TODO Retry count limit & notify error
