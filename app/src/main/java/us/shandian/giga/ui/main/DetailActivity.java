@@ -76,8 +76,6 @@ public class DetailActivity extends ToolbarActivity implements DownloadMission.M
 		mGraph.setMission(mMission);
 		
 		initViews();
-		
-		mMission.addListener(this);
 	}
 
 	@Override
@@ -93,6 +91,13 @@ public class DetailActivity extends ToolbarActivity implements DownloadMission.M
 		} else {
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		mMission.addListener(this);
 	}
 
 	@Override
