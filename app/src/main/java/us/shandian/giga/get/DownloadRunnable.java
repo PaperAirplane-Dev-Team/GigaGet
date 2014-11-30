@@ -33,7 +33,7 @@ public class DownloadRunnable implements Runnable
 			Log.d(TAG, mId + ":default pos " + position);
 		}
 		
-		while (mMission.running && position < mMission.blocks) {
+		while (mMission.errCode == -1 && mMission.running && position < mMission.blocks) {
 			
 			if (Thread.currentThread().isInterrupted()) {
 				mMission.pause();
@@ -84,7 +84,13 @@ public class DownloadRunnable implements Runnable
 				// A server may be ignoring the range requet
 				if (conn.getResponseCode() != 206) {
 					mMission.errCode = DownloadMission.ERROR_SERVER_UNSUPPORTED;
-					mMission.pause();
+					notifyError(DownloadMission.ERROR_SERVER_UNSUPPORTED);
+					
+					if (DEBUG) {
+						Log.e(TAG, mId + ":Unsupported");
+					}
+					
+					break;
 				}
 				
 				if (DEBUG) {
@@ -118,7 +124,7 @@ public class DownloadRunnable implements Runnable
 				ipt.close();
 				
 				if (!mMission.running) {
-					return;
+					break;
 				}
 			} catch (Exception e) {
 				// TODO Retry count limit & notify error
@@ -136,7 +142,12 @@ public class DownloadRunnable implements Runnable
 			Log.d(TAG, "thread " + mId + " finished");
 		}
 		
-		notifyFinished();
+		if (mMission.errCode == -1) {
+			if (DEBUG) {
+				Log.d(TAG, "no error has happened, notifying");
+			}
+			notifyFinished();
+		}
 	}
 	
 	private void notifyProgress(final long len) {
@@ -145,6 +156,18 @@ public class DownloadRunnable implements Runnable
 				@Override
 				public void run() {
 					mMission.notifyProgress(len);
+				}
+			});
+		}
+	}
+	
+	private void notifyError(final int err) {
+		synchronized (mMission) {
+			mHandler.post(new Runnable() {
+				@Override
+				public void run() {
+					mMission.notifyError(err);
+					mMission.pause();
 				}
 			});
 		}

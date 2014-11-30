@@ -57,4 +57,9 @@ public class TestActivity extends Activity implements DownloadMission.MissionLis
 	public void onFinish() {
 		mText.setText("done");
 	}
+
+	@Override
+	public void onError(int errCode) {
+		// TODO: Implement this method
+	}
 }

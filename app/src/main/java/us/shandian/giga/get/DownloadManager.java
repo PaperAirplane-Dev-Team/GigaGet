@@ -149,7 +149,18 @@ public class DownloadManager
 				URL url = new URL(mission.url);
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 				mission.length = conn.getContentLength();
+				
+				if (mission.length <= 0) {
+					mission.errCode = DownloadMission.ERROR_SERVER_UNSUPPORTED;
+					//mission.notifyError(DownloadMission.ERROR_SERVER_UNSUPPORTED);
+					return;
+				}
+				
 				mission.blocks = mission.length / BLOCK_SIZE;
+				
+				if (mission.threadCount > mission.blocks) {
+					mission.threadCount = (int) mission.blocks;
+				}
 				
 				if (mission.blocks * BLOCK_SIZE < mission.length) {
 					mission.blocks++;

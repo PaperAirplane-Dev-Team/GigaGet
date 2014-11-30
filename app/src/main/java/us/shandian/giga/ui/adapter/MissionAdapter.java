@@ -132,9 +132,14 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		long deltaDone = h.mission.done - h.lastDone;
 		
 		if (deltaTime == 0 || deltaTime > 1000) {
-			float progress = (float) h.mission.done / h.mission.length;
-			h.status.setText(String.format("%.2f%%", progress * 100));
-			h.progress.setProgress(progress);
+			if (h.mission.errCode > 0) {
+				h.status.setText(R.string.msg_error);
+			} else {
+				float progress = (float) h.mission.done / h.mission.length;
+				h.status.setText(String.format("%.2f%%", progress * 100));
+				h.progress.setProgress(progress);
+			
+			}
 		}
 		
 		if (deltaTime > 1000 && deltaDone > 0) {
@@ -271,6 +276,10 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 			mHolder.size.setText(Utility.formatBytes(mHolder.mission.length));
 		}
 
+		@Override
+		public void onError(int errCode) {
+			mAdapter.updateProgress(mHolder);
+		}
 		
 	}
 }

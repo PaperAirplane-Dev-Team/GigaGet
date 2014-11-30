@@ -2,6 +2,7 @@ package us.shandian.giga.get;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -10,13 +11,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import us.shandian.giga.util.Utility;
+import static us.shandian.giga.BuildConfig.DEBUG;
 
 public class DownloadMission
 {
+	private static final String TAG = DownloadMission.class.getSimpleName();
 	
 	public static interface MissionListener {
 		public void onProgressUpdate(long done, long total);
 		public void onFinish();
+		public void onError(int errCode);
 	}
 	
 	public static final int ERROR_SERVER_UNSUPPORTED = 206;
@@ -82,6 +86,8 @@ public class DownloadMission
 	}
 	
 	public synchronized void notifyFinished() {
+		if (errCode > 0) return;
+		
 		finishCount++;
 		
 		if (finishCount == threadCount) {
@@ -90,6 +96,12 @@ public class DownloadMission
 	}
 	
 	private void onFinish() {
+		if (errCode > 0) return;
+		
+		if (DEBUG) {
+			Log.d(TAG, "onFinish");
+		}
+		
 		running = false;
 		finished = true;
 		
@@ -97,6 +109,16 @@ public class DownloadMission
 		
 		for (MissionListener listener : mListeners) {
 			listener.onFinish();
+		}
+	}
+	
+	public synchronized void notifyError(int err) {
+		errCode = err;
+		
+		writeThisToFile();
+		
+		for (MissionListener listener : mListeners) {
+			listener.onError(err);
 		}
 	}
 	

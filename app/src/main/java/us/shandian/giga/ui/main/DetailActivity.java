@@ -119,12 +119,20 @@ public class DetailActivity extends ToolbarActivity implements DownloadMission.M
 	
 	private void updateViews() {
 		long now = System.currentTimeMillis();
+		
+		if (mMission.errCode > 0) {
+			mSpeed.setText(Utility.getErrorString(this, mMission.errCode));
+			return;
+		}
+		
 		if (mLastTime > 0) {
 			long deltaTime = now - mLastTime;
 			
 			if (deltaTime > 1000) {
 				long deltaDone = mMission.done - mLastDone;
+				
 				mSpeed.setText(Utility.formatSpeed((float) deltaDone / deltaTime * 1000));
+				
 				mDone.setText(Utility.formatBytes(mMission.done));
 				mLastTime = now;
 				mLastDone = mMission.done;
@@ -146,7 +154,12 @@ public class DetailActivity extends ToolbarActivity implements DownloadMission.M
 
 	@Override
 	public void onFinish() {
-		
+		updateViews();
+	}
+
+	@Override
+	public void onError(int errCode) {
+		updateViews();
 	}
 	
 }

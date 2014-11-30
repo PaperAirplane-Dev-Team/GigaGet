@@ -1,12 +1,16 @@
 package us.shandian.giga.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+
+import us.shandian.giga.R;
+import us.shandian.giga.get.DownloadMission;
 
 public class Utility
 {
@@ -111,6 +115,15 @@ public class Utility
 			}
 			return ext.toLowerCase();
 
+		}
+	}
+	
+	public static String getErrorString(Context context, int code) {
+		switch (code) {
+			case DownloadMission.ERROR_SERVER_UNSUPPORTED:
+				return context.getString(R.string.msg_server_unsupported);
+			default:
+				return "";
 		}
 	}
 }
