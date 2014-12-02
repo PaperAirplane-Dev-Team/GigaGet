@@ -25,6 +25,7 @@
 	
 	<!-- Browser -->
 	<string name="browser">Simple Browser</string>
+	<string name="detector">Video detector</string>
 	
 	<!-- Msg -->
 	<string name="msg_url">Download URL</string>

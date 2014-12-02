@@ -21,6 +21,7 @@
 	
 	<!-- Browser -->
 	<string name="browser">简易浏览器</string>
+	<string name="detector">视频嗅探器</string>
 	
 	<!-- Msg -->
 	<string name="msg_url">下载地址</string>

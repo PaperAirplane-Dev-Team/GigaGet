@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.DownloadListener;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -21,10 +24,15 @@ import android.widget.TextView;
 
 import android.support.v7.app.ActionBar;
 
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 import us.shandian.giga.R;
 import us.shandian.giga.ui.common.ToolbarActivity;
 import us.shandian.giga.ui.main.MainActivity;
 import us.shandian.giga.util.Utility;
+import static us.shandian.giga.BuildConfig.DEBUG;
 
 public class BrowserActivity extends ToolbarActivity
 {
@@ -111,6 +119,7 @@ public class BrowserActivity extends ToolbarActivity
 					return false;
 				}
 		});
+		mWeb.addJavascriptInterface(new MyJavascriptInterface(), "HTMLOUT");
 		
 		mWeb.loadUrl("about:blank");
 		
@@ -130,10 +139,19 @@ public class BrowserActivity extends ToolbarActivity
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.browser, menu);
+		return true;
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
 				finish();
+				return true;
+			case R.id.detector:
+				mWeb.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -151,6 +169,58 @@ public class BrowserActivity extends ToolbarActivity
 			getSupportActionBar().setDisplayShowTitleEnabled(false);
 			mUrl.setText(mWeb.getUrl());
 			mUrl.setSelection(0, mUrl.getText().length());
+		}
+	}
+	
+	class MyJavascriptInterface {
+		private static final String TAG = MyJavascriptInterface.class.getSimpleName();
+		
+		private static final String PATTERN = "(http://|https://){1}[\\w\\.\\-/:]+";
+		private static final String[] VIDEO_SUFFIXES = new String[]{
+			".mp4",
+			".flv",
+			".rm",
+			".rmvb",
+			".wmv"
+		};
+		
+		@JavascriptInterface
+		public void processHTML(String html) {
+			Pattern pattern = Pattern.compile(PATTERN);
+			Matcher matcher = pattern.matcher(html);
+			
+			ArrayList<String> vid = new ArrayList<String>();
+			
+			while (matcher.find()) {
+				String url = matcher.group();
+				
+				boolean isVid = false;
+				
+				for (String suffix : VIDEO_SUFFIXES) {
+					if (url.contains(suffix)) {
+						isVid = true;
+						break;
+					}
+				}
+				
+				if (isVid) {
+					
+					vid.add(url);
+					
+					if (DEBUG) {
+						Log.d(TAG, "found url:" + url);
+					}
+				}
+			}
+			
+			if (vid.size() == 0) return;
+			
+			// TODO: Show a list of videos for user to choose from
+			Intent i = new Intent();
+			i.setAction(Intent.ACTION_VIEW);
+			i.setDataAndType(Uri.parse(vid.get(0)), "application/octet-stream");
+			startActivity(i);
+			finish();
 		}
 	}
 }
