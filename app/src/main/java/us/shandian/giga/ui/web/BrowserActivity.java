@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -41,10 +42,13 @@ public class BrowserActivity extends ToolbarActivity
 	private WebView mWeb;
 	private ProgressBar mProgress;
 	private EditText mUrl;
+	private InputMethodManager mInput;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		mInput = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		
 		// Toolbar
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -71,6 +75,7 @@ public class BrowserActivity extends ToolbarActivity
 				view.loadUrl(url);
 				getSupportActionBar().setDisplayShowCustomEnabled(false);
 				getSupportActionBar().setDisplayShowTitleEnabled(true);
+				mInput.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY);
 				return true;
 			}
 			
@@ -175,9 +180,12 @@ public class BrowserActivity extends ToolbarActivity
 		if ((opt & ActionBar.DISPLAY_SHOW_CUSTOM) != 0) {
 			getSupportActionBar().setDisplayShowCustomEnabled(false);
 			getSupportActionBar().setDisplayShowTitleEnabled(true);
+			mInput.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY);
 		} else {
 			getSupportActionBar().setDisplayShowCustomEnabled(true);
 			getSupportActionBar().setDisplayShowTitleEnabled(false);
+			mInput.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+			mUrl.requestFocus();
 			mUrl.setText(mWeb.getUrl());
 			mUrl.setSelection(0, mUrl.getText().length());
 		}
