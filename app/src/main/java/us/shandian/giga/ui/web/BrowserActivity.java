@@ -1,6 +1,8 @@
 package us.shandian.giga.ui.web;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -172,10 +174,25 @@ public class BrowserActivity extends ToolbarActivity
 		}
 	}
 	
+	private void showVideoChoices(final String[] vids) {
+		new AlertDialog.Builder(this)
+			.setItems(vids, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int id) {
+					Intent i = new Intent();
+					i.setAction(Intent.ACTION_VIEW);
+					i.setDataAndType(Uri.parse(vids[id]), "application/octet-stream");
+					startActivity(i);
+					finish();
+				}
+			})
+			.show();
+	}
+	
 	class MyJavascriptInterface {
 		private static final String TAG = MyJavascriptInterface.class.getSimpleName();
 		
-		private static final String PATTERN = "(http://|https://){1}[\\w\\.\\-/:]+";
+		private static final String PATTERN = "[http|https]+[://]+[0-9A-Za-z:/[-]_#[?][=][.][&]]*";
 		private static final String[] VIDEO_SUFFIXES = new String[]{
 			".mp4",
 			".flv",
@@ -215,12 +232,8 @@ public class BrowserActivity extends ToolbarActivity
 			
 			if (vid.size() == 0) return;
 			
-			// TODO: Show a list of videos for user to choose from
-			Intent i = new Intent();
-			i.setAction(Intent.ACTION_VIEW);
-			i.setDataAndType(Uri.parse(vid.get(0)), "application/octet-stream");
-			startActivity(i);
-			finish();
+			String[] arr = new String[vid.size()];
+			showVideoChoices(vid.toArray(arr));
 		}
 	}
 }
