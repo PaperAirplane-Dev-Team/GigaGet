@@ -7,5 +7,10 @@
 		android:title="@string/add"
 		android:icon="@drawable/ic_add_white_24dp"
 		app:showAsAction="always"/>
+	
+	<item
+		android:id="@+id/browser"
+		android:title="@string/browser"
+		app:showAsAction="never"/>
 
 </menu>

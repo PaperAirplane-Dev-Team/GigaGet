@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import android.support.v7.widget.RecyclerView;
 import us.shandian.giga.R;
 import us.shandian.giga.get.DownloadManager;
 import us.shandian.giga.ui.adapter.MissionAdapter;
+import us.shandian.giga.ui.web.BrowserActivity;
 import us.shandian.giga.util.Utility;
 
 public class MissionsFragment extends Fragment
@@ -74,6 +76,12 @@ public class MissionsFragment extends Fragment
 		switch (item.getItemId()) {
 			case R.id.add:
 				showUrlDialog();
+				return true;
+			case R.id.browser:
+				Intent i = new Intent();
+				i.setAction(Intent.ACTION_MAIN);
+				i.setClass(getActivity(), BrowserActivity.class);
+				getActivity().startActivity(i);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

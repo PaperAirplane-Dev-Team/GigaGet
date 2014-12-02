@@ -59,6 +59,19 @@
 			</intent-filter>
 			
 		</activity>
+		
+		<activity
+			android:name=".ui.web.BrowserActivity"
+			android:label="@string/browser"
+			android:theme="@style/Theme.App.Green">
+
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+
+		</activity>
+		
     </application>
 
 </manifest>

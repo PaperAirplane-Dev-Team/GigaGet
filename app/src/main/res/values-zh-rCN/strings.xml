@@ -19,11 +19,15 @@
 	<!-- Fragment -->
 	<string name="add">添加任务</string>
 	
+	<!-- Browser -->
+	<string name="browser">简易浏览器</string>
+	
 	<!-- Msg -->
 	<string name="msg_url">下载地址</string>
 	<string name="msg_name">文件名</string>
 	<string name="msg_threads">线程</string>
 	<string name="msg_error">出错</string>
 	<string name="msg_server_unsupported">服务器不支持</string>
+	<string name="msg_enter_url">请在此输入地址</string>
 	
 </resources>
