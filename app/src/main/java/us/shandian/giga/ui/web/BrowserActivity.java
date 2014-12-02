@@ -159,6 +159,15 @@ public class BrowserActivity extends ToolbarActivity
 				return super.onOptionsItemSelected(item);
 		}
 	}
+
+	@Override
+	public void onBackPressed() {
+		if (mWeb.canGoBack()) {
+			mWeb.goBack();
+		} else {
+			finish();
+		}
+	}
 	
 	private void switchCustom() {
 		int opt = getSupportActionBar().getDisplayOptions();
