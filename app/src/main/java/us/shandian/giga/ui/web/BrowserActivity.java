@@ -198,7 +198,10 @@ public class BrowserActivity extends ToolbarActivity
 			".flv",
 			".rm",
 			".rmvb",
-			".wmv"
+			".wmv",
+			".avi",
+			".mkv",
+			".webm"
 		};
 		
 		@JavascriptInterface
