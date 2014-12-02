@@ -24,6 +24,7 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import android.support.v7.app.ActionBar;
 
@@ -250,10 +251,12 @@ public class BrowserActivity extends ToolbarActivity
 				}
 			}
 			
-			if (vid.size() == 0) return;
-			
-			String[] arr = new String[vid.size()];
-			showVideoChoices(vid.toArray(arr));
+			if (vid.size() == 0) {
+				Toast.makeText(BrowserActivity.this, R.string.msg_no_video, Toast.LENGTH_SHORT).show();
+			} else {
+				String[] arr = new String[vid.size()];
+				showVideoChoices(vid.toArray(arr));
+			}
 		}
 	}
 }

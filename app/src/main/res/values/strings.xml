@@ -34,5 +34,6 @@
 	<string name="msg_error">Error</string>
 	<string name="msg_server_unsupported">Server unsupported</string>
 	<string name="msg_enter_url">Enter url here</string>
+	<string name="msg_no_video">Oops, no video detected</string>
 
 </resources>
