@@ -76,7 +76,6 @@ public class BrowserActivity extends ToolbarActivity
 				view.loadUrl(url);
 				getSupportActionBar().setDisplayShowCustomEnabled(false);
 				getSupportActionBar().setDisplayShowTitleEnabled(true);
-				mInput.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY);
 				return true;
 			}
 			
