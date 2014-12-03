@@ -214,7 +214,11 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 						Intent i = new Intent();
 						i.setAction(Intent.ACTION_VIEW);
 						File f = new File(h.mission.location + "/" + h.mission.name);
-						String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(Utility.getFileExt(h.mission.name).substring(1));
+						String ext = Utility.getFileExt(h.mission.name);
+						
+						if (ext == null) return false;
+						
+						String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext.substring(1));
 						
 						if (f.exists()) {
 							i.setDataAndType(Uri.fromFile(f), mime);
