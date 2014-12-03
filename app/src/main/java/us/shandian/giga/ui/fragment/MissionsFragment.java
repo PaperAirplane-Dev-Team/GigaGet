@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +27,7 @@ import android.support.v7.widget.RecyclerView;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 
 import us.shandian.giga.R;
@@ -178,7 +180,7 @@ public class MissionsFragment extends Fragment
 		}
 		
 		// Show the dialog
-		new AlertDialog.Builder(getActivity())
+		AlertDialog dialog = new AlertDialog.Builder(getActivity())
 				.setCancelable(true)
 				.setView(v)
 				.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -207,8 +209,29 @@ public class MissionsFragment extends Fragment
 						}
 					}
 				})
-				.create()
-				.show();
+				.setNeutralButton(R.string.msg_fetch_filename, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						
+					}
+				})
+				.create();
+				
+				final View.OnClickListener l = new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						new NameFetcherTask().execute(text, name);
+					}
+				};
+				
+				dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+					@Override
+					public void onShow(DialogInterface dialog) {
+						((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(l);
+					}
+				});
+				
+				dialog.show();
 	}
 	
 	private boolean checkURL(String url) {
@@ -220,6 +243,34 @@ public class MissionsFragment extends Fragment
 			return false;
 		} catch (IOException e) {
 			return false;
+		}
+	}
+	
+	private class NameFetcherTask extends AsyncTask<View, Void, Object[]> {
+
+		@Override
+		protected Object[] doInBackground(View[] params) {
+			try {
+				URL url = new URL(((EditText) params[0]).getText().toString());
+				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+				String header = conn.getHeaderField("Content-Disposition");
+				
+				if (header != null && header.indexOf("=") != -1) {
+					return new Object[]{params[1], header.split("=")[1].replace("\"", "")};
+				}
+			} catch (Exception e) {
+				
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Object[] result)	{
+			super.onPostExecute(result);
+			
+			if (result != null) {
+				((EditText) result[0]).setText(result[1].toString());
+			}
 		}
 	}
 }
