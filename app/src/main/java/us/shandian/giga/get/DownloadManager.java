@@ -167,6 +167,10 @@ public class DownloadManager
 					mission.threadCount = (int) mission.blocks;
 				}
 				
+				if (mission.threadCount <= 0) {
+					mission.threadCount = 1;
+				}
+				
 				if (mission.blocks * BLOCK_SIZE < mission.length) {
 					mission.blocks++;
 				}
