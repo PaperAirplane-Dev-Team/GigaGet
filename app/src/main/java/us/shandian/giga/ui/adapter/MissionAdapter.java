@@ -118,6 +118,10 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 	}
 	
 	private void updateProgress(ViewHolder h) {
+		updateProgress(h, false);
+	}
+	
+	private void updateProgress(ViewHolder h, boolean finished) {
 		long now = System.currentTimeMillis();
 		
 		if (h.lastTimeStamp == -1) {
@@ -131,7 +135,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		long deltaTime = now - h.lastTimeStamp;
 		long deltaDone = h.mission.done - h.lastDone;
 		
-		if (deltaTime == 0 || deltaTime > 1000) {
+		if (deltaTime == 0 || deltaTime > 1000 || finished) {
 			if (h.mission.errCode > 0) {
 				h.status.setText(R.string.msg_error);
 			} else {
@@ -288,6 +292,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 			// TODO Notification
 			//mAdapter.notifyDataSetChanged();
 			mHolder.size.setText(Utility.formatBytes(mHolder.mission.length));
+			mAdapter.updateProgress(mHolder, true);
 		}
 
 		@Override
