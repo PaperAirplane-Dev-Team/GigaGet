@@ -31,5 +31,6 @@
 	<string name="msg_server_unsupported">服务器不支持</string>
 	<string name="msg_enter_url">请在此输入地址</string>
 	<string name="msg_no_video">目测找不到视频诶</string>
+	<string name="msg_exists">文件已存在</string>
 	
 </resources>

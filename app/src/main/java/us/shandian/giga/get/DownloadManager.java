@@ -135,6 +135,10 @@ public class DownloadManager
 		return i;
 	}
 	
+	public String getLocation() {
+		return mLocation;
+	}
+	
 	private class Initializer extends Thread {
 		private Context context;
 		private DownloadMission mission;

@@ -16,11 +16,14 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.text.Editable;
 import android.text.TextWatcher;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import java.io.File;
 
 import us.shandian.giga.R;
 import us.shandian.giga.get.DownloadManager;
@@ -185,13 +188,18 @@ public class MissionsFragment extends Fragment
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						String url = text.getText().toString().trim();
+						String fName = name.getText().toString().trim();
 						
-						mManager.startMission(url, name.getText().toString().trim(), threads.getProgress() + 1);
-						mAdapter.notifyDataSetChanged();
+						File f = new File(mManager.getLocation() + "/" + fName);
 						
-						mPrefs.edit().putInt("threads", threads.getProgress() + 1).commit();
+						if (f.exists()) {
+							Toast.makeText(getActivity(), R.string.msg_exists, Toast.LENGTH_SHORT).show();
+						} else {				
+							mManager.startMission(url, fName, threads.getProgress() + 1);
+							mAdapter.notifyDataSetChanged();
 						
-						// TODO Check for illegal url or file name
+							mPrefs.edit().putInt("threads", threads.getProgress() + 1).commit();
+						}
 					}
 				})
 				.create()
