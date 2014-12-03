@@ -24,6 +24,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import us.shandian.giga.R;
 import us.shandian.giga.get.DownloadManager;
@@ -194,6 +197,8 @@ public class MissionsFragment extends Fragment
 						
 						if (f.exists()) {
 							Toast.makeText(getActivity(), R.string.msg_exists, Toast.LENGTH_SHORT).show();
+						} else if (!checkURL(url)) {
+							Toast.makeText(getActivity(), R.string.msg_url_malform, Toast.LENGTH_SHORT).show();
 						} else {				
 							mManager.startMission(url, fName, threads.getProgress() + 1);
 							mAdapter.notifyDataSetChanged();
@@ -204,5 +209,17 @@ public class MissionsFragment extends Fragment
 				})
 				.create()
 				.show();
+	}
+	
+	private boolean checkURL(String url) {
+		try {
+			URL u = new URL(url);
+			u.openConnection();
+			return true;
+		} catch (MalformedURLException e) {
+			return false;
+		} catch (IOException e) {
+			return false;
+		}
 	}
 }
