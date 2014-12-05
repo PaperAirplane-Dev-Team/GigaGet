@@ -72,6 +72,9 @@
 
 		</activity>
 		
+		<service
+			android:name=".service.DownloadManagerService"/>
+		
     </application>
 
 </manifest>

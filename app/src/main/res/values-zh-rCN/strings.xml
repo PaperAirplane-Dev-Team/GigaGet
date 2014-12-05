@@ -34,5 +34,7 @@
 	<string name="msg_no_video">目测找不到视频诶</string>
 	<string name="msg_exists">文件已存在</string>
 	<string name="msg_url_malform">URL格式错误或网络不可用</string>
+	<string name="msg_running">GigaGet 正在运行</string>
+	<string name="msg_running_detail">单击查看详情</string>
 	
 </resources>

@@ -2,12 +2,15 @@ package us.shandian.giga.ui.fragment;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +35,7 @@ import java.net.URL;
 
 import us.shandian.giga.R;
 import us.shandian.giga.get.DownloadManager;
+import us.shandian.giga.service.DownloadManagerService;
 import us.shandian.giga.ui.adapter.MissionAdapter;
 import us.shandian.giga.ui.web.BrowserActivity;
 import us.shandian.giga.util.Utility;
@@ -39,6 +43,7 @@ import us.shandian.giga.util.Utility;
 public class MissionsFragment extends Fragment
 {
 	private DownloadManager mManager;
+	private DownloadManagerService.DMBinder mBinder;
 	
 	private RecyclerView mList;
 	private MissionAdapter mAdapter;
@@ -47,23 +52,39 @@ public class MissionsFragment extends Fragment
 	private SharedPreferences mPrefs;
 	
 	private String mPendingUrl = null;
+	
+	private ServiceConnection mConnection = new ServiceConnection() {
+
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder binder) {
+			mBinder = (DownloadManagerService.DMBinder) binder;
+			mManager = mBinder.getDownloadManager();
+			mAdapter = new MissionAdapter(getActivity(), mBinder);
+			mList.setAdapter(mAdapter);
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			// What to do?
+		}
+
+		
+	};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.missions, container, false);
 		
-		// Args
-		if (mManager == null) {
-			String loc = getArguments().getString("loc");
-			mManager = new DownloadManager(getActivity(), loc);
-		}
+		// Bind the service
+		Intent i = new Intent();
+		i.setClass(getActivity(), DownloadManagerService.class);
+		getActivity().startService(i);
+		getActivity().bindService(i, mConnection, Context.BIND_AUTO_CREATE);
 		
 		// Views
 		mList = Utility.findViewById(v, R.id.mission_recycler);
 		
 		// Init
-		mAdapter = new MissionAdapter(getActivity(), mManager);
-		mList.setAdapter(mAdapter);
 		mGridManager = new GridLayoutManager(getActivity(), 2);
 		mList.setLayoutManager(mGridManager);
 		
@@ -201,8 +222,11 @@ public class MissionsFragment extends Fragment
 							Toast.makeText(getActivity(), R.string.msg_exists, Toast.LENGTH_SHORT).show();
 						} else if (!checkURL(url)) {
 							Toast.makeText(getActivity(), R.string.msg_url_malform, Toast.LENGTH_SHORT).show();
-						} else {				
-							mManager.startMission(url, fName, threads.getProgress() + 1);
+						} else {
+							
+							while (mBinder == null);
+							
+							mBinder.startMission(url, fName, threads.getProgress() + 1);
 							mAdapter.notifyDataSetChanged();
 						
 							mPrefs.edit().putInt("threads", threads.getProgress() + 1).commit();

@@ -18,9 +18,6 @@ public class MainActivity extends ToolbarActivity
 		
 		// Fragment
 		mFragment = new MissionsFragment();
-		Bundle b = new Bundle();
-		b.putString("loc", "/storage/sdcard0/GigaGet");
-		mFragment.setArguments(b);
 		getFragmentManager().beginTransaction().replace(R.id.frame, mFragment).commit();
 		
 		// Intent

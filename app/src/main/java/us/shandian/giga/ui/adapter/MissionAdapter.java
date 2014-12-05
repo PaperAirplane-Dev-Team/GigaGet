@@ -20,6 +20,7 @@ import java.io.File;
 import us.shandian.giga.R;
 import us.shandian.giga.get.DownloadManager;
 import us.shandian.giga.get.DownloadMission;
+import us.shandian.giga.service.DownloadManagerService;
 import us.shandian.giga.ui.common.ProgressDrawable;
 import us.shandian.giga.ui.main.DetailActivity;
 import us.shandian.giga.util.Utility;
@@ -45,10 +46,12 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 	private Context mContext;
 	private LayoutInflater mInflater;
 	private DownloadManager mManager;
+	private DownloadManagerService.DMBinder mBinder;
 	
-	public MissionAdapter(Context context, DownloadManager manager) {
+	public MissionAdapter(Context context, DownloadManagerService.DMBinder binder) {
 		mContext = context;
-		mManager = manager;
+		mBinder = binder;
+		mManager = mBinder.getDownloadManager();
 		
 		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -207,7 +210,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 			public boolean onMenuItemClick(MenuItem item) {
 				switch (item.getItemId()) {
 					case R.id.start:
-						mManager.resumeMission(h.position);
+						mBinder.resumeMission(h.position);
 						return true;
 					case R.id.pause:
 						mManager.pauseMission(h.position);
