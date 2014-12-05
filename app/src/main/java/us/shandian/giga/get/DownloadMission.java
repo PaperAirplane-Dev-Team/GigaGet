@@ -2,6 +2,7 @@ package us.shandian.giga.get;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -18,6 +19,8 @@ public class DownloadMission
 	private static final String TAG = DownloadMission.class.getSimpleName();
 	
 	public static interface MissionListener {
+		Handler handler;
+		
 		public void onProgressUpdate(long done, long total);
 		public void onFinish();
 		public void onError(int errCode);
@@ -78,9 +81,14 @@ public class DownloadMission
 			writeThisToFile();
 		}
 		
-		for (MissionListener listener : mListeners) {
+		for (final MissionListener listener : mListeners) {
 			if (listener != null) {
-				listener.onProgressUpdate(done, length);
+				listener.handler.post(new Runnable() {
+					@Override
+					public void run() {
+						listener.onProgressUpdate(done, length);
+					}
+				});
 			}
 		}
 	}
@@ -107,8 +115,13 @@ public class DownloadMission
 		
 		deleteThisFromFile();
 		
-		for (MissionListener listener : mListeners) {
-			listener.onFinish();
+		for (final MissionListener listener : mListeners) {
+			listener.handler.post(new Runnable() {
+				@Override
+				public void run() {
+					listener.onFinish();
+				}
+			});
 		}
 	}
 	
@@ -117,12 +130,18 @@ public class DownloadMission
 		
 		writeThisToFile();
 		
-		for (MissionListener listener : mListeners) {
-			listener.onError(err);
+		for (final MissionListener listener : mListeners) {
+			listener.handler.post(new Runnable() {
+				@Override
+				public void run() {
+					listener.onError(errCode);
+				}
+			});
 		}
 	}
 	
 	public synchronized void addListener(MissionListener listener) {
+		listener.handler = new Handler(Looper.getMainLooper());
 		mListeners.add(listener);
 	}
 	
@@ -130,16 +149,15 @@ public class DownloadMission
 		mListeners.remove(listener);
 	}
 	
-	public void start(Context context) {
+	public void start() {
 		if (!running && !finished) {
 			running = true;
 			
-			Handler handler = new Handler(context.getMainLooper());
 			for (int i = 0; i < threadCount; i++) {
 				if (threadPositions.size() <= i && !recovered) {
 					threadPositions.add((long) i);
 				}
-				new Thread(new DownloadRunnable(this, handler, i)).start();
+				new Thread(new DownloadRunnable(this, i)).start();
 			}
 		}
 	}

@@ -44,7 +44,7 @@ public class DownloadManager
 	public void resumeMission(int i) {
 		DownloadMission d = getMission(i);
 		if (!d.running && d.errCode == -1) {
-			d.start(mContext);
+			d.start();
 		}
 	}
 	
@@ -182,7 +182,7 @@ public class DownloadManager
 				af.setLength(mission.length);
 				af.close();
 				
-				mission.start(context);
+				mission.start();
 			} catch (Exception e) {
 				// TODO Notify
 				throw new RuntimeException(e);

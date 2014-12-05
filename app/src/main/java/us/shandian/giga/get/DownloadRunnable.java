@@ -15,12 +15,10 @@ public class DownloadRunnable implements Runnable
 	private static final String TAG = DownloadRunnable.class.getSimpleName();
 	
 	private DownloadMission mMission;
-	private Handler mHandler;
 	private int mId;
 	
-	public DownloadRunnable(DownloadMission mission, Handler handler, int id) {
+	public DownloadRunnable(DownloadMission mission, int id) {
 		mMission = mission;
-		mHandler = handler;
 		mId = id;
 	}
 	
@@ -152,35 +150,20 @@ public class DownloadRunnable implements Runnable
 	
 	private void notifyProgress(final long len) {
 		synchronized (mMission) {
-			mHandler.post(new Runnable() {
-				@Override
-				public void run() {
-					mMission.notifyProgress(len);
-				}
-			});
+			mMission.notifyProgress(len);
 		}
 	}
 	
 	private void notifyError(final int err) {
 		synchronized (mMission) {
-			mHandler.post(new Runnable() {
-				@Override
-				public void run() {
-					mMission.notifyError(err);
-					mMission.pause();
-				}
-			});
+			mMission.notifyError(err);
+			mMission.pause();
 		}
 	}
 	
 	private void notifyFinished() {
 		synchronized (mMission) {
-			mHandler.post(new Runnable() {
-				@Override
-				public void run() {
-					mMission.notifyFinished();
-				}
-			});
+			mMission.notifyFinished();
 		}
 	}
 }
