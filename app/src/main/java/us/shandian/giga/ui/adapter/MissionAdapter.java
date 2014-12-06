@@ -213,7 +213,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 						mBinder.resumeMission(h.position);
 						return true;
 					case R.id.pause:
-						mManager.pauseMission(h.position);
+						mBinder.pauseMission(h.position);
 						h.lastTimeStamp = -1;
 						h.lastDone = -1;
 						return true;
