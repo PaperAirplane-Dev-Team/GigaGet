@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
@@ -47,11 +48,16 @@ public class DownloadManagerService extends Service
 		Intent i = new Intent();
 		i.setAction(Intent.ACTION_MAIN);
 		i.setClass(this, MainActivity.class);
-		Notification n = new Notification();
-		n.setLatestEventInfo(this, getString(R.string.msg_running),
-			getString(R.string.msg_running_detail), PendingIntent.getActivity(this, 0, i, 0));
+		Notification n = new Notification.Builder(this)
+			.setContentIntent(PendingIntent.getActivity(this, 0, i, 0))
+			.setContentTitle(getString(R.string.msg_running))
+			.setContentText(getString(R.string.msg_running_detail))
+			.setLargeIcon(((BitmapDrawable) getDrawable(R.drawable.gigaget)).getBitmap())
+			.setSmallIcon(android.R.drawable.stat_sys_download)
+			.build();
+		
 		startForeground(10011, n);
-		return START_STICKY;
+		return START_NOT_STICKY;
 	}
 
 	@Override
