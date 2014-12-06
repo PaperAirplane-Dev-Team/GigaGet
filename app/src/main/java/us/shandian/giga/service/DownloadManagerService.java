@@ -11,15 +11,19 @@ import android.util.Log;
 
 import us.shandian.giga.R;
 import us.shandian.giga.get.DownloadManager;
+import us.shandian.giga.get.DownloadMission;
 import us.shandian.giga.ui.main.MainActivity;
 import static us.shandian.giga.BuildConfig.DEBUG;
 
-public class DownloadManagerService extends Service
+public class DownloadManagerService extends Service implements DownloadMission.MissionListener
 {
+	
 	private static final String TAG = DownloadManagerService.class.getSimpleName();
 	
 	private DMBinder mBinder;
 	private DownloadManager mManager;
+	private Notification mNotification;
+	private int mRunningCount = 0;
 
 	@Override
 	public void onCreate() {
@@ -38,17 +42,11 @@ public class DownloadManagerService extends Service
 
 			mManager = new DownloadManager(this, "/storage/sdcard0/GigaGet");
 		}
-	}
-
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		if (DEBUG) {
-			Log.d(TAG, "Starting");
-		}
+		
 		Intent i = new Intent();
 		i.setAction(Intent.ACTION_MAIN);
 		i.setClass(this, MainActivity.class);
-		Notification n = new Notification.Builder(this)
+		mNotification = new Notification.Builder(this)
 			.setContentIntent(PendingIntent.getActivity(this, 0, i, 0))
 			.setContentTitle(getString(R.string.msg_running))
 			.setContentText(getString(R.string.msg_running_detail))
@@ -56,7 +54,14 @@ public class DownloadManagerService extends Service
 			.setSmallIcon(android.R.drawable.stat_sys_download)
 			.build();
 		
-		startForeground(10011, n);
+	}
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		if (DEBUG) {
+			Log.d(TAG, "Starting");
+		}
+		
 		return START_NOT_STICKY;
 	}
 
@@ -80,6 +85,33 @@ public class DownloadManagerService extends Service
 		return mBinder;
 	}
 	
+
+	@Override
+	public void onProgressUpdate(long done, long total) {
+		// Do nothing
+	}
+
+	@Override
+	public void onFinish() {
+		mRunningCount--;
+		updateState();
+	}
+
+	@Override
+	public void onError(int errCode) {
+		mRunningCount--;
+		updateState();
+	}
+	
+	private void updateState() {
+		if (mRunningCount == 0) {
+			stopForeground(true);
+		} else {
+			startForeground(1000, mNotification);
+		}
+	}
+	
+	
 	// Wrapper of DownloadManager
 	public class DMBinder extends Binder {
 		// Do not start missions from outside
@@ -88,11 +120,21 @@ public class DownloadManagerService extends Service
 		}
 		
 		public int startMission(final String url, final String name, final int threads) {
+			mRunningCount++;
+			updateState();
 			return mManager.startMission(url, name, threads);
 		}
 		
 		public void resumeMission(final int id) {
+			mRunningCount++;
+			updateState();
 			mManager.resumeMission(id);
+		}
+		
+		public void pauseMission(final int id) {
+			mRunningCount--;
+			updateState();
+			mManager.pauseMission(id);
 		}
 		
 	}
