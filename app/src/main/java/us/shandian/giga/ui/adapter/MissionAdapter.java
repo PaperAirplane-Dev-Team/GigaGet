@@ -125,6 +125,8 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 	}
 	
 	private void updateProgress(ViewHolder h, boolean finished) {
+		if (h.mission == null) return;
+		
 		long now = System.currentTimeMillis();
 		
 		if (h.lastTimeStamp == -1) {
