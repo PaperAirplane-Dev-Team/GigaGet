@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +34,7 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 import us.shandian.giga.R;
+import us.shandian.giga.api.FlvxzApi;
 import us.shandian.giga.ui.common.ToolbarActivity;
 import us.shandian.giga.ui.main.MainActivity;
 import us.shandian.giga.util.Utility;
@@ -226,7 +228,7 @@ public class BrowserActivity extends ToolbarActivity
 			Pattern pattern = Pattern.compile(PATTERN);
 			Matcher matcher = pattern.matcher(html);
 			
-			ArrayList<String> vid = new ArrayList<String>();
+			final ArrayList<String> vid = new ArrayList<String>();
 			
 			while (matcher.find()) {
 				String url = matcher.group();
@@ -250,11 +252,41 @@ public class BrowserActivity extends ToolbarActivity
 				}
 			}
 			
-			if (vid.size() == 0) {
+			// Try detecting with api utils
+			mWeb.post(new Runnable() {
+				@Override
+				public void run() {
+					new ShowVideoTask(mWeb.getUrl()).execute(vid);
+				}
+			});
+			
+		}
+	}
+	
+	private class ShowVideoTask extends AsyncTask<ArrayList<String>, Void, ArrayList<String>> {
+		private String mUrl;
+		
+		public ShowVideoTask(String url) {
+			mUrl = url;
+		}
+		
+		@Override
+		protected ArrayList<String> doInBackground(ArrayList<String>... params) {
+			if (params[0].size() == 0) {
+				params[0].addAll(FlvxzApi.getInstance(BrowserActivity.this).detectVideos(mUrl));
+			}
+			return params[0];
+		}
+
+		@Override
+		protected void onPostExecute(ArrayList<String> result) {
+			super.onPostExecute(result);
+			
+			if (result.size() == 0) {
 				Toast.makeText(BrowserActivity.this, R.string.msg_no_video, Toast.LENGTH_SHORT).show();
 			} else {
-				String[] arr = new String[vid.size()];
-				showVideoChoices(vid.toArray(arr));
+				String[] arr = new String[result.size()];
+				showVideoChoices(result.toArray(arr));
 			}
 		}
 	}
