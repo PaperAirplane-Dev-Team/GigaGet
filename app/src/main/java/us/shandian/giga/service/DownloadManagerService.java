@@ -111,7 +111,7 @@ public class DownloadManagerService extends Service implements DownloadMission.M
 
 	@Override
 	public void onProgressUpdate(long done, long total) {
-		// Do nothing
+		postUpdateMessage();
 	}
 
 	@Override
