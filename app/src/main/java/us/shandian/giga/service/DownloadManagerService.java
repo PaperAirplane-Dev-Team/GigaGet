@@ -27,6 +27,7 @@ public class DownloadManagerService extends Service implements DownloadMission.M
 	private DownloadManager mManager;
 	private Notification mNotification;
 	private Handler mHandler;
+	private long mLastTimeStamp = System.currentTimeMillis();
 
 	@Override
 	public void onCreate() {
@@ -111,7 +112,15 @@ public class DownloadManagerService extends Service implements DownloadMission.M
 
 	@Override
 	public void onProgressUpdate(long done, long total) {
-		postUpdateMessage();
+
+		long now = System.currentTimeMillis();
+
+		long delta = now - mLastTimeStamp;
+
+		if (delta > 2000) {
+			postUpdateMessage();
+			mLastTimeStamp = now;
+		}
 	}
 
 	@Override
