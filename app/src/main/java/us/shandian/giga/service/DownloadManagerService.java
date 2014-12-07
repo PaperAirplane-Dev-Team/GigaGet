@@ -6,7 +6,10 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Binder;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Message;
 import android.util.Log;
 
 import us.shandian.giga.R;
@@ -23,7 +26,7 @@ public class DownloadManagerService extends Service implements DownloadMission.M
 	private DMBinder mBinder;
 	private DownloadManager mManager;
 	private Notification mNotification;
-	private int mRunningCount = 0;
+	private Handler mHandler;
 
 	@Override
 	public void onCreate() {
@@ -53,6 +56,26 @@ public class DownloadManagerService extends Service implements DownloadMission.M
 			.setLargeIcon(((BitmapDrawable) getDrawable(R.drawable.gigaget)).getBitmap())
 			.setSmallIcon(android.R.drawable.stat_sys_download)
 			.build();
+			
+		HandlerThread thread = new HandlerThread("ServiceMessenger");
+		thread.start();
+			
+		mHandler = new Handler(thread.getLooper()) {
+			@Override
+			public void handleMessage(Message msg) {
+				if (msg.what == 0) {
+					int runningCount = 0;
+					
+					for (int i = 0; i < mManager.getCount(); i++) {
+						if (mManager.getMission(i).running) {
+							runningCount++;
+						}
+					}
+					
+					updateState(runningCount);
+				}
+			}
+		};
 		
 	}
 
@@ -93,18 +116,20 @@ public class DownloadManagerService extends Service implements DownloadMission.M
 
 	@Override
 	public void onFinish() {
-		mRunningCount--;
-		updateState();
+		postUpdateMessage();
 	}
 
 	@Override
 	public void onError(int errCode) {
-		mRunningCount--;
-		updateState();
+		postUpdateMessage();
 	}
 	
-	private void updateState() {
-		if (mRunningCount == 0) {
+	private void postUpdateMessage() {
+		mHandler.sendEmptyMessage(0);
+	}
+	
+	private void updateState(int runningCount) {
+		if (runningCount == 0) {
 			stopForeground(true);
 		} else {
 			startForeground(1000, mNotification);
@@ -120,21 +145,19 @@ public class DownloadManagerService extends Service implements DownloadMission.M
 		}
 		
 		public int startMission(final String url, final String name, final int threads) {
-			mRunningCount++;
-			updateState();
-			return mManager.startMission(url, name, threads);
+			int ret = mManager.startMission(url, name, threads);
+			postUpdateMessage();
+			return ret;
 		}
 		
 		public void resumeMission(final int id) {
-			mRunningCount++;
-			updateState();
 			mManager.resumeMission(id);
+			postUpdateMessage();
 		}
 		
 		public void pauseMission(final int id) {
-			mRunningCount--;
-			updateState();
 			mManager.pauseMission(id);
+			postUpdateMessage();
 		}
 		
 	}
