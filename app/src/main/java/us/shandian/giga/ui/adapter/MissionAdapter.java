@@ -205,6 +205,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 			}
 		} else {
 			view.setVisible(true);
+			delete.setVisible(true);
 		}
 		
 		popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
