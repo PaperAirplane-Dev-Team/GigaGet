@@ -18,6 +18,7 @@
 	
 	<!-- Fragment -->
 	<string name="add">添加任务</string>
+	<string name="about">关于</string>
 	
 	<!-- Browser -->
 	<string name="browser">简易浏览器</string>
@@ -36,5 +37,6 @@
 	<string name="msg_url_malform">URL格式错误或网络不可用</string>
 	<string name="msg_running">GigaGet 正在运行</string>
 	<string name="msg_running_detail">单击查看详情</string>
+	<string name="msg_close">关闭</string>
 	
 </resources>

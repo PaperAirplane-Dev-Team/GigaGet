@@ -22,6 +22,7 @@
 	
 	<!-- Fragment -->
 	<string name="add">Add</string>
+	<string name="about">About</string>
 	
 	<!-- Browser -->
 	<string name="browser">Simple Browser</string>
@@ -40,5 +41,6 @@
 	<string name="msg_url_malform">Malformed URL or Internet not available</string>
 	<string name="msg_running">GigaGet is running</string>
 	<string name="msg_running_detail">Click for details</string>
+	<string name="msg_close">Close</string>
 
 </resources>

@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -112,6 +113,9 @@ public class MissionsFragment extends Fragment
 				i.setClass(getActivity(), BrowserActivity.class);
 				getActivity().startActivity(i);
 				return true;
+			case R.id.about:
+				showAboutDialog();
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -129,6 +133,22 @@ public class MissionsFragment extends Fragment
 	
 	public void setPendingUrl(String url) {
 		mPendingUrl = url;
+	}
+	
+	private void showAboutDialog() {
+		WebView v = new WebView(getActivity());
+		v.loadUrl("file:///android_asset/licenses.html");
+		
+		new AlertDialog.Builder(getActivity())
+			.setView(v)
+			.setTitle(R.string.about)
+			.setNegativeButton(R.string.msg_close, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int id) {
+					// Noting to do
+				}
+			})
+			.show();
 	}
 	
 	private void showUrlDialog() {
