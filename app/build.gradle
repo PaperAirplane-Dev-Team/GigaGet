@@ -8,8 +8,8 @@ android {
         applicationId "us.shandian.giga"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0.0-pre-alpha"
+        versionCode 2
+        versionName "1.0.0"
     }
     buildTypes {
         release {
