@@ -54,7 +54,7 @@ public class DownloadManagerService extends Service implements DownloadMission.M
 			.setContentIntent(PendingIntent.getActivity(this, 0, i, 0))
 			.setContentTitle(getString(R.string.msg_running))
 			.setContentText(getString(R.string.msg_running_detail))
-			.setLargeIcon(((BitmapDrawable) getDrawable(R.drawable.gigaget)).getBitmap())
+			.setLargeIcon(((BitmapDrawable) getResources().getDrawable(R.drawable.gigaget)).getBitmap())
 			.setSmallIcon(android.R.drawable.stat_sys_download)
 			.build();
 			
