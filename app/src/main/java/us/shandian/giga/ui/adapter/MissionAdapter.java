@@ -28,19 +28,17 @@ import us.shandian.giga.util.Utility;
 public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHolder>
 {
 	private static final int[] BACKGROUNDS = new int[]{
-		R.color.blue,
-		R.color.green,
-		R.color.orange,
-		R.color.gray,
-		R.color.purple
+		R.color.brown,
+		R.color.bluegray,
+		R.color.teal,
+		R.color.cyan
 	};
 	
 	private static final int[] FOREGROUNDS = new int[]{
-		R.color.blue_dark,
-		R.color.green_dark,
-		R.color.orange_dark,
-		R.color.gray_dark,
-		R.color.purple_dark
+		R.color.brown_dark,
+		R.color.bluegray_dark,
+		R.color.teal_dark,
+		R.color.cyan_dark
 	};
 	
 	private Context mContext;

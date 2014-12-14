@@ -27,7 +27,7 @@
 		<activity
 			android:name=".ui.main.MainActivity"
 			android:label="@string/app_name"
-			android:theme="@style/Theme.App.Blue"
+			android:theme="@style/Theme.App.Teal"
 			android:launchMode="singleTask">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -51,7 +51,7 @@
 		<activity
 			android:name=".ui.main.DetailActivity"
 			android:label="@string/app_name"
-			android:theme="@style/Theme.App.Blue">
+			android:theme="@style/Theme.App.Cyan">
 			
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -63,7 +63,7 @@
 		<activity
 			android:name=".ui.web.BrowserActivity"
 			android:label="@string/browser"
-			android:theme="@style/Theme.App.Green">
+			android:theme="@style/Theme.App.Teal">
 
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />

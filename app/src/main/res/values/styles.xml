@@ -8,28 +8,23 @@
 		<item name="windowActionModeOverlay">true</item>
 	</style>
 	
-	<style name="Theme.App.Blue" parent="Theme.App.Base">
-		<item name="colorPrimary">@color/blue</item>
-		<item name="colorPrimaryDark">@color/blue_dark</item>
+	<style name="Theme.App.Brown" parent="Theme.App.Base">
+		<item name="colorPrimary">@color/brown</item>
+		<item name="colorPrimaryDark">@color/brown_dark</item>
 	</style>
 	
-	<style name="Theme.App.Orange" parent="Theme.App.Base">
-		<item name="colorPrimary">@color/orange</item>
-		<item name="colorPrimaryDark">@color/orange_dark</item>
+	<style name="Theme.App.BlueGray" parent="Theme.App.Base">
+		<item name="colorPrimary">@color/bluegray</item>
+		<item name="colorPrimaryDark">@color/bluegray_dark</item>
 	</style>
 	
-	<style name="Theme.App.Green" parent="Theme.App.Base">
-		<item name="colorPrimary">@color/green</item>
-		<item name="colorPrimaryDark">@color/green_dark</item>
+	<style name="Theme.App.Teal" parent="Theme.App.Base">
+		<item name="colorPrimary">@color/teal</item>
+		<item name="colorPrimaryDark">@color/teal_dark</item>
 	</style>
 	
-	<style name="Theme.App.Purple" parent="Theme.App.Base">
-		<item name="colorPrimary">@color/purple</item>
-		<item name="colorPrimaryDark">@color/purple_dark</item>
-	</style>
-	
-	<style name="Theme.App.Gray" parent="Theme.App.Base">
-		<item name="colorPrimary">@color/gray</item>
-		<item name="colorPrimaryDark">@color/gray_dark</item>
+	<style name="Theme.App.Cyan" parent="Theme.App.Base">
+		<item name="colorPrimary">@color/cyan</item>
+		<item name="colorPrimaryDark">@color/cyan_dark</item>
 	</style>
 </resources>
