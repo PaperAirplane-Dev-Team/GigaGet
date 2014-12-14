@@ -224,6 +224,7 @@ public class MissionsFragment extends Fragment
 		AlertDialog dialog = new AlertDialog.Builder(getActivity())
 				.setCancelable(true)
 				.setView(v)
+				.setTitle(R.string.add)
 				.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
