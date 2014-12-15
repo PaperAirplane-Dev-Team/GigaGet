@@ -11,6 +11,7 @@
 	<style name="Theme.App.Blue" parent="Theme.App.Base">
 		<item name="colorPrimary">@color/blue</item>
 		<item name="colorPrimaryDark">@color/blue_dark</item>
+		<item name="colorAccent">@color/blue</item>
 	</style>
 	
 	<style name="Theme.App.Brown" parent="Theme.App.Base">
