@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="drawer_items">
+		<item>全部</item>
+		<item>正在下载</item>
+		<item>已完成</item>
+		<item>-</item>
+		<item>内置浏览器</item>
+		<item>设置</item>
+	</string-array>
+</resources>

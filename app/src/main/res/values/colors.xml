@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<!-- Theme colors -->
+	<color name="blue">#2979FF</color>
+	<color name="blue_dark">#1565C0</color>
 	<color name="brown">#795548</color>
 	<color name="brown_dark">#6D4C41</color>
 	<color name="bluegray">#607D8B</color>
@@ -13,4 +15,6 @@
 	<!-- Component colors -->
 	<color name="white">#FFFFFF</color>
 	<color name="light_gray">#EFEFEF</color>
+	<color name="middle_gray">#E0E0E0</color>
+	<color name="gray">#616161</color>
 </resources>

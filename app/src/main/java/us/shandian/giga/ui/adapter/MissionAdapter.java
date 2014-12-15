@@ -27,19 +27,6 @@ import us.shandian.giga.util.Utility;
 
 public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHolder>
 {
-	private static final int[] BACKGROUNDS = new int[]{
-		R.color.brown,
-		R.color.bluegray,
-		R.color.teal,
-		R.color.cyan
-	};
-	
-	private static final int[] FOREGROUNDS = new int[]{
-		R.color.brown_dark,
-		R.color.bluegray_dark,
-		R.color.teal_dark,
-		R.color.cyan_dark
-	};
 	
 	private Context mContext;
 	private LayoutInflater mInflater;
@@ -98,8 +85,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		h.size.setText(Utility.formatBytes(ms.length));
 		
 		int first = (ms.name.charAt(0) + ms.name.charAt(ms.name.length() - 1)) / ms.name.length();
-		h.colorId = first % BACKGROUNDS.length;
-		h.progress = new ProgressDrawable(mContext, BACKGROUNDS[h.colorId], FOREGROUNDS[h.colorId]);
+		h.progress = new ProgressDrawable(mContext, R.color.bluegray, R.color.bluegray_dark);
 		h.bkg.setBackgroundDrawable(h.progress);
 		
 		h.observer = new MissionObserver(this, h);

@@ -6,11 +6,34 @@
 	<include
 		layout="@layout/toolbar"/>
 	
-	<FrameLayout
-		android:id="@+id/frame"
-		android:layout_below="@+id/toolbar"
+	<android.support.v4.widget.DrawerLayout
+		android:id="@+id/drawer"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"/>
+		android:layout_height="match_parent"
+		android:layout_below="@+id/toolbar">
+	
+		<FrameLayout
+			android:id="@+id/frame"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"/>
+		
+		<FrameLayout
+			android:id="@+id/nav"
+			android:layout_gravity="left"
+			android:layout_width="240dp"
+			android:layout_height="match_parent"
+			android:background="@color/white">
+			
+			<ListView
+				android:id="@+id/nav_list"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:divider="@null"/>
+			
+		</FrameLayout>
+	
+	</android.support.v4.widget.DrawerLayout>
 	
 	<View
 		android:layout_width="match_parent"
