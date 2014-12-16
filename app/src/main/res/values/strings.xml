@@ -21,8 +21,9 @@
 	<string name="threads_count">Threads count</string>
 	
 	<!-- Fragment -->
-	<string name="add">Add</string>
+	<string name="add">New mission</string>
 	<string name="about">About</string>
+	<string name="finish">Okay</string>
 	
 	<!-- Browser -->
 	<string name="browser">Simple Browser</string>

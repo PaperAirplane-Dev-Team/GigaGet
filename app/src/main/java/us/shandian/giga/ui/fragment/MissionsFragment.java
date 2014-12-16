@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -27,6 +28,7 @@ import android.text.TextWatcher;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 
 import java.io.File;
 import java.io.IOException;
@@ -159,6 +161,8 @@ public class MissionsFragment extends Fragment
 		final EditText name = Utility.findViewById(v, R.id.file_name);
 		final TextView tCount = Utility.findViewById(v, R.id.threads_count);
 		final SeekBar threads = Utility.findViewById(v, R.id.threads);
+		final Toolbar toolbar = Utility.findViewById(v, R.id.toolbar);
+		final Button fetch = Utility.findViewById(v, R.id.fetch_name);
 		
 		threads.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -220,63 +224,62 @@ public class MissionsFragment extends Fragment
 			text.setText(mPendingUrl);
 		}
 		
+		toolbar.setTitle(R.string.add);
+		toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+		toolbar.inflateMenu(R.menu.dialog_url);
+		
 		// Show the dialog
-		AlertDialog dialog = new AlertDialog.Builder(getActivity())
+		final AlertDialog dialog = new AlertDialog.Builder(getActivity())
 				.setCancelable(true)
 				.setView(v)
-				.setTitle(R.string.add)
-				.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.dismiss();
-					}
-				})
-				.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						String url = text.getText().toString().trim();
-						String fName = name.getText().toString().trim();
-						
-						File f = new File(mManager.getLocation() + "/" + fName);
-						
-						if (f.exists()) {
-							Toast.makeText(getActivity(), R.string.msg_exists, Toast.LENGTH_SHORT).show();
-						} else if (!checkURL(url)) {
-							Toast.makeText(getActivity(), R.string.msg_url_malform, Toast.LENGTH_SHORT).show();
-						} else {
-							
-							while (mBinder == null);
-							
-							mBinder.startMission(url, fName, threads.getProgress() + 1);
-							mAdapter.notifyDataSetChanged();
-						
-							mPrefs.edit().putInt("threads", threads.getProgress() + 1).commit();
-						}
-					}
-				})
-				.setNeutralButton(R.string.msg_fetch_filename, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						
-					}
-				})
 				.create();
+		
+		dialog.show();
 				
-				final View.OnClickListener l = new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						new NameFetcherTask().execute(text, name);
+		fetch.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				new NameFetcherTask().execute(text, name);
+			}
+		});
+		
+		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+		
+		toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				if (item.getItemId() == R.id.okay) {
+					String url = text.getText().toString().trim();
+					String fName = name.getText().toString().trim();
+
+					File f = new File(mManager.getLocation() + "/" + fName);
+
+					if (f.exists()) {
+						Toast.makeText(getActivity(), R.string.msg_exists, Toast.LENGTH_SHORT).show();
+					} else if (!checkURL(url)) {
+						Toast.makeText(getActivity(), R.string.msg_url_malform, Toast.LENGTH_SHORT).show();
+					} else {
+
+						while (mBinder == null);
+
+						mBinder.startMission(url, fName, threads.getProgress() + 1);
+						mAdapter.notifyDataSetChanged();
+
+						mPrefs.edit().putInt("threads", threads.getProgress() + 1).commit();
 					}
-				};
-				
-				dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-					@Override
-					public void onShow(DialogInterface dialog) {
-						((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(l);
-					}
-				});
-				
-				dialog.show();
+					
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
+											 
 	}
 	
 	private boolean checkURL(String url) {

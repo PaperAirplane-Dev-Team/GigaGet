@@ -19,6 +19,7 @@
 	<!-- Fragment -->
 	<string name="add">添加任务</string>
 	<string name="about">关于</string>
+	<string name="finish">完成</string>
 	
 	<!-- Browser -->
 	<string name="browser">简易浏览器</string>
