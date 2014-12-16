@@ -271,6 +271,7 @@ public class MissionsFragment extends Fragment
 						mAdapter.notifyDataSetChanged();
 
 						mPrefs.edit().putInt("threads", threads.getProgress() + 1).commit();
+						dialog.dismiss();
 					}
 					
 					return true;
