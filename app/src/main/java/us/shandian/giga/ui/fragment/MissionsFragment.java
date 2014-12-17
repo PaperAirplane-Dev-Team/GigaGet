@@ -17,24 +17,10 @@ import android.view.MenuItem;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.webkit.WebView;
-import android.widget.EditText;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.text.Editable;
-import android.text.TextWatcher;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import us.shandian.giga.R;
 import us.shandian.giga.get.DownloadManager;
@@ -51,10 +37,6 @@ public class MissionsFragment extends Fragment
 	private RecyclerView mList;
 	private MissionAdapter mAdapter;
 	private GridLayoutManager mGridManager;
-	
-	private SharedPreferences mPrefs;
-	
-	private String mPendingUrl = null;
 	
 	private ServiceConnection mConnection = new ServiceConnection() {
 
@@ -81,7 +63,6 @@ public class MissionsFragment extends Fragment
 		// Bind the service
 		Intent i = new Intent();
 		i.setClass(getActivity(), DownloadManagerService.class);
-		getActivity().startService(i);
 		getActivity().bindService(i, mConnection, Context.BIND_AUTO_CREATE);
 		
 		// Views
@@ -90,8 +71,6 @@ public class MissionsFragment extends Fragment
 		// Init
 		mGridManager = new GridLayoutManager(getActivity(), 2);
 		mList.setLayoutManager(mGridManager);
-		
-		mPrefs = getActivity().getSharedPreferences("threads", Context.MODE_WORLD_READABLE);
 		
 		setHasOptionsMenu(true);
 		
@@ -106,9 +85,6 @@ public class MissionsFragment extends Fragment
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.add:
-				showUrlDialog();
-				return true;
 			case R.id.browser:
 				Intent i = new Intent();
 				i.setAction(Intent.ACTION_MAIN);
@@ -123,18 +99,8 @@ public class MissionsFragment extends Fragment
 		}
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		
-		if (mPendingUrl != null) {
-			showUrlDialog();
-			mPendingUrl = null;
-		}
-	}
-	
-	public void setPendingUrl(String url) {
-		mPendingUrl = url;
+	public void notifyChange() {
+		mAdapter.notifyDataSetChanged();
 	}
 	
 	private void showAboutDialog() {
@@ -151,175 +117,5 @@ public class MissionsFragment extends Fragment
 				}
 			})
 			.show();
-	}
-	
-	private void showUrlDialog() {
-		// Create the view
-		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View v = inflater.inflate(R.layout.dialog_url, null);
-		final EditText text = Utility.findViewById(v, R.id.url);
-		final EditText name = Utility.findViewById(v, R.id.file_name);
-		final TextView tCount = Utility.findViewById(v, R.id.threads_count);
-		final SeekBar threads = Utility.findViewById(v, R.id.threads);
-		final Toolbar toolbar = Utility.findViewById(v, R.id.toolbar);
-		final Button fetch = Utility.findViewById(v, R.id.fetch_name);
-		
-		threads.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-				@Override
-				public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser) {
-					tCount.setText(String.valueOf(progress + 1));
-				}
-
-				@Override
-				public void onStartTrackingTouch(SeekBar p1) {
-					
-				}
-
-				@Override
-				public void onStopTrackingTouch(SeekBar p1) {
-					
-				}
-				
-		});
-		
-		int def = mPrefs.getInt("threads", 4);
-		threads.setProgress(def - 1);
-		tCount.setText(String.valueOf(def));
-		
-		text.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void beforeTextChanged(CharSequence p1, int p2, int p3, int p4) {
-				
-			}
-
-			@Override
-			public void onTextChanged(CharSequence p1, int p2, int p3, int p4) {
-				
-				String url = text.getText().toString().trim();
-
-				if (!url.equals("")) {
-					int index = url.lastIndexOf("/");
-
-					if (index > 0) {
-						int end = url.lastIndexOf("?");
-
-						if (end == -1) {
-							end = url.length();
-						}
-
-						name.setText(url.substring(index + 1, end));
-					}
-				}
-			}
-
-			@Override
-			public void afterTextChanged(Editable txt) {
-				
-			}	
-		});
-		
-		if (mPendingUrl != null) {
-			text.setText(mPendingUrl);
-		}
-		
-		toolbar.setTitle(R.string.add);
-		toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-		toolbar.inflateMenu(R.menu.dialog_url);
-		
-		// Show the dialog
-		final AlertDialog dialog = new AlertDialog.Builder(getActivity())
-				.setCancelable(true)
-				.setView(v)
-				.create();
-		
-		dialog.show();
-				
-		fetch.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				new NameFetcherTask().execute(text, name);
-			}
-		});
-		
-		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				dialog.dismiss();
-			}
-		});
-		
-		toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				if (item.getItemId() == R.id.okay) {
-					String url = text.getText().toString().trim();
-					String fName = name.getText().toString().trim();
-
-					File f = new File(mManager.getLocation() + "/" + fName);
-
-					if (f.exists()) {
-						Toast.makeText(getActivity(), R.string.msg_exists, Toast.LENGTH_SHORT).show();
-					} else if (!checkURL(url)) {
-						Toast.makeText(getActivity(), R.string.msg_url_malform, Toast.LENGTH_SHORT).show();
-					} else {
-
-						while (mBinder == null);
-
-						mBinder.startMission(url, fName, threads.getProgress() + 1);
-						mAdapter.notifyDataSetChanged();
-
-						mPrefs.edit().putInt("threads", threads.getProgress() + 1).commit();
-						dialog.dismiss();
-					}
-					
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
-											 
-	}
-	
-	private boolean checkURL(String url) {
-		try {
-			URL u = new URL(url);
-			u.openConnection();
-			return true;
-		} catch (MalformedURLException e) {
-			return false;
-		} catch (IOException e) {
-			return false;
-		}
-	}
-	
-	private class NameFetcherTask extends AsyncTask<View, Void, Object[]> {
-
-		@Override
-		protected Object[] doInBackground(View[] params) {
-			try {
-				URL url = new URL(((EditText) params[0]).getText().toString());
-				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				String header = conn.getHeaderField("Content-Disposition");
-				
-				if (header != null && header.indexOf("=") != -1) {
-					return new Object[]{params[1], header.split("=")[1].replace("\"", "")};
-				}
-			} catch (Exception e) {
-				
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Object[] result)	{
-			super.onPostExecute(result);
-			
-			if (result != null) {
-				((EditText) result[0]).setText(result[1].toString());
-			}
-		}
 	}
 }
