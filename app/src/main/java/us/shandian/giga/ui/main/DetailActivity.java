@@ -18,11 +18,6 @@ public class DetailActivity extends ToolbarActivity implements DownloadMission.M
 {
 	public static DownloadManager sManager;
 	
-	private static final int[] THEMES = new int[]{
-		R.style.Theme_App_BlueGray,
-		R.style.Theme_App_Cyan
-	};
-	
 	private DownloadMission mMission;
 	
 	private TextView mUrl;
@@ -42,22 +37,21 @@ public class DetailActivity extends ToolbarActivity implements DownloadMission.M
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// Theme it up
-		int colorId = getIntent().getIntExtra("colorId", 0);
-		setTheme(THEMES[colorId]);
+		if (sManager == null) {
+			finish();
+		} else {
+			int id = getIntent().getIntExtra("id", 0);
+			mMission = sManager.getMission(id);
+		}
+	
+		setTheme(Utility.getThemeForFileType(Utility.getFileType(mMission.name)));
 		
 		super.onCreate(savedInstanceState);
 		
 		// Toolbar
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
-		
-		if (sManager == null) {
-			finish();
-		} else {
-			int id = getIntent().getIntExtra("id", 0);
-			mMission = sManager.getMission(id);
-			getSupportActionBar().setTitle(mMission.name);
-		}
+		getSupportActionBar().setTitle(mMission.name);
 		
 		// Views
 		mUrl = Utility.findViewById(this, R.id.info_url);

@@ -29,6 +29,18 @@
 	<style name="Theme.App.Cyan" parent="Theme.App.Base">
 		<item name="colorPrimary">@color/cyan</item>
 		<item name="colorPrimaryDark">@color/cyan_dark</item>
-		<item name="colorAccent">@color/bluegray</item>
+		<item name="colorAccent">@color/cyan</item>
+	</style>
+	
+	<style name="Theme.App.Green" parent="Theme.App.Base">
+		<item name="colorPrimary">@color/green</item>
+		<item name="colorPrimaryDark">@color/green_dark</item>
+		<item name="colorAccent">@color/green</item>
+	</style>
+	
+	<style name="Theme.App.Brown" parent="Theme.App.Base">
+		<item name="colorPrimary">@color/brown</item>
+		<item name="colorPrimaryDark">@color/brown_dark</item>
+		<item name="colorAccent">@color/brown</item>
 	</style>
 </resources>

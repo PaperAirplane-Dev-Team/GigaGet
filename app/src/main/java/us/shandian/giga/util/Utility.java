@@ -201,6 +201,26 @@ public class Utility
 		}
 	}
 	
+	public static int getThemeForFileType(FileType type) {
+		switch (type) {
+			case APP:
+				return R.style.Theme_App_Orange;
+			case MUSIC:
+				return R.style.Theme_App_Cyan;
+			case ARCHIVE:
+				return R.style.Theme_App_Blue;
+			case VIDEO:
+				return R.style.Theme_App_Green;
+			case WORD:
+			case EXCEL:
+			case POWERPOINT:
+				return R.style.Theme_App_Brown;
+			case UNKNOWN:
+			default:
+				return R.style.Theme_App_BlueGray;
+		}
+	}
+	
 	public static int getIconForFileType(FileType type) {
 		switch (type) {
 			case APP:
