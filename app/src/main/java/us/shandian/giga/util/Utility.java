@@ -14,6 +14,18 @@ import us.shandian.giga.get.DownloadMission;
 
 public class Utility
 {
+	
+	public static enum FileType {
+		APP,
+		VIDEO,
+		EXCEL,
+		WORD,
+		POWERPOINT,
+		MUSIC,
+		ARCHIVE,
+		UNKNOWN
+	}
+	
 	public static String formatBytes(long bytes) {
 		if (bytes < 1024) {
 			return String.format("%d B", bytes);
@@ -124,6 +136,90 @@ public class Utility
 				return context.getString(R.string.msg_server_unsupported);
 			default:
 				return "";
+		}
+	}
+	
+	public static FileType getFileType(String file) {
+		if (file.endsWith(".apk")) {
+			return FileType.APP;
+		} else if (file.endsWith(".mp3") || file.endsWith(".wav") || file.endsWith(".flac")) {
+			return FileType.MUSIC;
+		} else if (file.endsWith(".mp4") || file.endsWith(".mpeg") || file.endsWith(".rm") || file.endsWith(".rmvb")
+					|| file.endsWith(".flv") || file.endsWith(".webp")) {
+			return FileType.VIDEO;
+		} else if (file.endsWith(".doc") || file.endsWith(".docx")) {
+			return FileType.WORD;
+		} else if (file.endsWith(".xls") || file.endsWith(".xlsx")) {
+			return FileType.EXCEL;
+		} else if (file.endsWith(".ppt") || file.endsWith(".pptx")) {
+			return FileType.POWERPOINT;
+		} else if (file.endsWith(".zip") || file.endsWith(".rar") || file.endsWith(".7z") || file.endsWith(".gz")
+					|| file.endsWith("tar") || file.endsWith(".bz")) {
+			return FileType.ARCHIVE;
+		} else {
+			return FileType.UNKNOWN;
+		}
+	}
+	
+	public static int getBackgroundForFileType(FileType type) {
+		switch (type) {
+			case APP:
+				return R.color.orange;
+			case MUSIC:
+				return R.color.cyan;
+			case ARCHIVE:
+				return R.color.blue;
+			case VIDEO:
+				return R.color.green;
+			case WORD:
+			case EXCEL:
+			case POWERPOINT:
+				return R.color.brown;
+			case UNKNOWN:
+			default:
+				return R.color.bluegray;
+		}
+	}
+	
+	public static int getForegroundForFileType(FileType type) {
+		switch (type) {
+			case APP:
+				return R.color.orange_dark;
+			case MUSIC:
+				return R.color.cyan_dark;
+			case ARCHIVE:
+				return R.color.blue_dark;
+			case VIDEO:
+				return R.color.green_dark;
+			case WORD:
+			case EXCEL:
+			case POWERPOINT:
+				return R.color.brown_dark;
+			case UNKNOWN:
+			default:
+				return R.color.bluegray_dark;
+		}
+	}
+	
+	public static int getIconForFileType(FileType type) {
+		switch (type) {
+			case APP:
+				return R.drawable.apps;
+			case MUSIC:
+				return R.drawable.music;
+			case ARCHIVE:
+				return R.drawable.archive;
+			case VIDEO:
+				return R.drawable.video;
+			case WORD:
+				return R.drawable.word;
+			case EXCEL:
+				return R.drawable.excel;
+			case POWERPOINT:
+				return R.drawable.powerpoint;
+			case UNKNOWN:
+			default:
+				return R.drawable.unknown;
 		}
 	}
 }

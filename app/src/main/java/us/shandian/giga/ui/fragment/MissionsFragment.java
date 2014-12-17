@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import us.shandian.giga.R;
@@ -34,9 +35,14 @@ public class MissionsFragment extends Fragment
 	private DownloadManager mManager;
 	private DownloadManagerService.DMBinder mBinder;
 	
+	private SharedPreferences mPrefs;
+	private boolean mLinear = false;
+	private MenuItem mSwitch;
+	
 	private RecyclerView mList;
 	private MissionAdapter mAdapter;
 	private GridLayoutManager mGridManager;
+	private LinearLayoutManager mLinearManager;
 	
 	private ServiceConnection mConnection = new ServiceConnection() {
 
@@ -44,8 +50,7 @@ public class MissionsFragment extends Fragment
 		public void onServiceConnected(ComponentName name, IBinder binder) {
 			mBinder = (DownloadManagerService.DMBinder) binder;
 			mManager = mBinder.getDownloadManager();
-			mAdapter = new MissionAdapter(getActivity(), mBinder);
-			mList.setAdapter(mAdapter);
+			updateList();
 		}
 
 		@Override
@@ -60,6 +65,9 @@ public class MissionsFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.missions, container, false);
 		
+		mPrefs = getActivity().getSharedPreferences("mode", Context.MODE_WORLD_READABLE);
+		mLinear = mPrefs.getBoolean("linear", false);
+		
 		// Bind the service
 		Intent i = new Intent();
 		i.setClass(getActivity(), DownloadManagerService.class);
@@ -70,6 +78,7 @@ public class MissionsFragment extends Fragment
 		
 		// Init
 		mGridManager = new GridLayoutManager(getActivity(), 2);
+		mLinearManager = new LinearLayoutManager(getActivity());
 		mList.setLayoutManager(mGridManager);
 		
 		setHasOptionsMenu(true);
@@ -80,6 +89,8 @@ public class MissionsFragment extends Fragment
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.frag_mission, menu);
+		mSwitch = menu.findItem(R.id.switch_mode);
+		mSwitch.setIcon(mLinear ? R.drawable.grid : R.drawable.list);
 	}
 
 	@Override
@@ -93,6 +104,10 @@ public class MissionsFragment extends Fragment
 				return true;
 			case R.id.about:
 				showAboutDialog();
+				return true;
+			case R.id.switch_mode:
+				mLinear = !mLinear;
+				updateList();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -117,5 +132,23 @@ public class MissionsFragment extends Fragment
 				}
 			})
 			.show();
+	}
+	
+	private void updateList() {
+		mAdapter = new MissionAdapter(getActivity(), mBinder, mLinear);
+		
+		if (mLinear) {
+			mList.setLayoutManager(mLinearManager);
+		} else {
+			mList.setLayoutManager(mGridManager);
+		}
+		
+		mList.setAdapter(mAdapter);
+		
+		if (mSwitch != null) {
+			mSwitch.setIcon(mLinear ? R.drawable.grid : R.drawable.list);
+		}
+		
+		mPrefs.edit().putBoolean("linear", mLinear).commit();
 	}
 }

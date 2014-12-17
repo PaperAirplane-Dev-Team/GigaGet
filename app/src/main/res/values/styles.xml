@@ -14,23 +14,21 @@
 		<item name="colorAccent">@color/blue</item>
 	</style>
 	
-	<style name="Theme.App.Brown" parent="Theme.App.Base">
-		<item name="colorPrimary">@color/brown</item>
-		<item name="colorPrimaryDark">@color/brown_dark</item>
+	<style name="Theme.App.Orange" parent="Theme.App.Base">
+		<item name="colorPrimary">@color/orange</item>
+		<item name="colorPrimaryDark">@color/orange_dark</item>
+		<item name="colorAccent">@color/orange</item>
 	</style>
 	
 	<style name="Theme.App.BlueGray" parent="Theme.App.Base">
 		<item name="colorPrimary">@color/bluegray</item>
 		<item name="colorPrimaryDark">@color/bluegray_dark</item>
-	</style>
-	
-	<style name="Theme.App.Teal" parent="Theme.App.Base">
-		<item name="colorPrimary">@color/teal</item>
-		<item name="colorPrimaryDark">@color/teal_dark</item>
+		<item name="colorAccent">@color/bluegray</item>
 	</style>
 	
 	<style name="Theme.App.Cyan" parent="Theme.App.Base">
 		<item name="colorPrimary">@color/cyan</item>
 		<item name="colorPrimaryDark">@color/cyan_dark</item>
+		<item name="colorAccent">@color/bluegray</item>
 	</style>
 </resources>

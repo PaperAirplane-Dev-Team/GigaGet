@@ -42,23 +42,21 @@
 			
 		</RelativeLayout>
 		
-		<TextView
-			android:id="@+id/item_letter"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
+		<ImageView
+			android:id="@+id/item_icon"
+			android:layout_width="72dp"
+			android:layout_height="72dp"
 			android:layout_below="@id/item_title_line"
-			android:padding="8dp"
+			android:layout_centerHorizontal="true"
+			android:scaleType="fitXY"
 			android:gravity="center"
-			android:textSize="48sp"
-			android:textColor="@color/white"
-			android:textStyle="bold"
-			android:text="X"/>
+			android:padding="10dp"/>
 		
 		<TextView
 			android:id="@+id/item_name"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_below="@id/item_letter"
+			android:layout_below="@id/item_icon"
 			android:padding="6dp"
 			android:singleLine="true"
 			android:ellipsize="end"

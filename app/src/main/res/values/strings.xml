@@ -24,6 +24,7 @@
 	<string name="add">New mission</string>
 	<string name="about">About</string>
 	<string name="finish">Okay</string>
+	<string name="switch_mode">Switch between list and grid</string>
 	
 	<!-- Browser -->
 	<string name="browser">Simple Browser</string>

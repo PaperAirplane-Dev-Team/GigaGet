@@ -32,18 +32,21 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 	private LayoutInflater mInflater;
 	private DownloadManager mManager;
 	private DownloadManagerService.DMBinder mBinder;
+	private int mLayout;
 	
-	public MissionAdapter(Context context, DownloadManagerService.DMBinder binder) {
+	public MissionAdapter(Context context, DownloadManagerService.DMBinder binder, boolean isLinear) {
 		mContext = context;
 		mBinder = binder;
 		mManager = mBinder.getDownloadManager();
 		
 		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
+		mLayout = isLinear ? R.layout.mission_item_linear : R.layout.mission_item;
 	}
 
 	@Override
 	public MissionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		final ViewHolder h =  new ViewHolder(mInflater.inflate(R.layout.mission_item, parent, false));
+		final ViewHolder h =  new ViewHolder(mInflater.inflate(mLayout, parent, false));
 		
 		h.menu.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -80,12 +83,14 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		DownloadMission ms = mManager.getMission(pos);
 		h.mission = ms;
 		h.position = pos;
-		h.letter.setText(ms.name.substring(0, 1));
+		
+		Utility.FileType type = Utility.getFileType(ms.name);
+		
+		h.icon.setImageResource(Utility.getIconForFileType(type));
 		h.name.setText(ms.name);
 		h.size.setText(Utility.formatBytes(ms.length));
 		
-		int first = (ms.name.charAt(0) + ms.name.charAt(ms.name.length() - 1)) / ms.name.length();
-		h.progress = new ProgressDrawable(mContext, R.color.bluegray, R.color.bluegray_dark);
+		h.progress = new ProgressDrawable(mContext, Utility.getBackgroundForFileType(type), Utility.getForegroundForFileType(type));
 		h.bkg.setBackgroundDrawable(h.progress);
 		
 		h.observer = new MissionObserver(this, h);
@@ -238,7 +243,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		public int position;
 		
 		public TextView status;
-		public TextView letter;
+		public ImageView icon;
 		public TextView name;
 		public TextView size;
 		public View bkg;
@@ -254,7 +259,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 			super(v);
 			
 			status = Utility.findViewById(v, R.id.item_status);
-			letter = Utility.findViewById(v, R.id.item_letter);
+			icon = Utility.findViewById(v, R.id.item_icon);
 			name = Utility.findViewById(v, R.id.item_name);
 			size = Utility.findViewById(v, R.id.item_size);
 			bkg = Utility.findViewById(v, R.id.item_bkg);

@@ -3,14 +3,16 @@
 	<!-- Theme colors -->
 	<color name="blue">#2979FF</color>
 	<color name="blue_dark">#1565C0</color>
-	<color name="brown">#795548</color>
-	<color name="brown_dark">#6D4C41</color>
 	<color name="bluegray">#607D8B</color>
 	<color name="bluegray_dark">#546E7A</color>
-	<color name="teal">#009688</color>
-	<color name="teal_dark">#00897B</color>
 	<color name="cyan">#00BCD4</color>
 	<color name="cyan_dark">#00ACC1</color>
+	<color name="orange">#FF9800</color>
+	<color name="orange_dark">#EF6C00</color>
+	<color name="green">#4CAF50</color>
+	<color name="green_dark">#388E3C</color>
+	<color name="brown">#795548</color>
+	<color name="brown_dark">#5D4037</color>
 	
 	<!-- Component colors -->
 	<color name="white">#FFFFFF</color>
