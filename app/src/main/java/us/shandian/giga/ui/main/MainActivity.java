@@ -2,12 +2,14 @@ package us.shandian.giga.ui.main;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,8 +20,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -42,10 +47,13 @@ import us.shandian.giga.ui.adapter.NavigationAdapter;
 import us.shandian.giga.ui.common.FloatingActionButton;
 import us.shandian.giga.ui.common.ToolbarActivity;
 import us.shandian.giga.ui.fragment.MissionsFragment;
+import us.shandian.giga.ui.fragment.AllMissionsFragment;
+import us.shandian.giga.ui.fragment.DownloadedMissionsFragment;
+import us.shandian.giga.ui.fragment.DownloadingMissionsFragment;
 import us.shandian.giga.util.CrashHandler;
 import us.shandian.giga.util.Utility;
 
-public class MainActivity extends ToolbarActivity
+public class MainActivity extends ToolbarActivity implements AdapterView.OnItemClickListener
 {
 	private MissionsFragment mFragment;
 	private DrawerLayout mDrawer;
@@ -57,6 +65,7 @@ public class MainActivity extends ToolbarActivity
 	
 	private String mPendingUrl;
 	private SharedPreferences mPrefs;
+	private int mSelection = 0;
 	
 	private ServiceConnection mConnection = new ServiceConnection() {
 
@@ -117,13 +126,21 @@ public class MainActivity extends ToolbarActivity
 			.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					showUrlDialog();
+					if (mFragment != null) {
+						showUrlDialog();
+					}
 				}
 			});
 		
 		// Fragment
-		mFragment = new MissionsFragment();
-		getFragmentManager().beginTransaction().replace(R.id.frame, mFragment).commit();
+		getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+			@Override
+			public void onGlobalLayout() {
+				updateFragments();
+				getWindow().getDecorView().getViewTreeObserver().removeGlobalOnLayoutListener(this);
+			}
+		});
+		mList.setOnItemClickListener(this);
 		
 		// Intent
 		if (getIntent().getAction().equals(Intent.ACTION_VIEW)) {
@@ -165,6 +182,52 @@ public class MainActivity extends ToolbarActivity
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		mToggle.onConfigurationChanged(newConfig);
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		mDrawer.closeDrawer(Gravity.LEFT);
+		if (position < 3) {
+			if (position != mSelection) {
+				mSelection = position;
+				updateFragments();
+			}
+		}
+	}
+	
+	private void updateFragments() {
+		switch (mSelection) {
+			case 0:
+				mFragment = new AllMissionsFragment();
+				break;
+			case 1:
+				mFragment = new DownloadingMissionsFragment();
+				break;
+			case 2:
+				mFragment = new DownloadedMissionsFragment();
+				break;
+		}
+		getFragmentManager().beginTransaction()
+			.replace(R.id.frame, mFragment)
+			.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+			.commit();
+		
+		for (int i = 0; i < 3; i++) {
+			View v = mList.getChildAt(i);
+			
+			ImageView icon = Utility.findViewById(v, R.id.drawer_icon);
+			TextView text = Utility.findViewById(v, R.id.drawer_text);
+			
+			if (i == mSelection) {
+				v.setBackgroundResource(R.color.light_gray);
+				icon.setColorFilter(getResources().getColor(R.color.blue), PorterDuff.Mode.SRC_IN);
+				text.setTextColor(getResources().getColor(R.color.blue));
+			} else {
+				v.setBackgroundResource(android.R.color.transparent);
+				icon.setColorFilter(null);
+				text.setTextColor(getResources().getColor(R.color.gray));
+			}
+		}
 	}
 	
 	private void showUrlDialog() {

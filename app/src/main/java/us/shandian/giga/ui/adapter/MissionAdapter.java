@@ -31,13 +31,11 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 	private Context mContext;
 	private LayoutInflater mInflater;
 	private DownloadManager mManager;
-	private DownloadManagerService.DMBinder mBinder;
 	private int mLayout;
 	
-	public MissionAdapter(Context context, DownloadManagerService.DMBinder binder, boolean isLinear) {
+	public MissionAdapter(Context context, DownloadManager manager, boolean isLinear) {
 		mContext = context;
-		mBinder = binder;
-		mManager = mBinder.getDownloadManager();
+		mManager = manager;
 		
 		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
@@ -202,10 +200,10 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 			public boolean onMenuItemClick(MenuItem item) {
 				switch (item.getItemId()) {
 					case R.id.start:
-						mBinder.resumeMission(h.position);
+						mManager.resumeMission(h.position);
 						return true;
 					case R.id.pause:
-						mBinder.pauseMission(h.position);
+						mManager.pauseMission(h.position);
 						h.lastTimeStamp = -1;
 						h.lastDone = -1;
 						return true;

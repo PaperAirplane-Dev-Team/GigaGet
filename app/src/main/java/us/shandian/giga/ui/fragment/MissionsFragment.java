@@ -1,5 +1,6 @@
 package us.shandian.giga.ui.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ComponentName;
@@ -30,7 +31,7 @@ import us.shandian.giga.ui.adapter.MissionAdapter;
 import us.shandian.giga.ui.web.BrowserActivity;
 import us.shandian.giga.util.Utility;
 
-public class MissionsFragment extends Fragment
+public abstract class MissionsFragment extends Fragment
 {
 	private DownloadManager mManager;
 	private DownloadManagerService.DMBinder mBinder;
@@ -43,13 +44,14 @@ public class MissionsFragment extends Fragment
 	private MissionAdapter mAdapter;
 	private GridLayoutManager mGridManager;
 	private LinearLayoutManager mLinearManager;
+	private Activity mActivity;
 	
 	private ServiceConnection mConnection = new ServiceConnection() {
 
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder binder) {
 			mBinder = (DownloadManagerService.DMBinder) binder;
-			mManager = mBinder.getDownloadManager();
+			mManager = setupDownloadManager(mBinder);
 			updateList();
 		}
 
@@ -84,6 +86,12 @@ public class MissionsFragment extends Fragment
 		setHasOptionsMenu(true);
 		
 		return v;
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		mActivity = activity;
 	}
 
 	@Override
@@ -135,7 +143,7 @@ public class MissionsFragment extends Fragment
 	}
 	
 	private void updateList() {
-		mAdapter = new MissionAdapter(getActivity(), mBinder, mLinear);
+		mAdapter = new MissionAdapter(mActivity, mManager, mLinear);
 		
 		if (mLinear) {
 			mList.setLayoutManager(mLinearManager);
@@ -151,4 +159,6 @@ public class MissionsFragment extends Fragment
 		
 		mPrefs.edit().putBoolean("linear", mLinear).commit();
 	}
+	
+	protected abstract DownloadManager setupDownloadManager(DownloadManagerService.DMBinder binder);
 }

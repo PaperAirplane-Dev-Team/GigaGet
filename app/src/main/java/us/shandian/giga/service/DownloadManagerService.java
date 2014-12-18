@@ -14,6 +14,7 @@ import android.util.Log;
 
 import us.shandian.giga.R;
 import us.shandian.giga.get.DownloadManager;
+import us.shandian.giga.get.DownloadManagerImpl;
 import us.shandian.giga.get.DownloadMission;
 import us.shandian.giga.ui.main.MainActivity;
 import static us.shandian.giga.BuildConfig.DEBUG;
@@ -44,7 +45,7 @@ public class DownloadManagerService extends Service implements DownloadMission.M
 				Log.d(TAG, "mManager == null");
 			}
 
-			mManager = new DownloadManager(this, "/storage/sdcard0/GigaGet");
+			mManager = new DownloadManagerImpl(this, "/storage/sdcard0/GigaGet");
 		}
 		
 		Intent i = new Intent();
