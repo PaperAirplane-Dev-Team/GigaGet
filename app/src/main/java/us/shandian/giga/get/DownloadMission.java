@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -45,7 +46,7 @@ public class DownloadMission
 	
 	public transient boolean recovered = false;
 	
-	private transient ArrayList<MissionListener> mListeners = new ArrayList<MissionListener>();
+	private transient ArrayList<WeakReference<MissionListener>> mListeners = new ArrayList<WeakReference<MissionListener>>();
 	private transient boolean mWritingToFile = false;
 	
 	public boolean isBlockPreserved(long block) {
@@ -81,7 +82,8 @@ public class DownloadMission
 			writeThisToFile();
 		}
 		
-		for (final MissionListener listener : mListeners) {
+		for (WeakReference<MissionListener> ref: mListeners) {
+			final MissionListener listener = ref.get();
 			if (listener != null) {
 				listener.handler.post(new Runnable() {
 					@Override
@@ -115,7 +117,8 @@ public class DownloadMission
 		
 		deleteThisFromFile();
 		
-		for (final MissionListener listener : mListeners) {
+		for (WeakReference<MissionListener> ref : mListeners) {
+			final MissionListener listener = ref.get();
 			listener.handler.post(new Runnable() {
 				@Override
 				public void run() {
@@ -130,7 +133,8 @@ public class DownloadMission
 		
 		writeThisToFile();
 		
-		for (final MissionListener listener : mListeners) {
+		for (WeakReference<MissionListener> ref : mListeners) {
+			final MissionListener listener = ref.get();
 			listener.handler.post(new Runnable() {
 				@Override
 				public void run() {
@@ -142,7 +146,7 @@ public class DownloadMission
 	
 	public synchronized void addListener(MissionListener listener) {
 		listener.handler = new Handler(Looper.getMainLooper());
-		mListeners.add(listener);
+		mListeners.add(new WeakReference<MissionListener>(listener));
 	}
 	
 	public synchronized void removeListener(MissionListener listener) {
