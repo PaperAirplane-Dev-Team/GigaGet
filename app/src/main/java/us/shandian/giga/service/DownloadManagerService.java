@@ -149,27 +149,17 @@ public class DownloadManagerService extends Service implements DownloadMission.M
 	
 	// Wrapper of DownloadManager
 	public class DMBinder extends Binder {
-		// Do not start missions from outside
 		public DownloadManager getDownloadManager() {
 			return mManager;
 		}
 		
-		public int startMission(final String url, final String name, final int threads) {
-			int ret = mManager.startMission(url, name, threads);
-			mManager.getMission(ret).addListener(DownloadManagerService.this);
-			postUpdateMessage();
-			return ret;
-		}
-		
-		public void resumeMission(final int id) {
-			mManager.resumeMission(id);
-			mManager.getMission(id).addListener(DownloadManagerService.this);
+		public void onMissionAdded(DownloadMission mission) {
+			mission.addListener(DownloadManagerService.this);
 			postUpdateMessage();
 		}
 		
-		public void pauseMission(final int id) {
-			mManager.pauseMission(id);
-			mManager.getMission(id).removeListener(DownloadManagerService.this);
+		public void onMissionRemoved(DownloadMission mission) {
+			mission.removeListener(DownloadManagerService.this);
 			postUpdateMessage();
 		}
 		

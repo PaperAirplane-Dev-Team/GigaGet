@@ -344,7 +344,8 @@ public class MainActivity extends ToolbarActivity implements AdapterView.OnItemC
 
 							while (mBinder == null);
 
-							mBinder.startMission(url, fName, threads.getProgress() + 1);
+							int res = mManager.startMission(url, fName, threads.getProgress() + 1);
+							mBinder.onMissionAdded(mManager.getMission(res));
 							mFragment.notifyChange();
 
 							mPrefs.edit().putInt("threads", threads.getProgress() + 1).commit();
