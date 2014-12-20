@@ -75,7 +75,7 @@ public class DownloadManagerImpl implements DownloadManager
 				
 				if (sub.getName().endsWith(".giga")) {
 					String str = Utility.readFromFile(sub.getAbsolutePath());
-					if (str != null) {
+					if (str != null && !str.trim().equals("")) {
 						
 						if (DEBUG) {
 							Log.d(TAG, "loading mission " + sub.getName());

@@ -119,12 +119,14 @@ public class DownloadMission
 		
 		for (WeakReference<MissionListener> ref : mListeners) {
 			final MissionListener listener = ref.get();
-			listener.handler.post(new Runnable() {
-				@Override
-				public void run() {
-					listener.onFinish();
-				}
-			});
+			if (listener != null) {
+				listener.handler.post(new Runnable() {
+					@Override
+					public void run() {
+						listener.onFinish();
+					}
+				});
+			}
 		}
 	}
 	
