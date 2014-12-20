@@ -104,15 +104,6 @@ public abstract class MissionsFragment extends Fragment
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.browser:
-				Intent i = new Intent();
-				i.setAction(Intent.ACTION_MAIN);
-				i.setClass(getActivity(), BrowserActivity.class);
-				getActivity().startActivity(i);
-				return true;
-			case R.id.about:
-				showAboutDialog();
-				return true;
 			case R.id.switch_mode:
 				mLinear = !mLinear;
 				updateList();
