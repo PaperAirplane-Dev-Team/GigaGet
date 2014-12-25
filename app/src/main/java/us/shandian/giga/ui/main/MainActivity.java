@@ -50,6 +50,7 @@ import us.shandian.giga.ui.fragment.MissionsFragment;
 import us.shandian.giga.ui.fragment.AllMissionsFragment;
 import us.shandian.giga.ui.fragment.DownloadedMissionsFragment;
 import us.shandian.giga.ui.fragment.DownloadingMissionsFragment;
+import us.shandian.giga.ui.settings.SettingsActivity;
 import us.shandian.giga.ui.web.BrowserActivity;
 import us.shandian.giga.util.CrashHandler;
 import us.shandian.giga.util.Utility;
@@ -197,6 +198,11 @@ public class MainActivity extends ToolbarActivity implements AdapterView.OnItemC
 			Intent i = new Intent();
 			i.setAction(Intent.ACTION_VIEW);
 			i.setClass(this, BrowserActivity.class);
+			startActivity(i);
+		} else if (position == 5) {
+			Intent i = new Intent();
+			i.setAction(Intent.ACTION_VIEW);
+			i.setClass(this, SettingsActivity.class);
 			startActivity(i);
 		}
 	}

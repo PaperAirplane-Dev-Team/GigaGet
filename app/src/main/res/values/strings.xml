@@ -22,13 +22,16 @@
 	
 	<!-- Fragment -->
 	<string name="add">New mission</string>
-	<string name="about">About</string>
 	<string name="finish">Okay</string>
 	<string name="switch_mode">Switch between list and grid</string>
+	<string name="settings">Settings</string>
 	
 	<!-- Browser -->
 	<string name="browser">Simple Browser</string>
 	<string name="detector">Video detector</string>
+	
+	<!-- Settings -->
+	<string name="about">About</string>
 	
 	<!-- Msg -->
 	<string name="msg_url">Download URL</string>

@@ -1,7 +1,6 @@
 package us.shandian.giga.ui.fragment;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ComponentName;
 import android.content.Context;
@@ -18,7 +17,6 @@ import android.view.MenuItem;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -115,22 +113,6 @@ public abstract class MissionsFragment extends Fragment
 
 	public void notifyChange() {
 		mAdapter.notifyDataSetChanged();
-	}
-	
-	private void showAboutDialog() {
-		WebView v = new WebView(getActivity());
-		v.loadUrl("file:///android_asset/licenses.html");
-		
-		new AlertDialog.Builder(getActivity())
-			.setView(v)
-			.setTitle(R.string.about)
-			.setNegativeButton(R.string.msg_close, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int id) {
-					// Noting to do
-				}
-			})
-			.show();
 	}
 	
 	private void updateList() {

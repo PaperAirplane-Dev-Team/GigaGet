@@ -18,13 +18,16 @@
 	
 	<!-- Fragment -->
 	<string name="add">添加任务</string>
-	<string name="about">关于</string>
 	<string name="finish">完成</string>
 	<string name="switch_mode">切换列表和表格视图</string>
+	<string name="settings">设置</string>
 	
 	<!-- Browser -->
 	<string name="browser">简易浏览器</string>
 	<string name="detector">视频嗅探器</string>
+	
+	<!-- Settings -->
+	<string name="about">关于</string>
 	
 	<!-- Msg -->
 	<string name="msg_url">下载地址</string>
