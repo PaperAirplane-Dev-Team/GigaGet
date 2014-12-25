@@ -9,7 +9,7 @@
 	
 	<View
 		android:layout_width="match_parent"
-		android:layout_height="10dp"
+		android:layout_height="4dp"
 		android:background="@drawable/action_shadow"/>
 
 	<LinearLayout
@@ -17,7 +17,7 @@
 		android:layout_height="wrap_content"
 		android:layout_marginLeft="24dp"
 		android:layout_marginRight="24dp"
-		android:layout_marginTop="15dp"
+		android:layout_marginTop="9dp"
 		android:layout_marginBottom="24dp"
 		android:gravity="center_vertical"
 		android:orientation="vertical">
