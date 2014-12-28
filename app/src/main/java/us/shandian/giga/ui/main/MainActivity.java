@@ -88,6 +88,7 @@ public class MainActivity extends ToolbarActivity implements AdapterView.OnItemC
 	@Override
 	@TargetApi(21)
 	protected void onCreate(Bundle savedInstanceState) {
+		CrashHandler.init(this);
 		CrashHandler.register();
 		
 		// Service
