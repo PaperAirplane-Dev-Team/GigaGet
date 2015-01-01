@@ -73,7 +73,7 @@ public class NavigationAdapter extends BaseAdapter
 				
 				if (iv != null && tv != null) {
 				
-					iv.setImageDrawable(mContext.getDrawable(mIcons[position]));
+					iv.setImageDrawable(mContext.getResources().getDrawable(mIcons[position]));
 					tv.setText(str);
 					tv.getPaint().setFakeBoldText(true);
 				
