@@ -42,6 +42,17 @@ import static us.shandian.giga.BuildConfig.DEBUG;
 
 public class BrowserActivity extends ToolbarActivity
 {
+	private static final String[] VIDEO_SUFFIXES = new String[]{
+		".mp4",
+		".flv",
+		".rm",
+		".rmvb",
+		".wmv",
+		".avi",
+		".mkv",
+		".webm"
+	};
+	
 	private WebView mWeb;
 	private ProgressBar mProgress;
 	private EditText mUrl;
@@ -84,6 +95,15 @@ public class BrowserActivity extends ToolbarActivity
 			@Override
 			public void onPageFinished(WebView view, String url) {
 				mProgress.setProgress(0);
+				
+				if (isVideo(url)) {
+					// If viewing a video, start download immediately
+					Intent i = new Intent();
+					i.setAction(Intent.ACTION_VIEW);
+					i.setDataAndType(Uri.parse(url), "application/octet-stream");
+					startActivity(i);
+					finish();
+				}
 			}
 		});
 		mWeb.setWebChromeClient(new WebChromeClient() {
@@ -208,20 +228,20 @@ public class BrowserActivity extends ToolbarActivity
 			.show();
 	}
 	
+	private static boolean isVideo(String url) {
+		for (String suffix : VIDEO_SUFFIXES) {
+			if (url.contains(suffix)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	class MyJavascriptInterface {
 		private static final String TAG = MyJavascriptInterface.class.getSimpleName();
 		
 		private static final String PATTERN = "[http|https]+[://]+[0-9A-Za-z:/[-]_#[?][=][.][&]]*";
-		private static final String[] VIDEO_SUFFIXES = new String[]{
-			".mp4",
-			".flv",
-			".rm",
-			".rmvb",
-			".wmv",
-			".avi",
-			".mkv",
-			".webm"
-		};
 		
 		@JavascriptInterface
 		public void processHTML(String html) {
@@ -233,16 +253,7 @@ public class BrowserActivity extends ToolbarActivity
 			while (matcher.find()) {
 				String url = matcher.group();
 				
-				boolean isVid = false;
-				
-				for (String suffix : VIDEO_SUFFIXES) {
-					if (url.contains(suffix)) {
-						isVid = true;
-						break;
-					}
-				}
-				
-				if (isVid) {
+				if (isVideo(url)) {
 					
 					vid.add(url);
 					
