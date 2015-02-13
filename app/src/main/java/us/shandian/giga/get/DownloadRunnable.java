@@ -29,6 +29,7 @@ public class DownloadRunnable implements Runnable
 		
 		if (DEBUG) {
 			Log.d(TAG, mId + ":default pos " + position);
+			Log.d(TAG, mId + ":recovered: " + mMission.recovered);
 		}
 		
 		while (mMission.errCode == -1 && mMission.running && position < mMission.blocks) {
@@ -36,6 +37,10 @@ public class DownloadRunnable implements Runnable
 			if (Thread.currentThread().isInterrupted()) {
 				mMission.pause();
 				return;
+			}
+			
+			if (DEBUG && retry) {
+				Log.d(TAG, mId + ":retry is true. Resuming at " + position);
 			}
 			
 			// Wait for an unblocked position
@@ -58,8 +63,6 @@ public class DownloadRunnable implements Runnable
 				Log.d(TAG, mId + ":preserving position " + position);
 			}
 			
-			// TODO: Thread may be interrupted suddenly, so a preserved block may not have been downloaded
-			// Maybe we need some new methods to calculate if a block is downloaded
 			mMission.preserveBlock(position);
 			mMission.setPosition(mId, position);
 			
@@ -114,7 +117,7 @@ public class DownloadRunnable implements Runnable
 					}
 				}
 				
-				if (DEBUG) {
+				if (DEBUG && mMission.running) {
 					Log.d(TAG, mId + ":position " + position + " finished, total length " + total);
 				}
 				
@@ -122,7 +125,7 @@ public class DownloadRunnable implements Runnable
 				ipt.close();
 				
 				if (!mMission.running) {
-					return;
+					throw new RuntimeException("This mission has been paused");
 				}
 			} catch (Exception e) {
 				// TODO Retry count limit & notify error
@@ -137,7 +140,7 @@ public class DownloadRunnable implements Runnable
 		}
 		
 		if (DEBUG) {
-			Log.d(TAG, "thread " + mId + " finished");
+			Log.d(TAG, "thread " + mId + " exited main loop");
 		}
 		
 		if (mMission.errCode == -1 && mMission.running) {
@@ -145,6 +148,10 @@ public class DownloadRunnable implements Runnable
 				Log.d(TAG, "no error has happened, notifying");
 			}
 			notifyFinished();
+		}
+		
+		if (DEBUG && !mMission.running) {
+			Log.d(TAG, "The mission has been paused. Passing.");
 		}
 	}
 	
