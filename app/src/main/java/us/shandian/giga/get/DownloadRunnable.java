@@ -124,9 +124,7 @@ public class DownloadRunnable implements Runnable
 				f.close();
 				ipt.close();
 				
-				if (!mMission.running) {
-					throw new RuntimeException("This mission has been paused");
-				}
+				// TODO We should save progress for each thread
 			} catch (Exception e) {
 				// TODO Retry count limit & notify error
 				retry = true;
