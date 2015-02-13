@@ -140,7 +140,7 @@ public class DownloadRunnable implements Runnable
 			Log.d(TAG, "thread " + mId + " finished");
 		}
 		
-		if (mMission.errCode == -1) {
+		if (mMission.errCode == -1 && mMission.running) {
 			if (DEBUG) {
 				Log.d(TAG, "no error has happened, notifying");
 			}
