@@ -295,7 +295,7 @@ public class MainActivity extends ToolbarActivity implements AdapterView.OnItemC
 						if (index > 0) {
 							int end = url.lastIndexOf("?");
 
-							if (end == -1) {
+							if (end < 0) {
 								end = url.length();
 							}
 
