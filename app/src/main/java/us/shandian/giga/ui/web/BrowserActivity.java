@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -95,9 +96,13 @@ public class BrowserActivity extends ToolbarActivity
 			@Override
 			public void onPageFinished(WebView view, String url) {
 				mProgress.setProgress(0);
-				
+			}
+			
+			@Override
+			public void onPageStarted(WebView view, String url, Bitmap fav) {
 				if (isVideo(url)) {
 					// If viewing a video, start download immediately
+					view.stopLoading();
 					Intent i = new Intent();
 					i.setAction(Intent.ACTION_VIEW);
 					i.setDataAndType(Uri.parse(url), "application/octet-stream");
