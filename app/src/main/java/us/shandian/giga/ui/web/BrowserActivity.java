@@ -246,7 +246,8 @@ public class BrowserActivity extends ToolbarActivity
 	class MyJavascriptInterface {
 		private static final String TAG = MyJavascriptInterface.class.getSimpleName();
 		
-		private static final String PATTERN = "[http|https]+[://]+[0-9A-Za-z:/[-]_#[?][=][.][&]]*";
+		private static final String PATTERN = "[http|https]+[://]+[0-9A-Za-z:/[-]_#[?][=][.][&][;]]*";
+		private static final String PATTERN_HTML5_VIDEO = "<video src=\"(.*?)\"";
 		
 		@JavascriptInterface
 		public void processHTML(String html) {
@@ -256,7 +257,7 @@ public class BrowserActivity extends ToolbarActivity
 			final ArrayList<String> vid = new ArrayList<String>();
 			
 			while (matcher.find()) {
-				String url = matcher.group();
+				String url = matcher.group().replace("&amp;", "&");
 				
 				if (isVideo(url)) {
 					
@@ -265,6 +266,17 @@ public class BrowserActivity extends ToolbarActivity
 					if (DEBUG) {
 						Log.d(TAG, "found url:" + url);
 					}
+				}
+			}
+			
+			// HTML5 videos
+			pattern = Pattern.compile(PATTERN_HTML5_VIDEO);
+			matcher = pattern.matcher(html);
+			while (matcher.find()) {
+				String url = matcher.group(1).replace("&amp;", "&");
+				
+				if (!vid.contains(url)) {
+					vid.add(url);
 				}
 			}
 			
