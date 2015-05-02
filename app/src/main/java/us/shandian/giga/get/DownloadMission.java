@@ -68,6 +68,8 @@ public class DownloadMission
 	}
 	
 	public synchronized void notifyProgress(long deltaLen) {
+		if (!running) return;
+		
 		if (recovered) {
 			recovered = false;
 		}
@@ -171,6 +173,7 @@ public class DownloadMission
 	public void pause() {
 		if (running) {
 			running = false;
+			recovered = true;
 			
 			// TODO: Notify & Write state to info file
 			// if (err)
