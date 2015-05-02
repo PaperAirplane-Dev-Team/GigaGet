@@ -23,5 +23,6 @@ dependencies {
 	compile 'com.android.support:recyclerview-v7:+'
 	compile 'com.android.support:appcompat-v7:+'
 	compile 'com.android.support:support-v4:+'
+	compile 'com.google.code.gson:gson:2.3.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
