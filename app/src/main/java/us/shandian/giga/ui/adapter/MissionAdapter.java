@@ -223,7 +223,12 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 						
 						if (f.exists()) {
 							i.setDataAndType(Uri.fromFile(f), mime);
-							mContext.startActivity(i);
+							
+							try {
+								mContext.startActivity(i);
+							} catch (Exception e) {
+								
+							}
 						}
 						
 						return true;
