@@ -13,16 +13,16 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-	compile 'com.android.support:recyclerview-v7:+'
-	compile 'com.android.support:appcompat-v7:+'
-	compile 'com.android.support:support-v4:+'
+	compile 'com.android.support:recyclerview-v7:21.0.+'
+	compile 'com.android.support:appcompat-v7:21.0.+'
+	compile 'com.android.support:support-v4:21.0.+'
 	compile 'com.google.code.gson:gson:2.3.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

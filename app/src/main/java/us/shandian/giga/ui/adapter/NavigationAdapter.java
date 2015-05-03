@@ -63,7 +63,7 @@ public class NavigationAdapter extends BaseAdapter
 				return v;
 			} else {
 			
-				if (v == null || Integer.valueOf(v.getTag()) == 1) {
+				if (v == null || ((Integer)v.getTag()) == 1) {
 					v = mInflater.inflate(R.layout.drawer_item, parent, false);
 					v.setTag(0);
 				}

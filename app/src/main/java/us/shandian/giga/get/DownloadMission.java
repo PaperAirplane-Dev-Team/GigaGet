@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.HashMap;
 
 import us.shandian.giga.util.Utility;
@@ -20,7 +21,7 @@ public class DownloadMission
 	private static final String TAG = DownloadMission.class.getSimpleName();
 	
 	public static interface MissionListener {
-		Handler handler;
+		HashMap<MissionListener, Handler> handlerStore = new HashMap<>();
 		
 		public void onProgressUpdate(long done, long total);
 		public void onFinish();
@@ -87,7 +88,7 @@ public class DownloadMission
 		for (WeakReference<MissionListener> ref: mListeners) {
 			final MissionListener listener = ref.get();
 			if (listener != null) {
-				listener.handler.post(new Runnable() {
+				MissionListener.handlerStore.get(listener).post(new Runnable() {
 					@Override
 					public void run() {
 						listener.onProgressUpdate(done, length);
@@ -122,7 +123,7 @@ public class DownloadMission
 		for (WeakReference<MissionListener> ref : mListeners) {
 			final MissionListener listener = ref.get();
 			if (listener != null) {
-				listener.handler.post(new Runnable() {
+				MissionListener.handlerStore.get(listener).post(new Runnable() {
 					@Override
 					public void run() {
 						listener.onFinish();
@@ -139,7 +140,7 @@ public class DownloadMission
 		
 		for (WeakReference<MissionListener> ref : mListeners) {
 			final MissionListener listener = ref.get();
-			listener.handler.post(new Runnable() {
+			MissionListener.handlerStore.get(listener).post(new Runnable() {
 				@Override
 				public void run() {
 					listener.onError(errCode);
@@ -149,12 +150,20 @@ public class DownloadMission
 	}
 	
 	public synchronized void addListener(MissionListener listener) {
-		listener.handler = new Handler(Looper.getMainLooper());
+		Handler handler = new Handler(Looper.getMainLooper());
+		MissionListener.handlerStore.put(listener, handler);
 		mListeners.add(new WeakReference<MissionListener>(listener));
 	}
 	
 	public synchronized void removeListener(MissionListener listener) {
-		mListeners.remove(listener);
+		for (Iterator<WeakReference<MissionListener>> iterator = mListeners.iterator();
+			 iterator.hasNext(); ) {
+			WeakReference<MissionListener> weakRef = iterator.next();
+			if (listener!=null && listener == weakRef.get())
+			{
+				iterator.remove();
+			}
+		}
 	}
 	
 	public void start() {

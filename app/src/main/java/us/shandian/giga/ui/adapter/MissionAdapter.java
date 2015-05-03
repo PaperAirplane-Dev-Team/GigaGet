@@ -153,7 +153,8 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 	}
 	
 	private void showDetail(ViewHolder h) {
-		if (h.mission.finished) return;
+		//if (h.mission.finished) return;
+		//This is evil!
 		
 		// Pass the manager
 		DetailActivity.sManager = mManager;

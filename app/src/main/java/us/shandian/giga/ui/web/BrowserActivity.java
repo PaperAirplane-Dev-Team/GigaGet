@@ -243,7 +243,7 @@ public class BrowserActivity extends ToolbarActivity
 	}
 	
 	class MyJavascriptInterface {
-		private static final String TAG = MyJavascriptInterface.class.getSimpleName();
+		private final String TAG = MyJavascriptInterface.class.getSimpleName();
 		
 		private static final String PATTERN = "[http|https]+[://]+[0-9A-Za-z:/[-]_#[?][=][.][&][;]]*";
 		private static final String PATTERN_HTML5_VIDEO = "<video src=\"(.*?)\"";
