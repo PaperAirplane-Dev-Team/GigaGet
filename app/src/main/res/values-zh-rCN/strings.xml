@@ -28,6 +28,7 @@
 	
 	<!-- Settings -->
 	<string name="about">关于</string>
+    <string name="contributors">贡献者</string>
 	
 	<!-- Msg -->
 	<string name="msg_url">下载地址</string>

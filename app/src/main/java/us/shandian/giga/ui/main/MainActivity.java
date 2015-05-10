@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -21,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +35,8 @@ import android.widget.Toast;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -98,6 +102,22 @@ public class MainActivity extends ToolbarActivity implements AdapterView.OnItemC
 		bindService(i, mConnection, Context.BIND_AUTO_CREATE);
 		
 		super.onCreate(savedInstanceState);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            // enable status bar tint
+            tintManager.setStatusBarTintEnabled(true);
+            // enable navigation bar tint
+            tintManager.setStatusBarTintColor(Color.parseColor("#1565C0"));
+        }
+        else
+        {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
 		getSupportActionBar().setDisplayUseLogoEnabled(false);
 		
 		mPrefs = getSharedPreferences("threads", Context.MODE_WORLD_READABLE);

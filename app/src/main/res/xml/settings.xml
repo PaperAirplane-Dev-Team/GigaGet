@@ -5,5 +5,8 @@
 	<Preference
 		android:key="about"
 		android:title="@string/about"/>
+    <Preference
+        android:key="contributors"
+        android:title="@string/contributors"/>
 	
 </PreferenceScreen>
