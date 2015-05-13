@@ -14,10 +14,12 @@ import us.shandian.giga.R;
 public class SettingsFragment extends PreferenceFragment
 {
 	private static final String ABOUT = "about";
+    private static final String CONTRIBUTORS = "contributors";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		addPreferencesFromResource(R.xml.settings);
 	}
 
@@ -27,6 +29,9 @@ public class SettingsFragment extends PreferenceFragment
 			case ABOUT:
 				showAboutDialog();
 				return true;
+            case CONTRIBUTORS:
+                showContributorsDialog();
+                return  true;
 			default:
 				return super.onPreferenceTreeClick(preferenceScreen, preference);
 		}
@@ -46,4 +51,18 @@ public class SettingsFragment extends PreferenceFragment
 			})
 			.show();
 	}
+    private void showContributorsDialog() {
+        WebView v = new WebView(getActivity());
+        v.loadUrl("file:///android_asset/contributors.html");
+
+        new AlertDialog.Builder(getActivity())
+                .setView(v)
+                .setNegativeButton(R.string.msg_close, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Noting to do
+                    }
+                })
+                .show();
+    }
 }

@@ -1,8 +1,13 @@
 package us.shandian.giga.ui.main;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.TextView;
+
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -47,6 +52,23 @@ public class DetailActivity extends ToolbarActivity implements DownloadMission.M
 		setTheme(Utility.getThemeForFileType(Utility.getFileType(mMission.name)));
 		
 		super.onCreate(savedInstanceState);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            // enable status bar tint
+            tintManager.setStatusBarTintEnabled(true);
+            // enable navigation bar tint
+            tintManager.setStatusBarTintColor(Color.parseColor("#1565C0"));
+        }
+        else
+        {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+
 		
 		// Toolbar
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);

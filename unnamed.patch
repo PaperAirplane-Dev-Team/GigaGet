@@ -1,0 +1,485 @@
+Index: app/src/main/java/us/shandian/giga/ui/settings/SettingsActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/us/shandian/giga/ui/settings/SettingsActivity.java	(revision 04f8715e5fb06e8f25e51bf6f69e3c4cfe8d79ec)
++++ app/src/main/java/us/shandian/giga/ui/settings/SettingsActivity.java	(revision )
+@@ -1,8 +1,13 @@
+ package us.shandian.giga.ui.settings;
+ 
++import android.graphics.Color;
++import android.os.Build;
+ import android.os.Bundle;
+ import android.view.MenuItem;
++import android.view.WindowManager;
+ 
++import com.readystatesoftware.systembartint.SystemBarTintManager;
++
+ import us.shandian.giga.R;
+ import us.shandian.giga.ui.common.ToolbarActivity;
+ 
+@@ -12,6 +17,23 @@
+ 	@Override
+ 	protected void onCreate(Bundle savedInstanceState) {
+ 		super.onCreate(savedInstanceState);
++        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
++            //透明状态栏
++            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
++            //透明导航栏
++            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
++            SystemBarTintManager tintManager = new SystemBarTintManager(this);
++            // enable status bar tint
++            tintManager.setStatusBarTintEnabled(true);
++            // enable navigation bar tint
++            tintManager.setStatusBarTintColor(Color.parseColor("#1565C0"));
++        }
++        else
++        {
++            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
++                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
++        }
++
+ 		
+ 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+ 		getSupportActionBar().setDisplayUseLogoEnabled(false);
+Index: app/src/main/res/values/styles.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/styles.xml	(revision 04f8715e5fb06e8f25e51bf6f69e3c4cfe8d79ec)
++++ app/src/main/res/values/styles.xml	(revision )
+@@ -6,6 +6,9 @@
+ 		<item name="android:windowContentOverlay">@null</item>
+ 		<item name="windowActionBar">false</item>
+ 		<item name="windowActionModeOverlay">true</item>
++        <item name="android:windowIsTranslucent">true</item>
++        <item name="android:windowTranslucentStatus">true</item>
++        <item name="android:windowTranslucentNavigation">true</item>
+ 	</style>
+ 	
+ 	<style name="Theme.App.Blue" parent="Theme.App.Base">
+Index: app/src/main/res/layout/settings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/settings.xml	(revision 04f8715e5fb06e8f25e51bf6f69e3c4cfe8d79ec)
++++ app/src/main/res/layout/settings.xml	(revision )
+@@ -1,6 +1,8 @@
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ 	android:layout_width="match_parent"
+ 	android:layout_height="match_parent"
++    android:clipToPadding="true"
++    android:fitsSystemWindows="true"
+ 	android:orientation="vertical">
+ 	
+ 	<include
+Index: app/src/main/res/xml/settings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/xml/settings.xml	(revision 04f8715e5fb06e8f25e51bf6f69e3c4cfe8d79ec)
++++ app/src/main/res/xml/settings.xml	(revision )
+@@ -5,5 +5,8 @@
+ 	<Preference
+ 		android:key="about"
+ 		android:title="@string/about"/>
++    <Preference
++        android:key="contributors"
++        android:title="@string/contributors"/>
+ 	
+ </PreferenceScreen>
+Index: app/src/main/res/layout/detail.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/detail.xml	(revision 04f8715e5fb06e8f25e51bf6f69e3c4cfe8d79ec)
++++ app/src/main/res/layout/detail.xml	(revision )
+@@ -1,6 +1,8 @@
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ 	android:layout_width="match_parent"
+ 	android:layout_height="match_parent"
++    android:clipToPadding="true"
++    android:fitsSystemWindows="true"
+ 	android:orientation="vertical">
+ 
+ 	<include
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision 04f8715e5fb06e8f25e51bf6f69e3c4cfe8d79ec)
++++ app/build.gradle	(revision )
+@@ -20,9 +20,10 @@
+ }
+ 
+ dependencies {
+-	compile 'com.android.support:recyclerview-v7:21.0.+'
+-	compile 'com.android.support:appcompat-v7:21.0.+'
+-	compile 'com.android.support:support-v4:21.0.+'
+-	compile 'com.google.code.gson:gson:2.3.+'
++    compile 'com.android.support:recyclerview-v7:21.0.+'
++    compile 'com.android.support:appcompat-v7:21.0.+'
++    compile 'com.android.support:support-v4:21.0.+'
++    compile 'com.google.code.gson:gson:2.3.+'
+-    compile fileTree(dir: 'libs', include: ['*.jar'])
++    compile fileTree(include: ['*.jar'], dir: 'libs')
++    compile files('libs/systembartint-1.0.4.jar')
+ }
+Index: app/src/main/assets/contributors.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/assets/contributors.html	(revision )
++++ app/src/main/assets/contributors.html	(revision )
+@@ -0,0 +1,38 @@
++<html>
++<head>
++    <style>
++        body {
++        margin: 1em;
++        font-size: 10px;
++        }
++        pre {
++        background: #DDD;
++        padding: 1em;
++        white-space: pre-wrap;
++        }
++        h3 {
++        font-size: 16px;
++        }
++        h2 {
++        font-size: 14px;
++        }
++        h1 {
++        font-size: 12px;
++        }
++    </style>
++</head>
++<body>
++
++<h3>GigaGet Contributors</h3>
++
++<p>GigaGet is a multi-thread download manager software designed for Android. GigaGet is libre software and is licensed under GNU GPLv3 or later. </p>
++<p>This version is forked by Eason Chai(<a href="https://github.com/hackerchai">@Hackerchai</a>) Improve Under API 21 device's User Interface</p>
++
++<ul>
++    <li>Peter Cai  <a href="https://github.com/PeterCxy">@PeterCXY</a>  xqsx43cxy@126.com</li>
++    <li>Eason Chai  <a href="https://github.com/hackerchai">@Hackerchai</a>  hackerchai.com@gmail.com</li>
++
++</ul>
++
++</body>
++</html>
+Index: app/src/main/java/us/shandian/giga/ui/settings/SettingsFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/us/shandian/giga/ui/settings/SettingsFragment.java	(revision 04f8715e5fb06e8f25e51bf6f69e3c4cfe8d79ec)
++++ app/src/main/java/us/shandian/giga/ui/settings/SettingsFragment.java	(revision )
+@@ -14,10 +14,12 @@
+ public class SettingsFragment extends PreferenceFragment
+ {
+ 	private static final String ABOUT = "about";
++    private static final String CONTRIBUTORS = "contributors";
+ 
+ 	@Override
+ 	public void onCreate(Bundle savedInstanceState) {
+ 		super.onCreate(savedInstanceState);
++
+ 		addPreferencesFromResource(R.xml.settings);
+ 	}
+ 
+@@ -27,6 +29,9 @@
+ 			case ABOUT:
+ 				showAboutDialog();
+ 				return true;
++            case CONTRIBUTORS:
++                showContributorsDialog();
++                return  true;
+ 			default:
+ 				return super.onPreferenceTreeClick(preferenceScreen, preference);
+ 		}
+@@ -35,15 +40,29 @@
+ 	private void showAboutDialog() {
+ 		WebView v = new WebView(getActivity());
+ 		v.loadUrl("file:///android_asset/licenses.html");
++
++		new AlertDialog.Builder(getActivity())
++			.setView(v)
++			.setNegativeButton(R.string.msg_close, new DialogInterface.OnClickListener() {
++				@Override
++				public void onClick(DialogInterface dialog, int id) {
++					// Noting to do
++				}
++			})
++			.show();
++	}
++    private void showContributorsDialog() {
++        WebView v = new WebView(getActivity());
++        v.loadUrl("file:///android_asset/contributors.html");
+ 
+-		new AlertDialog.Builder(getActivity())
+-			.setView(v)
+-			.setNegativeButton(R.string.msg_close, new DialogInterface.OnClickListener() {
+-				@Override
+-				public void onClick(DialogInterface dialog, int id) {
+-					// Noting to do
+-				}
+-			})
+-			.show();
+-	}
++        new AlertDialog.Builder(getActivity())
++                .setView(v)
++                .setNegativeButton(R.string.msg_close, new DialogInterface.OnClickListener() {
++                    @Override
++                    public void onClick(DialogInterface dialog, int id) {
++                        // Noting to do
++                    }
++                })
++                .show();
++    }
+ }
+Index: app/src/main/java/us/shandian/giga/ui/main/DetailActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/us/shandian/giga/ui/main/DetailActivity.java	(revision 04f8715e5fb06e8f25e51bf6f69e3c4cfe8d79ec)
++++ app/src/main/java/us/shandian/giga/ui/main/DetailActivity.java	(revision )
+@@ -1,9 +1,14 @@
+ package us.shandian.giga.ui.main;
+ 
++import android.graphics.Color;
++import android.os.Build;
+ import android.os.Bundle;
+ import android.view.MenuItem;
++import android.view.WindowManager;
+ import android.widget.TextView;
+ 
++import com.readystatesoftware.systembartint.SystemBarTintManager;
++
+ import java.sql.Timestamp;
+ import java.text.SimpleDateFormat;
+ 
+@@ -47,6 +52,23 @@
+ 		setTheme(Utility.getThemeForFileType(Utility.getFileType(mMission.name)));
+ 		
+ 		super.onCreate(savedInstanceState);
++        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
++            //透明状态栏
++            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
++            //透明导航栏
++            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
++            SystemBarTintManager tintManager = new SystemBarTintManager(this);
++            // enable status bar tint
++            tintManager.setStatusBarTintEnabled(true);
++            // enable navigation bar tint
++            tintManager.setStatusBarTintColor(Color.parseColor("#1565C0"));
++        }
++        else
++        {
++            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
++                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
++        }
++
+ 		
+ 		// Toolbar
+ 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+Index: app/src/main/res/layout/main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/main.xml	(revision 04f8715e5fb06e8f25e51bf6f69e3c4cfe8d79ec)
++++ app/src/main/res/layout/main.xml	(revision )
+@@ -1,6 +1,8 @@
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ 	android:layout_width="match_parent"
+ 	android:layout_height="match_parent"
++    android:clipToPadding="true"
++    android:fitsSystemWindows="true"
+ 	android:orientation="vertical">
+ 	
+ 	<include
+Index: app/src/main/java/us/shandian/giga/ui/main/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/us/shandian/giga/ui/main/MainActivity.java	(revision 04f8715e5fb06e8f25e51bf6f69e3c4cfe8d79ec)
++++ app/src/main/java/us/shandian/giga/ui/main/MainActivity.java	(revision )
+@@ -9,6 +9,7 @@
+ import android.content.ServiceConnection;
+ import android.content.SharedPreferences;
+ import android.content.res.Configuration;
++import android.graphics.Color;
+ import android.graphics.PorterDuff;
+ import android.os.AsyncTask;
+ import android.os.Build;
+@@ -21,6 +22,7 @@
+ import android.view.MenuItem;
+ import android.view.View;
+ import android.view.ViewTreeObserver;
++import android.view.WindowManager;
+ import android.widget.AdapterView;
+ import android.widget.Button;
+ import android.widget.EditText;
+@@ -34,6 +36,8 @@
+ import android.support.v7.app.ActionBarDrawerToggle;
+ import android.support.v7.widget.Toolbar;
+ 
++import com.readystatesoftware.systembartint.SystemBarTintManager;
++
+ import java.io.File;
+ import java.io.IOException;
+ import java.net.URL;
+@@ -98,6 +102,22 @@
+ 		bindService(i, mConnection, Context.BIND_AUTO_CREATE);
+ 		
+ 		super.onCreate(savedInstanceState);
++        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
++            //透明状态栏
++            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
++            //透明导航栏
++            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
++            SystemBarTintManager tintManager = new SystemBarTintManager(this);
++            // enable status bar tint
++            tintManager.setStatusBarTintEnabled(true);
++            // enable navigation bar tint
++            tintManager.setStatusBarTintColor(Color.parseColor("#1565C0"));
++        }
++        else
++        {
++            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
++                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
++        }
+ 		getSupportActionBar().setDisplayUseLogoEnabled(false);
+ 		
+ 		mPrefs = getSharedPreferences("threads", Context.MODE_WORLD_READABLE);
+Index: app/src/main/java/us/shandian/giga/ui/web/BrowserActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/us/shandian/giga/ui/web/BrowserActivity.java	(revision 04f8715e5fb06e8f25e51bf6f69e3c4cfe8d79ec)
++++ app/src/main/java/us/shandian/giga/ui/web/BrowserActivity.java	(revision )
+@@ -5,6 +5,7 @@
+ import android.content.DialogInterface;
+ import android.content.Intent;
+ import android.graphics.Bitmap;
++import android.graphics.Color;
+ import android.net.Uri;
+ import android.os.AsyncTask;
+ import android.os.Build;
+@@ -16,6 +17,7 @@
+ import android.view.Menu;
+ import android.view.MenuItem;
+ import android.view.View;
++import android.view.WindowManager;
+ import android.view.inputmethod.EditorInfo;
+ import android.view.inputmethod.InputMethodManager;
+ import android.webkit.DownloadListener;
+@@ -30,6 +32,8 @@
+ 
+ import android.support.v7.app.ActionBar;
+ 
++import com.readystatesoftware.systembartint.SystemBarTintManager;
++
+ import java.util.ArrayList;
+ import java.util.regex.Pattern;
+ import java.util.regex.Matcher;
+@@ -61,6 +65,22 @@
+ 	@Override
+ 	protected void onCreate(Bundle savedInstanceState) {
+ 		super.onCreate(savedInstanceState);
++        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
++            //透明状态栏
++            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
++            //透明导航栏
++            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
++            SystemBarTintManager tintManager = new SystemBarTintManager(this);
++            // enable status bar tint
++            tintManager.setStatusBarTintEnabled(true);
++            // enable navigation bar tint
++            tintManager.setStatusBarTintColor(Color.parseColor("#1565C0"));
++        }
++        else
++        {
++            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
++                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
++        }
+ 		
+ 		mInput = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+ 		
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/strings.xml	(revision 04f8715e5fb06e8f25e51bf6f69e3c4cfe8d79ec)
++++ app/src/main/res/values/strings.xml	(revision )
+@@ -32,6 +32,7 @@
+ 	
+ 	<!-- Settings -->
+ 	<string name="about">About</string>
++    <string name="contributors">Contributors</string>
+ 	
+ 	<!-- Msg -->
+ 	<string name="msg_url">Download URL</string>
+Index: app/src/main/res/layout/browser.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/browser.xml	(revision 04f8715e5fb06e8f25e51bf6f69e3c4cfe8d79ec)
++++ app/src/main/res/layout/browser.xml	(revision )
+@@ -1,6 +1,8 @@
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ 	android:layout_width="match_parent"
+ 	android:layout_height="match_parent"
++    android:clipToPadding="true"
++    android:fitsSystemWindows="true"
+ 	android:orientation="vertical">
+ 
+ 	<include
+Index: app/src/main/res/values-zh-rCN/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values-zh-rCN/strings.xml	(revision 04f8715e5fb06e8f25e51bf6f69e3c4cfe8d79ec)
++++ app/src/main/res/values-zh-rCN/strings.xml	(revision )
+@@ -28,6 +28,7 @@
+ 	
+ 	<!-- Settings -->
+ 	<string name="about">关于</string>
++    <string name="contributors">贡献者</string>
+ 	
+ 	<!-- Msg -->
+ 	<string name="msg_url">下载地址</string>
+Index: app/src/main/assets/licenses.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/assets/licenses.html	(revision 04f8715e5fb06e8f25e51bf6f69e3c4cfe8d79ec)
++++ app/src/main/assets/licenses.html	(revision )
+@@ -75,7 +75,9 @@
+ <h2>GigaGet Download Manager</h2>
+ 
+ <p>Source code available at
+-    <a href="https://github.com/PaperAirplane-Dev-Team/GigaGet">https://github.com/PaperAirplane-Dev-Team/GigaGet</a>.</p>
++
++    <a href="https://github.com/hackerchai/GigaGet">https://github.com/PaperAirplane-Dev-Team/GigaGet</a>.</p>
++<p>This version is forked by Eason Chai(<a href="https://github.com/hackerchai">@Hackerchai</a>) Improve Under API 21 device's User Interface</p>
+ 
+ <p>This app is released under the terms of the GNU General
+     Public License:</p>
