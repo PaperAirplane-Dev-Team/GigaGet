@@ -3,6 +3,9 @@
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	
 	<Preference
+		android:key="download_directory"
+		android:title="@string/change_download_dir"/>
+	<Preference
 		android:key="about"
 		android:title="@string/about"/>
 	

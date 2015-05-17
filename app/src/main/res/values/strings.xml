@@ -47,5 +47,8 @@
 	<string name="msg_running">GigaGet is running</string>
 	<string name="msg_running_detail">Click for details</string>
 	<string name="msg_close">Close</string>
+	<string name="change_download_dir">Change download directory</string>
+	<string name="no_available_dir">Please select an available download directory.</string>
+	<string name="need_restart">Will not take effect before you restart the app.</string>
 
 </resources>

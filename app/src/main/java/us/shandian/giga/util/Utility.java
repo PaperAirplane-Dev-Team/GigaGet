@@ -2,7 +2,9 @@ package us.shandian.giga.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -11,6 +13,11 @@ import java.io.FileOutputStream;
 
 import us.shandian.giga.R;
 import us.shandian.giga.get.DownloadMission;
+import us.shandian.giga.util.Settings;
+import us.shandian.giga.ui.settings.SettingsActivity;
+
+import com.nononsenseapps.filepicker.FilePickerActivity;
+import com.nononsenseapps.filepicker.AbstractFilePickerFragment;
 
 public class Utility
 {
@@ -240,6 +247,52 @@ public class Utility
 			case UNKNOWN:
 			default:
 				return R.drawable.unknown;
+		}
+	}
+	
+	public static boolean isDirectoryAvailble(String path) {
+		File dir = new File(path);
+		return dir.exists() && dir.isDirectory();
+	}
+	
+	public static boolean isDownloadDirectoryAvailble(Context context) {
+		return isDirectoryAvailble(Settings.getInstance(context).getString(Settings.DOWNLOAD_DIRECTORY, Settings.DEFAULT_PATH));
+	}
+	
+	public static void changeDownloadDirectory(Context context, String path) {
+		Settings.getInstance(context).putString(Settings.DOWNLOAD_DIRECTORY, path);
+	}
+	
+	public static void showDirectoryChooser(Activity activity) {
+		Intent i = new Intent(activity, FilePickerActivity.class);
+		i.setAction(Intent.ACTION_GET_CONTENT);
+		i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
+		i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true);
+		i.putExtra(FilePickerActivity.EXTRA_MODE, AbstractFilePickerFragment.MODE_DIR);
+		activity.startActivityForResult(i, 233);
+	}
+	
+	public static void processDirectoryChange(int requestCode, int resultCode,
+                                    Intent data, Activity activity){
+		if (requestCode != 233) return; //Oh devils!
+		if (resultCode !=  Activity.RESULT_OK) {
+				checkAndReshow(activity);
+				return;
+		}
+		Settings.getInstance(activity).putString(Settings.DOWNLOAD_DIRECTORY, data.getData().toString().substring(7));
+		if (activity instanceof SettingsActivity){
+			activity.recreate(); //FIXME Just a workaround because OnSharedPreferenceChangeListener is NOT WORKING.
+		}
+		Toast.makeText(activity.getApplicationContext(),
+				R.string.need_restart, Toast.LENGTH_LONG).show();
+		//remove "file://" from the path
+	}
+	
+	public static void checkAndReshow(Activity activity){
+		if (!isDownloadDirectoryAvailble(activity)){
+			Toast.makeText(activity.getApplicationContext(),
+				R.string.no_available_dir, Toast.LENGTH_LONG).show();
+			showDirectoryChooser(activity);
 		}
 	}
 }

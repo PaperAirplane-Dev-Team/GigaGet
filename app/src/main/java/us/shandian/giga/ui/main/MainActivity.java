@@ -151,6 +151,7 @@ public class MainActivity extends ToolbarActivity implements AdapterView.OnItemC
 		}
 	}
 
+
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);

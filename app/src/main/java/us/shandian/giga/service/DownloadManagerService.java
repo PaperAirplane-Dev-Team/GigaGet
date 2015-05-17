@@ -17,6 +17,7 @@ import us.shandian.giga.get.DownloadManager;
 import us.shandian.giga.get.DownloadManagerImpl;
 import us.shandian.giga.get.DownloadMission;
 import us.shandian.giga.ui.main.MainActivity;
+import us.shandian.giga.util.Settings;
 import static us.shandian.giga.BuildConfig.DEBUG;
 
 public class DownloadManagerService extends Service implements DownloadMission.MissionListener
@@ -40,12 +41,12 @@ public class DownloadManagerService extends Service implements DownloadMission.M
 		
 		mBinder = new DMBinder();
 		if (mManager == null) {
-
+			String path = Settings.getInstance(this).getString(Settings.DOWNLOAD_DIRECTORY, Settings.DEFAULT_PATH);
+			mManager = new DownloadManagerImpl(this, path);
 			if (DEBUG) {
 				Log.d(TAG, "mManager == null");
+				Log.d(TAG, "Download directory: " + path);
 			}
-
-			mManager = new DownloadManagerImpl(this, "/storage/sdcard0/GigaGet");
 		}
 		
 		Intent i = new Intent();

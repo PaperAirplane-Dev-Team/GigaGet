@@ -1,10 +1,12 @@
 package us.shandian.giga.ui.settings;
 
 import android.os.Bundle;
+import android.content.Intent;
 import android.view.MenuItem;
 
 import us.shandian.giga.R;
 import us.shandian.giga.ui.common.ToolbarActivity;
+import us.shandian.giga.util.Utility;
 
 public class SettingsActivity extends ToolbarActivity
 {
@@ -33,5 +35,12 @@ public class SettingsActivity extends ToolbarActivity
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+		Utility.processDirectoryChange(requestCode, resultCode, data, this);
+	}
+	
 
 }

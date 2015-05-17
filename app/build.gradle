@@ -24,5 +24,6 @@ dependencies {
 	compile 'com.android.support:appcompat-v7:21.0.+'
 	compile 'com.android.support:support-v4:21.0.+'
 	compile 'com.google.code.gson:gson:2.3.+'
+	compile 'com.nononsenseapps:filepicker:2.0.5'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
