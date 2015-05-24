@@ -103,7 +103,7 @@ public class BrowserActivity extends ToolbarActivity
 					// If viewing a video, start download immediately
 					view.stopLoading();
 					Intent i = new Intent();
-					i.setAction(Intent.ACTION_VIEW);
+					i.setAction(MainActivity.INTENT_DOWNLOAD);
 					i.setDataAndType(Uri.parse(url), "application/octet-stream");
 					startActivity(i);
 					finish();
@@ -128,7 +128,7 @@ public class BrowserActivity extends ToolbarActivity
 				public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimeType, long contentLength) {
 					// Start MainActivity for downloading
 					Intent i = new Intent();
-					i.setAction(Intent.ACTION_VIEW);
+					i.setAction(MainActivity.INTENT_DOWNLOAD);
 					i.setDataAndType(Uri.parse(url), mimeType);
 					startActivity(i);
 					finish();
@@ -231,7 +231,7 @@ public class BrowserActivity extends ToolbarActivity
 				@Override
 				public void onClick(DialogInterface dialog, int id) {
 					Intent i = new Intent();
-					i.setAction(Intent.ACTION_VIEW);
+					i.setAction(MainActivity.INTENT_DOWNLOAD);
 					i.setDataAndType(Uri.parse(vids[id]), "application/octet-stream");
 					startActivity(i);
 					finish();
