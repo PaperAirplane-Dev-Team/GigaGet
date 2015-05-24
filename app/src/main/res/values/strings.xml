@@ -50,5 +50,6 @@
 	<string name="change_download_dir">Download directory</string>
 	<string name="no_available_dir">Please select an available download directory.</string>
 	<string name="need_restart">Will not take effect before you restart the app.</string>
-
+	<string name="open_with_gigaget">Open with GigaGet</string>
+	
 </resources>

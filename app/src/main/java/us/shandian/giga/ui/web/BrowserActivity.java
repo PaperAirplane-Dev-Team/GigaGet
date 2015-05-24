@@ -164,6 +164,14 @@ public class BrowserActivity extends ToolbarActivity
 				switchCustom();
 			}
 		});
+		
+		// Parse Intent
+		Intent i = getIntent();
+		if (i.getAction().equals(Intent.ACTION_SEND)) {
+			String data = i.getStringExtra(Intent.EXTRA_TEXT);
+			mWeb.loadUrl(data);
+			mUrl.setText(data);
+		}
 	}
 
 	@Override
