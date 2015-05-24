@@ -43,7 +43,7 @@
 	<string name="msg_running">GigaGet 正在运行</string>
 	<string name="msg_running_detail">单击查看详情</string>
 	<string name="msg_close">关闭</string>
-	<string name="change_download_dir">更改下载目录</string>
+	<string name="change_download_dir">下载目录</string>
 	<string name="no_available_dir">请设置一个可用的默认下载目录</string>
 	<string name="need_restart">设置将在重启软件后生效。如果不起作用，请暂停所有任务后把本程序从“最近使用的App”列表中移除或强行杀死本程序。</string>
 	
