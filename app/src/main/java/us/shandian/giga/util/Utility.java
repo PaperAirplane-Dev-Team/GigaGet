@@ -1,6 +1,8 @@
 package us.shandian.giga.util;
 
 import android.app.Activity;
+import android.content.ClipboardManager;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -10,6 +12,10 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import us.shandian.giga.R;
 import us.shandian.giga.get.DownloadMission;
@@ -294,5 +300,51 @@ public class Utility
 				R.string.no_available_dir, Toast.LENGTH_LONG).show();
 			showDirectoryChooser(activity);
 		}
+	}
+	
+	public static void copyToClipboard(Context context, String str) {
+		ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+		cm.setPrimaryClip(ClipData.newPlainText("text", str));
+		Toast.makeText(context, R.string.msg_copied, Toast.LENGTH_SHORT).show();
+	}
+	
+	public static String checksum(String path, String algorithm) {
+		MessageDigest md = null;
+		
+		try {
+			md = MessageDigest.getInstance(algorithm);
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
+		
+		FileInputStream i = null;
+		
+		try {
+			i = new FileInputStream(path);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+		
+		byte[] buf = new byte[1024];
+		int len = 0;
+		
+		try {
+			while ((len = i.read(buf)) != -1) {
+				md.update(buf, 0, len);
+			}
+		} catch (IOException e) {
+			
+		}
+		
+		byte[] digest = md.digest();
+		
+		// HEX
+		StringBuilder sb = new StringBuilder();
+		for (byte b : digest) {
+			sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+		}
+		
+		return sb.toString();
+		
 	}
 }
