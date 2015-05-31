@@ -166,6 +166,23 @@ public class DownloadManagerImpl implements DownloadManager
 					return;
 				}
 				
+				// Open again
+				conn = (HttpURLConnection) url.openConnection();
+				conn.setRequestProperty("Range", "bytes=" + (mission.length - 10) + "-" + mission.length);
+				
+				if (conn.getResponseCode() != 206) {
+					// Fallback to single thread if no partial content support
+					mission.fallback = true;
+					
+					if (DEBUG) {
+						Log.d(TAG, "falling back");
+					}
+				}
+				
+				if (DEBUG) {
+					Log.d(TAG, "response = " + conn.getResponseCode());
+				}
+				
 				mission.blocks = mission.length / BLOCK_SIZE;
 				
 				if (mission.threadCount > mission.blocks) {
