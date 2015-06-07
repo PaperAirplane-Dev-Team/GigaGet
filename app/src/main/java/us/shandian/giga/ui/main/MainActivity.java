@@ -298,10 +298,10 @@ public class MainActivity extends ToolbarActivity implements AdapterView.OnItemC
 						if (index > 0) {
 							int end = url.lastIndexOf("?");
 
-							if (end < 0) {
+							if (end < index) {
 								end = url.length();
 							}
-
+							
 							name.setText(url.substring(index + 1, end));
 						}
 					}
