@@ -82,21 +82,21 @@ public class DownloadRunnable implements Runnable
 				conn = (HttpURLConnection) url.openConnection();
 				conn.setRequestProperty("Range", "bytes=" + start + "-" + end);
 				
+				if (DEBUG) {
+					Log.d(TAG, mId + ":" + conn.getRequestProperty("Range"));
+					Log.d(TAG, mId + ":Content-Length=" + conn.getContentLength() + " Code:" + conn.getResponseCode());
+				}
+				
 				// A server may be ignoring the range requet
 				if (conn.getResponseCode() != 206) {
 					mMission.errCode = DownloadMission.ERROR_SERVER_UNSUPPORTED;
 					notifyError(DownloadMission.ERROR_SERVER_UNSUPPORTED);
 					
 					if (DEBUG) {
-						Log.e(TAG, mId + ":Unsupported");
+						Log.e(TAG, mId + ":Unsupported " + conn.getResponseCode());
 					}
 					
 					break;
-				}
-				
-				if (DEBUG) {
-					Log.d(TAG, mId + ":" + conn.getRequestProperty("Range"));
-					Log.d(TAG, mId + ":Content-Length=" + conn.getContentLength() + " Code:" + conn.getResponseCode());
 				}
 				
 				RandomAccessFile f = new RandomAccessFile(mMission.location + "/" + mMission.name, "rw");

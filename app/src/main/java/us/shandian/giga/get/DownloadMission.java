@@ -29,6 +29,7 @@ public class DownloadMission
 	}
 	
 	public static final int ERROR_SERVER_UNSUPPORTED = 206;
+	public static final int ERROR_UNKNOWN = 233;
 	
 	public String name = "";
 	public String url = "";
@@ -42,6 +43,7 @@ public class DownloadMission
 	public HashMap<Long, Boolean> blockState = new HashMap<Long, Boolean>();
 	public boolean running = false;
 	public boolean finished = false;
+	public boolean fallback = false;
 	public int errCode = -1;
 	public long timestamp = 0;
 	
@@ -170,11 +172,19 @@ public class DownloadMission
 		if (!running && !finished) {
 			running = true;
 			
-			for (int i = 0; i < threadCount; i++) {
-				if (threadPositions.size() <= i && !recovered) {
-					threadPositions.add((long) i);
+			if (!fallback) {
+				for (int i = 0; i < threadCount; i++) {
+					if (threadPositions.size() <= i && !recovered) {
+						threadPositions.add((long) i);
+					}
+					new Thread(new DownloadRunnable(this, i)).start();
 				}
-				new Thread(new DownloadRunnable(this, i)).start();
+			} else {
+				// In fallback mode, resuming is not supported.
+				threadCount = 1;
+				done = 0;
+				blocks = 0;
+				new Thread(new DownloadRunnableFallback(this)).start();
 			}
 		}
 	}

@@ -57,6 +57,8 @@ import us.shandian.giga.util.Utility;
 
 public class MainActivity extends ToolbarActivity implements AdapterView.OnItemClickListener
 {
+	public static final String INTENT_DOWNLOAD = "us.shandian.giga.intent.DOWNLOAD";
+	
 	private MissionsFragment mFragment;
 	private DrawerLayout mDrawer;
 	private ListView mList;
@@ -146,7 +148,7 @@ public class MainActivity extends ToolbarActivity implements AdapterView.OnItemC
 		mList.setOnItemClickListener(this);
 		
 		// Intent
-		if (getIntent().getAction().equals(Intent.ACTION_VIEW)) {
+		if (getIntent().getAction().equals(INTENT_DOWNLOAD)) {
 			mPendingUrl = getIntent().getData().toString();
 		}
 	}
@@ -156,7 +158,7 @@ public class MainActivity extends ToolbarActivity implements AdapterView.OnItemC
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		
-		if (intent.getAction().equals(Intent.ACTION_VIEW)) {
+		if (intent.getAction().equals(INTENT_DOWNLOAD)) {
 			mPendingUrl = intent.getData().toString();
 		}
 	}
@@ -296,10 +298,10 @@ public class MainActivity extends ToolbarActivity implements AdapterView.OnItemC
 						if (index > 0) {
 							int end = url.lastIndexOf("?");
 
-							if (end < 0) {
+							if (end < index) {
 								end = url.length();
 							}
-
+							
 							name.setText(url.substring(index + 1, end));
 						}
 					}

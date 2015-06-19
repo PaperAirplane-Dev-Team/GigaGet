@@ -1,8 +1,10 @@
 package us.shandian.giga.ui.adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +18,8 @@ import android.widget.TextView;
 import android.support.v7.widget.RecyclerView;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import us.shandian.giga.R;
 import us.shandian.giga.get.DownloadManager;
@@ -27,6 +31,12 @@ import us.shandian.giga.util.Utility;
 
 public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHolder>
 {
+	private static final Map<Integer, String> ALGORITHMS = new HashMap<>();
+	
+	static {
+		ALGORITHMS.put(R.id.md5, "MD5");
+		ALGORITHMS.put(R.id.sha1, "SHA1");
+	}
 	
 	private Context mContext;
 	private LayoutInflater mInflater;
@@ -176,12 +186,14 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		MenuItem pause = menu.findItem(R.id.pause);
 		MenuItem view = menu.findItem(R.id.view);
 		MenuItem delete = menu.findItem(R.id.delete);
+		MenuItem checksum = menu.findItem(R.id.checksum);
 		
 		// Set to false first
 		start.setVisible(false);
 		pause.setVisible(false);
 		view.setVisible(false);
 		delete.setVisible(false);
+		checksum.setVisible(false);
 		
 		if (!h.mission.finished) {
 			if (!h.mission.running) {
@@ -196,12 +208,14 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		} else {
 			view.setVisible(true);
 			delete.setVisible(true);
+			checksum.setVisible(true);
 		}
 		
 		popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				switch (item.getItemId()) {
+				int id = item.getItemId();
+				switch (id) {
 					case R.id.start:
 						mManager.resumeMission(h.position);
 						mBinder.onMissionAdded(mManager.getMission(h.position));
@@ -237,6 +251,11 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 						mManager.deleteMission(h.position);
 						notifyDataSetChanged();
 						return true;
+					case R.id.md5:
+					case R.id.sha1:
+						DownloadMission mission = mManager.getMission(h.position);
+						new ChecksumTask().execute(mission.location + "/" + mission.name, ALGORITHMS.get(id));
+						return true;
 					default:
 						return false;
 				}
@@ -244,6 +263,33 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.ViewHold
 		});
 		
 		popup.show();
+	}
+	
+	private class ChecksumTask extends AsyncTask<String, Void, String> {
+		ProgressDialog prog;
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			
+			// Create dialog
+			prog = new ProgressDialog(mContext);
+			prog.setCancelable(false);
+			prog.setMessage(mContext.getString(R.string.msg_wait));
+			prog.show();
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			return Utility.checksum(params[0], params[1]);
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			prog.dismiss();
+			Utility.copyToClipboard(mContext, result);
+		}
 	}
 	
 	static class ViewHolder extends RecyclerView.ViewHolder {

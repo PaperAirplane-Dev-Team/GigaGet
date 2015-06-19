@@ -5,6 +5,7 @@
 	<string name="pause">暂停</string>
 	<string name="view">查看</string>
 	<string name="delete">删除</string>
+	<string name="checksum">校验码</string>
 	
 	<!-- Info -->
 	<string name="url">源地址</string>
@@ -42,9 +43,12 @@
 	<string name="msg_url_malform">URL格式错误或网络不可用</string>
 	<string name="msg_running">GigaGet 正在运行</string>
 	<string name="msg_running_detail">单击查看详情</string>
+	<string name="msg_wait">请稍候...</string>
+	<string name="msg_copied">已拷贝到剪贴板</string>
 	<string name="msg_close">关闭</string>
-	<string name="change_download_dir">更改下载目录</string>
+	<string name="change_download_dir">下载目录</string>
 	<string name="no_available_dir">请设置一个可用的默认下载目录</string>
 	<string name="need_restart">设置将在重启软件后生效。如果不起作用，请暂停所有任务后把本程序从“最近使用的App”列表中移除或强行杀死本程序。</string>
+	<string name="open_with_gigaget">用 GigaGet 打开</string>
 	
 </resources>

@@ -34,7 +34,7 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 			<intent-filter>
-				<action android:name="android.intent.action.VIEW"/>
+				<action android:name="us.shandian.giga.intent.DOWNLOAD"/>
 				<category android:name="android.intent.category.DEFAULT"/>
 				<category android:name="android.intent.category.BROWSABLE"/>
 				<data 
@@ -71,6 +71,19 @@
 			</intent-filter>
 
 		</activity>
+		
+		<activity-alias
+			android:name=".ui.web.BrowserActivity-share"
+			android:label="@string/open_with_gigaget"
+			android:targetActivity=".ui.web.BrowserActivity">
+			
+			<intent-filter>
+				<action android:name="android.intent.action.SEND"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+				<data android:mimeType="text/*"/>
+			</intent-filter>
+			
+		</activity-alias>
 		
 		<activity
 			android:name=".ui.settings.SettingsActivity"
