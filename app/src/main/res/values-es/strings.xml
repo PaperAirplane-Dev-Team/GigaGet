@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GigaGet</string>
+    <string name="hello_world">Hello world!</string>
+	
+	<!-- Missions -->
+	<string name="start">Empezar</string>
+	<string name="pause">Pausar</string>
+	<string name="view">Ver</string>
+	<string name="delete">Borrar</string>
+	<string name="checksum">Checksum</string>
+	
+	<!-- Info -->
+	<string name="url">Url</string>
+	<string name="path">Ruta</string>
+	<string name="create_date">Creado el</string>
+	<string name="total_size">Tamaño total</string>
+	<string name="downloaded_size">Total descargado</string>
+	<string name="speed">Velocidad</string>
+	<string name="blocks_count">Total de bloques</string>
+	<string name="threads_count">Total de hilos</string>
+	
+	<!-- Fragment -->
+	<string name="add">Nueva descarga</string>
+	<string name="finish">Aceptar</string>
+	<string name="switch_mode">Cambiar entre vista de lista o grid</string>
+	<string name="settings">Ajustes</string>
+	
+	<!-- Browser -->
+	<string name="browser">Navegador simple</string>
+	<string name="detector">Detector de vídeo</string>
+	
+	<!-- Settings -->
+	<string name="about">Acerca de</string>
+	
+	<!-- Msg -->
+	<string name="msg_url">Descargar URL</string>
+	<string name="msg_name">Nombre del archivo</string>
+	<string name="msg_threads">Hilos</string>
+	<string name="msg_fetch_filename">Obtener nombre de archivo</string>
+	<string name="msg_error">Error</string>
+	<string name="msg_server_unsupported">Servidor no soportado</string>
+	<string name="msg_enter_url">Ingrese aquí la url</string>
+	<string name="msg_no_video">Oops, se se ha detectado vídeo</string>
+	<string name="msg_exists">El archivo ya existe</string>
+	<string name="msg_url_malform">URL mal formada o conexión no disponible</string>
+	<string name="msg_running">GigaGet está ejecutando</string>
+	<string name="msg_running_detail">Click para detalles</string>
+	<string name="msg_wait">Espera por favor...</string>
+	<string name="msg_copied">Copiado al portapapeles.</string>
+	<string name="msg_close">Cerrar</string>
+	<string name="change_download_dir">Directorio de descarga</string>
+	<string name="no_available_dir">Selecciona un directorio de descarga disponible.</string>
+	<string name="need_restart">Los cambios no tendrán efecto hasta que reinicies la aplicación.</string>
+	<string name="open_with_gigaget">Abrir con GigaGet</string>
+</resources>
