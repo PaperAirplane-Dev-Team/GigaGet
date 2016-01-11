@@ -4,8 +4,8 @@
 		<item>All</item>
 		<item>Downloading</item>
 		<item>Done</item>
-		<item>-</item>
 		<item>Add Bulk</item>
+		<item>-</item>
 		<item>Embedded Browser</item>
 		<item>Settings</item>
 
@@ -15,9 +15,9 @@
 		<item>all</item>
 		<item>downloading</item>
 		<item>done</item>
+		<item>downloading</item>
 		<item>null</item>
 		<item>browser</item>
 		<item>settings</item>
-		<item>null</item>
 	</string-array>
 </resources>

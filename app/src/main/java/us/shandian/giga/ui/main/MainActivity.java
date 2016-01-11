@@ -210,17 +210,17 @@ public class MainActivity extends ToolbarActivity implements AdapterView.OnItemC
                 mSelection = position;
                 updateFragments();
             }
-        } else if (position == 5) {
+        } else if (position == 5) { //Browser
             Intent i = new Intent();
             i.setAction(Intent.ACTION_VIEW);
             i.setClass(this, BrowserActivity.class);
             startActivity(i);
-        } else if (position == 6) {
+        } else if (position == 6) { //Settings
             Intent i = new Intent();
             i.setAction(Intent.ACTION_VIEW);
             i.setClass(this, SettingsActivity.class);
             startActivity(i);
-        } else if (position == 4) {
+        } else if (position == 3) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Add links to new lines");
