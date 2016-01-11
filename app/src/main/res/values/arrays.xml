@@ -5,8 +5,10 @@
 		<item>Downloading</item>
 		<item>Done</item>
 		<item>-</item>
+		<item>Add Bulk</item>
 		<item>Embedded Browser</item>
 		<item>Settings</item>
+
 	</string-array>
 	
 	<string-array name="drawer_icons" translatable="false">
@@ -16,5 +18,6 @@
 		<item>null</item>
 		<item>browser</item>
 		<item>settings</item>
+		<item>null</item>
 	</string-array>
 </resources>
