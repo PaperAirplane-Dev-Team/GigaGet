@@ -38,9 +38,9 @@ public class DownloadMission
 	public long length = 0;
 	public long done = 0;
 	public int threadCount = 3;
-	public int finishCount = 0;
-	public ArrayList<Long> threadPositions = new ArrayList<Long>();
-	public HashMap<Long, Boolean> blockState = new HashMap<Long, Boolean>();
+	private int finishCount = 0;
+	private ArrayList<Long> threadPositions = new ArrayList<Long>();
+	private HashMap<Long, Boolean> blockState = new HashMap<Long, Boolean>();
 	public boolean running = false;
 	public boolean finished = false;
 	public boolean fallback = false;

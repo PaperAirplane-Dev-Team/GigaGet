@@ -6,7 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 // Single-threaded fallback mode
-public class DownloadRunnableFallback implements Runnable
+class DownloadRunnableFallback implements Runnable
 {
 	private DownloadMission mMission;
 	//private int mId;

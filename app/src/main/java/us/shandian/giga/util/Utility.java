@@ -71,7 +71,7 @@ public class Utility
 		}
 	}
 	
-	public static void writeToFile(String fileName, byte[] content) {
+	private static void writeToFile(String fileName, byte[] content) {
 		File f = new File(fileName);
 		
 		if (!f.exists()) {
@@ -256,12 +256,12 @@ public class Utility
 		}
 	}
 	
-	public static boolean isDirectoryAvailble(String path) {
+	private static boolean isDirectoryAvailble(String path) {
 		File dir = new File(path);
 		return dir.exists() && dir.isDirectory();
 	}
 	
-	public static boolean isDownloadDirectoryAvailble(Context context) {
+	private static boolean isDownloadDirectoryAvailble(Context context) {
 		return isDirectoryAvailble(Settings.getInstance(context).getString(Settings.DOWNLOAD_DIRECTORY, Settings.DEFAULT_PATH));
 	}
 	
@@ -294,7 +294,7 @@ public class Utility
 		//remove "file://" from the path
 	}
 	
-	public static void checkAndReshow(Activity activity){
+	private static void checkAndReshow(Activity activity){
 		if (!isDownloadDirectoryAvailble(activity)){
 			Toast.makeText(activity.getApplicationContext(),
 				R.string.no_available_dir, Toast.LENGTH_LONG).show();

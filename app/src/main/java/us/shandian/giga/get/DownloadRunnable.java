@@ -10,7 +10,7 @@ import java.net.URL;
 
 import static us.shandian.giga.BuildConfig.DEBUG;
 
-public class DownloadRunnable implements Runnable
+class DownloadRunnable implements Runnable
 {
 	private static final String TAG = DownloadRunnable.class.getSimpleName();
 	

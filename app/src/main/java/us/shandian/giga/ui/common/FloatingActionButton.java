@@ -24,14 +24,14 @@ import android.widget.FrameLayout;
  */
 public class FloatingActionButton extends View implements Animator.AnimatorListener {
  
-	final static OvershootInterpolator overshootInterpolator = new OvershootInterpolator();
-	final static AccelerateInterpolator accelerateInterpolator = new AccelerateInterpolator();
+	private final static OvershootInterpolator overshootInterpolator = new OvershootInterpolator();
+	private final static AccelerateInterpolator accelerateInterpolator = new AccelerateInterpolator();
  
-	Context context;
-	Paint mButtonPaint;
-	Paint mDrawablePaint;
-	Bitmap mBitmap;
-	boolean mHidden = false;
+	private Context context;
+	private Paint mButtonPaint;
+	private Paint mDrawablePaint;
+	private Bitmap mBitmap;
+	private boolean mHidden = false;
  
 	public FloatingActionButton(Context context) {
 		super(context);
@@ -39,16 +39,16 @@ public class FloatingActionButton extends View implements Animator.AnimatorListe
 		init(Color.WHITE);
 	}
  
-	public void setFloatingActionButtonColor(int FloatingActionButtonColor) {
+	private void setFloatingActionButtonColor(int FloatingActionButtonColor) {
 		init(FloatingActionButtonColor);
 	}
  
-	public void setFloatingActionButtonDrawable(Drawable FloatingActionButtonDrawable) {
+	private void setFloatingActionButtonDrawable(Drawable FloatingActionButtonDrawable) {
 		mBitmap = ((BitmapDrawable) FloatingActionButtonDrawable).getBitmap();
 		invalidate();
 	}
  
-	public void init(int FloatingActionButtonColor) {
+	private void init(int FloatingActionButtonColor) {
 		setWillNotDraw(false);
 		setLayerType(View.LAYER_TYPE_SOFTWARE, null);
  
