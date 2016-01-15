@@ -20,7 +20,7 @@ public class DownloadManagerImpl implements DownloadManager
 	
 	private Context mContext;
 	private String mLocation;
-	protected ArrayList<DownloadMission> mMissions = new ArrayList<DownloadMission>();
+	private ArrayList<DownloadMission> mMissions = new ArrayList<DownloadMission>();
 	
 	public DownloadManagerImpl(Context context, String location) {
 		mContext = context;

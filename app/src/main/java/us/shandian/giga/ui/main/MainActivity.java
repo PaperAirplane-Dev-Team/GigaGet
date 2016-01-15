@@ -14,7 +14,6 @@ import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.IBinder;
 import android.text.Editable;
 import android.text.InputType;
@@ -40,14 +39,12 @@ import android.support.v7.widget.Toolbar;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.ExecutionException;
@@ -56,7 +53,6 @@ import us.shandian.giga.R;
 import us.shandian.giga.get.DownloadManager;
 import us.shandian.giga.get.DownloadMission;
 import us.shandian.giga.service.DownloadManagerService;
-import us.shandian.giga.ui.adapter.MissionAdapter;
 import us.shandian.giga.ui.adapter.NavigationAdapter;
 import us.shandian.giga.ui.common.FloatingActionButton;
 import us.shandian.giga.ui.common.ToolbarActivity;
@@ -79,13 +75,13 @@ public class MainActivity extends ToolbarActivity implements AdapterView.OnItemC
     private ActionBarDrawerToggle mToggle;
     private DownloadManager mManager;
     private DownloadManagerService.DMBinder mBinder;
-    int numberofDownloads = 2;
+    private int numberofDownloads = 2;
 
     private String mPendingUrl;
     private SharedPreferences mPrefs;
     private int mSelection = 0;
     private int totalBulkDownloads = 0;
-    Stack<String> url_stack;
+    private Stack<String> url_stack;
     private ServiceConnection mConnection = new ServiceConnection() {
 
         @Override
@@ -268,7 +264,7 @@ public class MainActivity extends ToolbarActivity implements AdapterView.OnItemC
     }
 
 
-    public void startQue() {
+    private void startQue() {
         if (url_stack.isEmpty()) {
             Toast.makeText(MainActivity.this, "Task Completed", Toast.LENGTH_LONG).show();
             return;
@@ -524,7 +520,7 @@ public class MainActivity extends ToolbarActivity implements AdapterView.OnItemC
                     return new Object[]{params[1], header.split("=")[1].replace("\"", "")};
                 }
             } catch (Exception e) {
-
+                Log.d("Exception", e.toString());
             }
             return null;
         }

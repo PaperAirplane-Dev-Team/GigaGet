@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
 */
 public class Settings
 {
-	public static final String XML_NAME = "settings";
+	private static final String XML_NAME = "settings";
 	
 	public static final String DOWNLOAD_DIRECTORY = "download_directory";
 	

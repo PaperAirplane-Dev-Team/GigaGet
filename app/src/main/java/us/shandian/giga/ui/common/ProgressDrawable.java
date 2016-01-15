@@ -16,7 +16,7 @@ public class ProgressDrawable extends Drawable
 		this(context.getResources().getColor(background), context.getResources().getColor(foreground));
 	}
 	
-	public ProgressDrawable(int background, int foreground) {
+	private ProgressDrawable(int background, int foreground) {
 		mBackgroundColor = background;
 		mForegroundColor = foreground;
 	}

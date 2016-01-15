@@ -10,15 +10,15 @@ import java.io.PrintWriter;
 
 public class CrashHandler implements Thread.UncaughtExceptionHandler
 {
-	public static String CRASH_DIR = Environment.getExternalStorageDirectory().getPath() + "/GigaCrash/";
-	public static String CRASH_LOG = CRASH_DIR + "last_crash.log";
-	public static String CRASH_TAG = CRASH_DIR + ".crashed";
+	private static String CRASH_DIR = Environment.getExternalStorageDirectory().getPath() + "/GigaCrash/";
+	private static String CRASH_LOG = CRASH_DIR + "last_crash.log";
+	private static String CRASH_TAG = CRASH_DIR + ".crashed";
 
 	private static String ANDROID = Build.VERSION.RELEASE;
 	private static String MODEL = Build.MODEL;
 	private static String MANUFACTURER = Build.MANUFACTURER;
 
-	public static String VERSION = "Unknown";
+	private static String VERSION = "Unknown";
 
 	private Thread.UncaughtExceptionHandler mPrevious;
 
