@@ -46,6 +46,9 @@ import java.io.StringReader;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.ExecutionException;
 
@@ -205,22 +208,23 @@ public class MainActivity extends ToolbarActivity implements AdapterView.OnItemC
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         mDrawer.closeDrawer(Gravity.LEFT);
+        List<String> drawer_items = Arrays.asList(getResources().getStringArray(R.array.drawer_items));
         if (position < 3) {
             if (position != mSelection) {
                 mSelection = position;
                 updateFragments();
             }
-        } else if (position == 5) { //Browser
+        } else if (position == drawer_items.indexOf("Browser")) { //Browser
             Intent i = new Intent();
             i.setAction(Intent.ACTION_VIEW);
             i.setClass(this, BrowserActivity.class);
             startActivity(i);
-        } else if (position == 6) { //Settings
+        } else if (position == drawer_items.indexOf("Embedded Browser")) { //Settings
             Intent i = new Intent();
             i.setAction(Intent.ACTION_VIEW);
             i.setClass(this, SettingsActivity.class);
             startActivity(i);
-        } else if (position == 3) {
+        } else if (position == drawer_items.indexOf("Add Bulk")) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Add links to new lines");
