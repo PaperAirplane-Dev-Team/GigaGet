@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="drawer_items">
+		<item>Visi</item>
+		<item>Parsiunčiama</item>
+		<item>Atlikta</item>
+		<item>-</item>
+		<item>Integruota naršyklė</item>
+		<item>Nustatymai</item>
+	</string-array>
+	
+	<string-array name="drawer_icons" translatable="false">
+		<item>all</item>
+		<item>downloading</item>
+		<item>done</item>
+		<item>null</item>
+		<item>browser</item>
+		<item>settings</item>
+	</string-array>
+</resources>
