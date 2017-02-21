@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GigaGet</string>
+    <string name="hello_world">Sveikas Pasauli!</string>
+	
+	<!-- Missions -->
+	<string name="start">Pradėti</string>
+	<string name="pause">Sustabdyti</string>
+	<string name="view">Peržiūra</string>
+	<string name="delete">Ištrinti</string>
+	<string name="checksum">Kontrolinė suma</string>
+	
+	<!-- Info -->
+	<string name="url">Url</string>
+	<string name="path">Kelias</string>
+	<string name="create_date">Sukurta</string>
+	<string name="total_size">Visas dydis</string>
+	<string name="downloaded_size">Parsiuntimo dydis</string>
+	<string name="speed">Greitis</string>
+	<string name="blocks_count">Blokų skaičius</string>
+	<string name="threads_count">Žingsnių skaičius</string>
+	
+	<!-- Fragment -->
+	<string name="add">Nauja užduotis</string>
+	<string name="finish">Gerai</string>
+	<string name="switch_mode">Pasrinkti tarp sąrašo ir tinklelio peržiūros</string>
+	<string name="settings">nustatymai</string>
+	
+	<!-- Browser -->
+	<string name="browser">Paprasta naršyklė</string>
+	<string name="detector">Vaizdo įrašo aptikimas ir parsiuntimas</string>
+	
+	<!-- Settings -->
+	<string name="about">Apie</string>
+	
+	<!-- Msg -->
+	<string name="msg_url">Parsiuntimo URL</string>
+	<string name="msg_name">Bylos pavadinimas</string>
+	<string name="msg_threads">Žingsniai</string>
+	<string name="msg_fetch_filename">Suteikti bylai pavadinimą</string>
+	<string name="msg_error">Klaida</string>
+	<string name="msg_server_unsupported">Tarnybinė stotis nepalaikoma</string>
+	<string name="msg_enter_url">Įveskite url čia</string>
+	<string name="msg_no_video">Oi, vaizdo įrašas nerastas</string>
+	<string name="msg_exists">Byla jau yra</string>
+	<string name="msg_url_malform">Netinkamas URL arba nėra interneto ryšio</string>
+	<string name="msg_running">GigaGet veikia</string>
+	<string name="msg_running_detail">Paspauskite, kad matytumėte detales</string>
+	<string name="msg_wait">Prašome palaukti...</string>
+	<string name="msg_copied">Nukopijuota į iškarpinę.</string>
+	<string name="msg_close">Uždaryti</string>
+	<string name="change_download_dir">Parsiuntimo vieta</string>
+	<string name="no_available_dir">Prašome pasirinkti galimą parsiuntimo vietą.</string>
+	<string name="need_restart">Pakeitimai įsigalios paleidus programėlę iš naujo.</string>
+	<string name="open_with_gigaget">atidaryti su GigaGet</string>
+	
+	<!-- Checksum types -->
+	<string name="md5" translatable="false">MD5</string>
+	<string name="sha1" translatable="false">SHA1</string>
+	
+</resources>
